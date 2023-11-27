@@ -7,7 +7,11 @@ h1 {
 }
 
 .banner {
+<<<<<<<< Updated upstream:src/main/resources/public/styles.css
     background-image: url("images/cupcakes1600x900.png");
+========
+    background-image: url("../images/cupcakes1600x900.png");
+>>>>>>>> Stashed changes:src/src/main/resources/public/css/styles.css
     width: 100%;
     height: 200px;
 }
