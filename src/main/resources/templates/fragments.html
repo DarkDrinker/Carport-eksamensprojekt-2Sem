@@ -21,7 +21,7 @@
         <footer th:fragment="footer">
             <a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a>
             <a th:if="${#ctx.session.currentUser} != null" th:href="@{/logout}">Log ud</a>
-            <a href="/">Startside</a>
+            <a href="/public">Startside</a>
         </footer>
     </div>
 </div>
