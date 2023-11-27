@@ -8,7 +8,5 @@ https://1drv.ms/x/s!Avu7UuFH1hLohaQBPXy_prng1JuVhA?e=xE2Nlt&nav=MTVfezNGRjlGOTlG
 
 https://1drv.ms/x/s!Avu7UuFH1hLohaQGiyUc8iUp5AcliA?e=6td5bD
 
-https://efif.sharepoint.com/:w:/r/sites/cph/Lyngby/_layouts/15/Doc.aspx?sourcedoc=%7B050553F3-2582-4D03-ABE6-68EA7C976645%7D&file=Uddrag%20af%20Risikostyring-%20Eksempel.docx&action=default&mobileredirect=true
-
 User stories
 https://1drv.ms/w/s!Avu7UuFH1hLohaQELPxwgkPByYge-A?e=8T3mck
