@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head th:fragment="head(title)">
     <title th:text="${title}">Frontpage</title>
@@ -11,11 +11,9 @@
 <body>
 
 <div id="page-container">
-
     <div id="page-content">
-        <header th:fragment="header(title)">
-            <img src="images/cupcakes.png" height="305" width="955"/>
-            <h1 th:text="${title}"></h1>
+        <header th:fragment="topnav">
+            <img src="images/fog_logo_2015-3003583891.jpg" height="305" width="955"/>
         </header>
 
         <footer th:fragment="footer">

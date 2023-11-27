@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="">
 <div th:replace="~{fragments :: head('My Cupcake Shop')}"></div>
-<thhead>
-  <style>
-
-  </style>
-</thhead>
 <body>
 <a href="cupcakes.html">
   <div th:replace="~{fragments :: banner}"></div>
@@ -20,8 +15,6 @@
     <a th:case="true" class="split" th:text="${#ctx.session.currentUser.name}" href="/logout"></a>
   </div>
 </div>
-
-<p th:text="${name}">lolololol</p>
 <h2>Choose Your Cupcake</h2>
 <form id="cupcake-form">
   <label for="bottom">Choose a Bottom:</label>
