@@ -1,0 +1,53 @@
+@startuml
+|#white|Kunde|
+start
+:Besøger hjemmesiden;
+:Vælg mål for carport;
+#lightgreen:if (Skur?) is (Nej) then
+else (Ja)
+:Vælg **mål/placering** for skur;
+endif
+:Indsend forespørgsel;
+|Shop|
+:Forespørgsel;
+|Mailsystem|
+:Send mail til sælger inkl. Forespørgselsdata;
+|Sælger|
+:Gennemgå mail;
+:Indtaster forespørgselsdata;
+|Tilbudsberegning|
+:Beregner tilbuddet;
+|Sælger|
+if (Acceptabelt resultat?) is (Ja) then
+else (Nej)
+|Tilbudsberegning|
+:Beregn nyt tilbud;
+|Kunde|
+if (Accepterer tilbuddet?) is (Ja) then
+:Betal;
+|Sælger|
+else (Nej)
+|Tilbudsberegning|
+:Beregn nyt tilbud;
+
+|Kunde|
+If (Accepterer tilbud nr. 2?) is (Ja) then
+:Betal;
+|Sælger|
+:Modtager betalingen;
+else (Nej)
+|Sælger|
+:Find en løsning med kunden;
+|Tilbudsberegning|
+:opret nyt tilbud;
+
+
+|Tilbudsberegning|
+
+
+|Sælger|
+|Mailsystem|
+|Tilbudsberegning|
+
+stop
+@enduml
