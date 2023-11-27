@@ -4,16 +4,18 @@
 
 class kunde
 class ordre
-
-class mailsystem
+class skur
+class carport
 class tilbudsberegning
 class sælger
 
 
 kunde *- ordre
 admin *- ordre
-ordre -- mailsystem
-mailsystem -- sælger
+ordre -- carport
+carport -- sælger
+carport -- skur
+skur -- sælger
 sælger -> tilbudsberegning
 tilbudsberegning -> sælger
 sælger -- kunde
