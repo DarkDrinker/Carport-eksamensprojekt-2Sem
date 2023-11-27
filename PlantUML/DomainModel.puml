@@ -7,12 +7,15 @@ object ordre
 object status
 object mailsystem
 object tilbudsberegning
+object sælger
 
 
 kunde *- ordre
-
-
-
-
+ordre -- mailsystem
+mailsystem -- sælger
+sælger -> tilbudsberegning
+tilbudsberegning -> sælger
+sælger -- status
+kunde -- status
 
 @enduml
