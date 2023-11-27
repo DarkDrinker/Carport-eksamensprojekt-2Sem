@@ -10,3 +10,6 @@ https://1drv.ms/x/s!Avu7UuFH1hLohaQGiyUc8iUp5AcliA?e=6td5bD
 
 User stories
 https://1drv.ms/w/s!Avu7UuFH1hLohaQELPxwgkPByYge-A?e=8T3mck
+
+FIGMA preview af mobilsider
+![img.png](src/main/resources/public/images/img.png)
