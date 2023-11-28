@@ -12,7 +12,7 @@ public class UserController
     User user;
     public static void login(Context ctx, ConnectionPool connectionPool)
     {
-        String name = ctx.formParam("username");
+        String name = ctx.formParam("email");
         String password = ctx.formParam("password");
         try
         {
@@ -29,7 +29,7 @@ public class UserController
 
     public static void createuser(Context ctx, ConnectionPool connectionPool)
     {
-        String name = ctx.formParam("username");
+        String name = ctx.formParam("email");
         String password1 = ctx.formParam("password1");
         String password2 = ctx.formParam("password2");
 
