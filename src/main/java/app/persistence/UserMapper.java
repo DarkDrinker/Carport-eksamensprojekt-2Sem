@@ -7,21 +7,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserMapper {
-    public static User login(String name, String password, ConnectionPool connectionPool) throws DatabaseException{
-       String sql = "select * from \"user\" where username=? and password=?";
+    public static User login(String email, String password, ConnectionPool connectionPool) throws DatabaseException{
+       String sql = "select * from \"user\" where email=? and password=?";
 
        try(Connection connection = connectionPool.getConnection())
        {
            try(PreparedStatement ps = connection.prepareStatement(sql))
            {
-               ps.setString(1,name);
+               ps.setString(1,email);
                ps.setString(2,password);
                ResultSet rs = ps.executeQuery();
                if(rs.next()){
                    int id = rs.getInt("id");
-                   boolean isAdmin = rs.getBoolean("admin");
-                   int balance = rs.getInt("balance");
-                   return new User(id,name, password,isAdmin,balance);
+                   return new User(id, email, password);
                } else {
                 throw new DatabaseException("Login er desværre forkert");
                }
@@ -32,15 +30,15 @@ public class UserMapper {
 
     }
 
-    public static void createuser(String name, String password, ConnectionPool connectionPool) throws DatabaseException
+    public static void createuser(String email, String password, ConnectionPool connectionPool) throws DatabaseException
     {
-        String sql = "insert into \"user\" (username, password) values (?,?)";
+        String sql = "insert into \"user\" (email, password) values (?,?)";
 
         try (Connection connection = connectionPool.getConnection())
         {
             try (PreparedStatement ps = connection.prepareStatement(sql))
             {
-                ps.setString(1, name);
+                ps.setString(1, email);
                 ps.setString(2, password);
                 int rowsAffected =  ps.executeUpdate();
                 if (rowsAffected != 1)
