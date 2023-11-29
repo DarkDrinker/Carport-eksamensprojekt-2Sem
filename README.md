@@ -10,3 +10,9 @@ https://1drv.ms/x/s!Avu7UuFH1hLohaQGiyUc8iUp5AcliA?e=6td5bD
 
 User stories
 https://1drv.ms/w/s!Avu7UuFH1hLohaQELPxwgkPByYge-A?e=8T3mck
+
+Link til rapport: 
+https://efif-my.sharepoint.com/:w:/g/personal/cph-np158_cphbusiness_dk/EVp0-p8XRL9KjM-b7SViRoQBv3Xu7yqK1lmha2vH1mnojg?e=KIPf35
+
+FIGMA preview af mobilsider
+![img.png](src/main/resources/public/images/img.png)

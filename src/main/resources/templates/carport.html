@@ -1,30 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
-<div th:replace="~{fragments :: head('FOG Trælast')}"></div>
+
+<div th:replace="~{fragments :: head('FOG')}"></div>
 <body>
-<a href="carport.html">
-    <div th:replace="~{fragments :: topnav}"></div>
-
-    <div id="page-container">
-
-        <div id="page-content">
-
-            <div th:replace="~{fragments :: header('Velkommen')}"></div>
-
-            <div class="centered-form">
-                <form method="post">
-
-                    <input type="text" name="email" placeholder="email"/>
-                    <input type="password" name="password" placeholder="password"/>
-                    <button type="submit" formaction="/login">Log på</button>
-
-                    <p class="errormessage" th:text="${#ctx.message}"></p>
-                </form>
-            </div>
-            <a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a>
-        </div>
-    </div>
-
+<a>
+    <div th:replace="~{fragments :: top-bar}"></div>
 </a>
+<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Dolor sed viverra ipsum nunc aliquet bibendum. Mi eget mauris pharetra et ultrices. Tempor orci dapibus ultrices in iaculis nunc sed augue lacus. Lacus suspendisse faucibus interdum posuere lorem ipsum. Facilisis magna etiam tempor orci. Nunc sed velit dignissim sodales ut eu sem. Enim tortor at auctor urna. Augue lacus viverra vitae congue eu consequat ac. Quam vulputate dignissim suspendisse in. Hendrerit gravida rutrum quisque non tellus orci. Sed euismod nisi porta lorem. Feugiat pretium nibh ipsum consequat nisl vel pretium lectus. Sit amet justo donec enim diam vulputate ut. Dictum sit amet justo donec enim. Phasellus egestas tellus rutrum tellus pellentesque. Varius morbi enim nunc faucibus a pellentesque sit. Nunc consequat interdum varius sit amet mattis vulputate enim nulla. Venenatis cras sed felis eget velit aliquet. Mauris sit amet massa vitae tortor condimentum lacinia. Risus sed vulputate odio ut enim blandit volutpat maecenas. Purus in mollis nunc sed id semper risus in. Morbi blandit cursus risus at ultrices mi tempus imperdiet. Justo nec ultrices dui sapien eget mi proin sed libero. Egestas tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla. Quam elementum pulvinar etiam non quam lacus suspendisse faucibus interdum. Donec et odio pellentesque diam volutpat commodo sed. Sagittis id consectetur purus ut faucibus pulvinar. Sit amet aliquam id diam maecenas ultricies mi. Purus in massa tempor nec feugiat nisl pretium fusce id. Nunc aliquet bibendum enim facilisis gravida neque convallis a. Sem nulla pharetra diam sit amet nisl. Pharetra pharetra massa massa ultricies mi. Amet massa vitae tortor condimentum lacinia quis. Eget lorem dolor sed viverra ipsum nunc aliquet. Odio morbi quis commodo odio. Justo donec enim diam vulputate. Posuere ac ut consequat semper viverra. Lacus laoreet non curabitur gravida arcu ac. Amet dictum sit amet justo donec enim diam vulputate. Quam viverra orci sagittis eu. Dui nunc mattis enim ut. Vulputate dignissim suspendisse in est ante in nibh. Eu mi bibendum neque egestas congue quisque egestas. Adipiscing tristique risus nec feugiat in. Scelerisque felis imperdiet proin fermentum leo. Ultricies mi quis hendrerit dolor magna eget est. Et netus et malesuada fames ac turpis egestas sed tempus. Sit amet tellus cras adipiscing enim eu. Viverra orci sagittis eu volutpat. Eu mi bibendum neque egestas congue quisque egestas diam in. Suscipit adipiscing bibendum est ultricies integer quis auctor elit. Porta non pulvinar neque laoreet suspendisse interdum consectetur. Sed velit dignissim sodales ut eu sem. Rhoncus urna neque viverra justo. Magna fermentum iaculis eu non diam phasellus vestibulum. Neque vitae tempus quam pellentesque nec nam aliquam. Ornare massa eget egestas purus viverra. Tristique risus nec feugiat in fermentum.
+</p>
+<div th:replace="~{fragments :: footer}"></div>
 </body>
 </html>
