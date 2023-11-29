@@ -4,6 +4,27 @@
 <body>
 <a href="carport.html">
     <div th:replace="~{fragments :: topnav}"></div>
+
+    <div id="page-container">
+
+        <div id="page-content">
+
+            <div th:replace="~{fragments :: header('Velkommen')}"></div>
+
+            <div class="centered-form">
+                <form method="post">
+
+                    <input type="text" name="email" placeholder="email"/>
+                    <input type="password" name="password" placeholder="password"/>
+                    <button type="submit" formaction="/login">Log på</button>
+
+                    <p class="errormessage" th:text="${#ctx.message}"></p>
+                </form>
+            </div>
+            <a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a>
+        </div>
+    </div>
+
 </a>
 </body>
 </html>

@@ -20,7 +20,7 @@ public class OrderController {
 
         try {
             List<Remme> remmeList =  new ArrayList<>( RemmeMapper.getAllRemme(connectionPool).values());
-            ctx.attribute("Remme", remmeList);
+            ctx.attribute("remme", remmeList);
 
         } catch (DatabaseException e) {
             throw new RuntimeException(e);
@@ -31,7 +31,7 @@ public class OrderController {
 
         try {
             List<Stolper> stolperList =  new ArrayList<>( StolperMapper.getAllStolper(connectionPool).values());
-            ctx.attribute("Stolper", stolperList);
+            ctx.attribute("stolper", stolperList);
 
         } catch (DatabaseException e) {
             throw new RuntimeException(e);
@@ -42,7 +42,7 @@ public class OrderController {
 
         try {
             List<Spaer> spaerList =  new ArrayList<>( SpaerMapper.getAllSpaer(connectionPool).values());
-            ctx.attribute("Spaer", spaerList);
+            ctx.attribute("spaer", spaerList);
 
         } catch (DatabaseException e) {
             throw new RuntimeException(e);

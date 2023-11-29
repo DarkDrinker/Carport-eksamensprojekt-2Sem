@@ -18,7 +18,7 @@ public class UserController
         {
             User user = UserMapper.login(name, password, connectionPool);
             ctx.sessionAttribute("currentUser", user);
-            ctx.render("cupcakes.html");
+            ctx.render("order.html");
         }
         catch (DatabaseException e)
         {
