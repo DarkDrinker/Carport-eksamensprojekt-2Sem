@@ -1,21 +1,21 @@
 package app.persistence;
 
+import app.exceptions.DatabaseException;
 import app.models.Stolper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.sql.Connection;
+import java.util.Map;
 
-import static app.Main.connectionPool;
 
 
 public class StolperMapper {
 
 
-    public static List<Stolper> getAllStolper(ConnectionPool connectionPool) {
+    public static Map<Integer, Stolper> getAllStolper(ConnectionPool connectionPool) throws DatabaseException {
 
-        List<Stolper> stolperList = new ArrayList<>();
+        Map<Integer, Stolper> stolperMap = new HashMap<>();
 
         String sql = "SELECT * from stolper";
         try (Connection connection = connectionPool.getConnection()) {
@@ -27,12 +27,13 @@ public class StolperMapper {
                     int size= rs.getInt("size");
                     double price = rs.getDouble("price");
                     Stolper stolper = new Stolper(stolper_id, stolpe, size, price);
+                    stolperMap.put(stolper_id, stolper);
                 }
 
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException("Fejl i StolperMapper");
         }
-        return stolperList;
+        return stolperMap;
     }
 }
