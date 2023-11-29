@@ -1,8 +1,6 @@
 package app;
 
 import config.ThymeleafConfig;
-import app.controllers.CartController;
-import app.controllers.OrderController;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
