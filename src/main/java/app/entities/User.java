@@ -4,16 +4,23 @@ public class User {
     private int id;
     private String name;
     private String password;
+    private String adresse;
     private String email;
-    private boolean admin;
     private int balance;
 
 
-    public User(int id, String name, String password, boolean isAdmin, int balance) {
+    public User(int id, String password, String email) {
+        this.id = id;
+        this.password = password;
+        this.email = email;
+    }
+
+    public User(int id, String name, String password, String adresse, String email, int balance) {
         this.id = id;
         this.name = name;
         this.password = password;
-        this.admin = isAdmin;
+        this.adresse = adresse;
+        this.email = email;
         this.balance = balance;
     }
 
@@ -29,16 +36,16 @@ public class User {
         return password;
     }
 
-    public boolean isAdmin() {
-        return admin;
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public int getBalance() {
         return balance;
-    }
-
-    public void setBalance(int balance) {
-        this.balance = balance;
     }
 
     @Override
@@ -47,7 +54,8 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
-                ", admin=" + admin +
+                ", adresse='" + adresse + '\'' +
+                ", email='" + email + '\'' +
                 ", balance=" + balance +
                 '}';
     }
