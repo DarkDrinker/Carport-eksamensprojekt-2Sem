@@ -23,9 +23,9 @@ public class Main {
 
         // Routing
 
-        app.get("/", ctx -> ctx.render("cupcakes.html"));
-        app.get("/cupcakes", ctx -> ctx.render("cupcakes.html"));
-        app.post("/cupcakes", ctx -> ctx.render("cupcakes.html"));
+        app.get("/", ctx -> ctx.render("carport.html"));
+        app.get("/carport", ctx -> ctx.render("carport.html"));
+        app.post("/carport", ctx -> ctx.render("carport.html"));
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
         app.post("/login", ctx -> UserController.login(ctx, connectionPool));
