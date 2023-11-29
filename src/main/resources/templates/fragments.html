@@ -9,19 +9,41 @@
 </head>
 
 <body>
+<div id="page-content">
+    <div id="top-bar">
+        <header th:fragment="top-bar" >
+            <div class="sticky">
+                <img src="../public/images/fog_logo_2015-3003583891.jpg" style="width:100%; max-height: 50px"  alt="FOGLOGO"/>
+            </div>
 
-<div id="page-container">
-    <div id="page-content">
-        <header th:fragment="topnav">
-            <img src="images/fog_logo_2015-3003583891.jpg" height="305" width="100%"/>
+
         </header>
 
         <footer th:fragment="footer">
+            <h1 ><a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a></h1>
             <a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a>
             <a th:if="${#ctx.session.currentUser} != null" th:href="@{/logout}">Log ud</a>
             <a href="/public">Startside</a>
         </footer>
     </div>
 </div>
+
+
+<!--
+<div id="page-container">
+    <div id="page-content">
+        <header th:fragment="topnav">
+            <img src="images/fog_logo_2015-3003583891.jpg" height="50px" width="100%"/>
+        </header>
+
+        <footer th:fragment="footer">
+            <h1 ><a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a></h1>
+            <a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a>
+            <a th:if="${#ctx.session.currentUser} != null" th:href="@{/logout}">Log ud</a>
+            <a href="/public">Startside</a>
+        </footer>
+    </div>
+</div>
+-->
 </body>
 </html>
