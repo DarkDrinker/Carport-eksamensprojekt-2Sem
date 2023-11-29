@@ -30,7 +30,8 @@ public class Main {
         app.post("/cupcakes", ctx -> ctx.render("cupcakes.html"));
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
-        app.post("/login", ctx -> UserController.login(ctx ,connectionPool) );
+        app.post("/login", ctx -> UserController.login(ctx, connectionPool));
         app.get("/logout", ctx -> UserController.logout(ctx));
-        app.get("/orders/{id}", ctx -> OrderController.getorders(ctx, connectionPool));
+        //app.get("/orders/{id}", ctx -> OrderController.getorders(ctx, connectionPool));
+    }
 }
