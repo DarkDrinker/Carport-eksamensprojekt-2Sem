@@ -1,11 +1,10 @@
 package app;
 
-import app.config.ThymeleafConfig;
+import config.ThymeleafConfig;
 import app.controllers.CartController;
 import app.controllers.OrderController;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
-import app.persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 public class Main {
