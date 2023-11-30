@@ -7,7 +7,9 @@ import app.persistence.MaterialMapper;
 import io.javalin.http.Context;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderController {
 
@@ -16,7 +18,7 @@ public class OrderController {
 
         try {
             List<Material> materialList =  new ArrayList<>( MaterialMapper.getAllMaterial(connectionPool).values());
-            ctx.attribute("material", materialList);
+            ctx.attribute("materialList", materialList);
 
         } catch (DatabaseException e) {
             throw new RuntimeException(e);

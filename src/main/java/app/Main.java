@@ -1,5 +1,6 @@
 package app;
 
+import app.controllers.OrderController;
 import config.ThymeleafConfig;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
@@ -26,6 +27,10 @@ public class Main {
         app.get("/", ctx -> ctx.render("carport.html"));
         app.get("/carport", ctx -> ctx.render("carport.html"));
         app.post("/carport", ctx -> ctx.render("carport.html"));
+        app.get("/order", ctx -> {
+            OrderController.allMaterial(ctx, connectionPool);
+            ctx.render("order.html");
+        });
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
         app.post("/login", ctx -> UserController.login(ctx, connectionPool));

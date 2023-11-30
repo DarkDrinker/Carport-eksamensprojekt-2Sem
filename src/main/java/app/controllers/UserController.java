@@ -1,23 +1,40 @@
 package app.controllers;
 import app.entities.User;
 import app.exceptions.DatabaseException;
+import app.models.Material;
 import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
 import app.persistence.UserMapper;
 import io.javalin.http.Context;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserController
 {
     User user;
     public static void login(Context ctx, ConnectionPool connectionPool)
     {
+        Map<Integer, Material> materialMap;
+
         String name = ctx.formParam("email");
         String password = ctx.formParam("password");
         try
         {
             User user = UserMapper.login(name, password, connectionPool);
-            ctx.render("carport.html");
+            ctx.sessionAttribute("currentUser", user);
+            materialMap = (HashMap<Integer, Material>) ctx.sessionAttribute("materialMap");
+            if (materialMap == null)
+            {
+
+                // Hent alle tops fra DB og gem i Hashmap
+                materialMap = MaterialMapper.getAllMaterial(connectionPool);
+                ctx.sessionAttribute("materialMap", materialMap);
+                List<Material> materialList = new ArrayList<>(materialMap.values());
+                ctx.sessionAttribute("materialList", materialList);
+            }
         }
         catch (DatabaseException e)
         {

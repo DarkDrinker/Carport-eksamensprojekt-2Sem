@@ -33,8 +33,9 @@ public class MaterialMapper {
 
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Fejl i StolperMapper");
+            throw new DatabaseException("Fejl i MaterialMapper");
         }
         return materialMap;
     }
+
 }

@@ -14,7 +14,7 @@
 
     <div id="page-content">
         <header th:fragment="header(title)">
-            <img src="../public/images/fog_logo_2015-3003583891.jpg" height="250" width="250"/>
+            <img src="images/fog_logo_2015-3003583891.jpg" height="250" width="250"/>
             <h1 th:text="${title}"></h1>
         </header>
 
@@ -36,7 +36,7 @@
 
             <form action="/order" method="post">
                 <div>
-                    <select name="remme_id">
+                    <select name="material_id">
                         <option th:each="material : ${#ctx.session.materialList}"
                                 th:value="${material.material_id}"
                                 th:text="'Materiale '+ ${material.material_id + ' ' +material.material_description + ' størrelse '+ material.size +' - beløb: ' + material.price + ' kroner'}"></option>
