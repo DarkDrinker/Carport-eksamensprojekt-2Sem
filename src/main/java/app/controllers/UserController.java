@@ -33,7 +33,8 @@ public class UserController
         String password2 = ctx.formParam("password2");
         String adresse = ctx.formParam("adresse");
         String email = ctx.formParam("email");
-        String zip = ctx.formParam("zip");
+        String city = ctx.formParam("city");
+        int zip = Integer.parseInt(ctx.formParam("zip"));
 
 
         // Validering af passwords - at de to matcher
@@ -41,7 +42,7 @@ public class UserController
         {
             try
             {
-                UserMapper.createuser(name, password1, adresse, email, zip, connectionPool);
+                UserMapper.createuser(name, password1, adresse, email, city, zip, connectionPool);
                 ctx.attribute("message", "Du er nu oprette. Log på for at komme i gang.");
                 ctx.render("cupcakes.html");
 

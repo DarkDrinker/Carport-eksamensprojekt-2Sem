@@ -6,7 +6,9 @@ public class User {
     private String password;
     private String adresse;
     private String email;
-    private int balance;
+    private String role;
+    private String city;
+    private int zip;
 
 
     public User(int id, String password, String email) {
@@ -15,13 +17,15 @@ public class User {
         this.email = email;
     }
 
-    public User(int id, String name, String password, String adresse, String email, int balance) {
+    public User(int id, String name, String password, String adresse, String email, String role, String city, int zip) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.adresse = adresse;
         this.email = email;
-        this.balance = balance;
+        this.role = role;
+        this.city = city;
+        this.zip = zip;
     }
 
     public int getId() {
@@ -44,8 +48,16 @@ public class User {
         return email;
     }
 
-    public int getBalance() {
-        return balance;
+    public String getRole() {
+        return role;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public int getZip() {
+        return zip;
     }
 
     @Override
@@ -56,7 +68,9 @@ public class User {
                 ", password='" + password + '\'' +
                 ", adresse='" + adresse + '\'' +
                 ", email='" + email + '\'' +
-                ", balance=" + balance +
+                ", role='" + role + '\'' +
+                ", city='" + city + '\'' +
+                ", zip=" + zip +
                 '}';
     }
 }
