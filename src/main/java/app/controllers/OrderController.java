@@ -2,7 +2,6 @@ package app.controllers;
 
 import app.exceptions.DatabaseException;
 import app.models.Material;
-import app.models.Stolper;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
 import io.javalin.http.Context;
