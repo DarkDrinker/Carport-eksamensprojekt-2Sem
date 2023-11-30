@@ -1,0 +1,48 @@
+@startuml
+
+Title Domænemodel
+
+hide circle
+hide methods
+
+class User {
+  name
+  mail
+  role
+  address
+  zip
+  city
+  date
+}
+
+class Orders {
+   order_id
+   user_id
+   carport_length
+   carport_width
+   shed_length
+   shed_width
+   date
+   status
+}
+
+class OrderLine{
+item_id
+order_id
+material_id
+quantity
+}
+
+class material {
+material_id
+descriptions
+price
+}
+
+
+User "1" -right- "*" Orders : > places
+Orders "1" -right- "*" OrderLine
+OrderLine "*" -- "1" material
+
+
+@enduml
