@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head(title)">
+    <title th:text="${title}">Order</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div id="page-container">
+
+    <div id="page-content">
+        <header th:fragment="header(title)">
+            <img src="../public/images/fog_logo_2015-3003583891.jpg" height="250" width="250"/>
+            <h1 th:text="${title}"></h1>
+        </header>
+
+
+
+            <section>
+                <h3>Størrelse</h3>
+                <form action="/process-length" method="post">
+                    <label for="length">Længde:</label>
+                    <input type="number" name="length" id="length" value="1" min="1" required>
+                    <button type="submit" id="submit-length">Læg i kurv</button>
+                </form><br><br>
+                <form action="/process-width" method="post">
+                    <label for="width">Bredde:</label>
+                    <input type="number" name="width" id="width" value="1" min="1" required>
+                    <button type="submit" id="submit-width">Læg i kurv</button>
+                </form><br>
+            </section>
+
+            <form action="/order" method="post">
+                <div>
+                    <select name="material_id">
+                        <option th:each="material : ${#ctx.session.materialList}"
+                                th:value="${material.material_id}"
+                                th:text="'Materiale '+ ${material.material_id + ' ' +material.material_description + ' størrelse '+ material.size +' - beløb: ' + material.price + ' kroner'}"></option>
+                    </select>
+                    <button type="submit" id="submit-remme">Læg i kurv</button>
+                </div><br>
+
+
+        </form><br>
+        <form method="get" action="/cart">
+         <button type="submit" th:href="@{/cart}">Giv mig et tilbud</button>
+        </form>
+
+
+        <footer th:fragment="footer">
+            <a th:if="${#ctx.session.currentUser} != null" th:href="@{/logout}">Log ud</a>
+        </footer>
+    </div>
+</div>
+</body>
+</html>
