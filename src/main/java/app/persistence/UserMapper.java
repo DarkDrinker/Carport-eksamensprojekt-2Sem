@@ -30,9 +30,9 @@ public class UserMapper {
 
     }
 
-    public static void createuser(String name, String password, String adresse, String email, ConnectionPool connectionPool) throws DatabaseException
+    public static void createuser(String name, String password, String adresse, String email, String zip, ConnectionPool connectionPool) throws DatabaseException
     {
-        String sql = "insert into \"user\" (name, password, adresse, email) values (?,?,?,?)";
+        String sql = "insert into \"user\" (name, password, adresse, email, zip) values (?,?,?,?,?)";
 
         try (Connection connection = connectionPool.getConnection())
         {
@@ -42,6 +42,7 @@ public class UserMapper {
                 ps.setString(2, password);
                 ps.setString(3, adresse);
                 ps.setString(4, email);
+                ps.setString(5, zip);
                 int rowsAffected =  ps.executeUpdate();
                 if (rowsAffected != 1)
                 {

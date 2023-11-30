@@ -1,6 +1,6 @@
 package app;
 
-import app.config.ThymeleafConfig;
+import config.ThymeleafConfig;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;

@@ -1,7 +1,8 @@
 package app.persistence;
 
 import app.exceptions.DatabaseException;
-import app.models.Stolper;
+import app.models.Material;
+
 
 import java.sql.*;
 import java.util.HashMap;
@@ -10,30 +11,30 @@ import java.util.Map;
 
 
 
-public class StolperMapper {
+public class MaterialMapper {
 
 
-    public static Map<Integer, Stolper> getAllStolper(ConnectionPool connectionPool) throws DatabaseException {
+    public static Map<Integer, Material> getAllMaterial(ConnectionPool connectionPool) throws DatabaseException {
 
-        Map<Integer, Stolper> stolperMap = new HashMap<>();
+        Map<Integer, Material> materialMap = new HashMap<>();
 
-        String sql = "SELECT * from stolper";
+        String sql = "SELECT * from material";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    int stolper_id = rs.getInt("stolper_id");
-                    String stolpe= rs.getString("stolpe");
+                    int material_id = rs.getInt("material_id");
+                    String material_description= rs.getString("material_description");
                     int size= rs.getInt("size");
                     double price = rs.getDouble("price");
-                    Stolper stolper = new Stolper(stolper_id, stolpe, size, price);
-                    stolperMap.put(stolper_id, stolper);
+                    Material material = new Material(material_id, material_description, size, price);
+                    materialMap.put(material_id, material);
                 }
 
             }
         } catch (SQLException e) {
             throw new DatabaseException("Fejl i StolperMapper");
         }
-        return stolperMap;
+        return materialMap;
     }
 }

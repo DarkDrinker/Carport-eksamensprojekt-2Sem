@@ -7,13 +7,21 @@ public class Orders {
         private int id;
         private Date date;
         private int user_id;
-        private boolean paid;
+        private double carport_length;
+        private double carport_width;
+        private double shed_length;
+        private double shed_width;
+        private String status;
 
-    public Orders(int id, Date date, int user_id, boolean paid) {
+    public Orders(int id, Date date, int user_id, double carport_length, double carport_width, double shed_length, double shed_width, String status) {
         this.id = id;
         this.date = date;
         this.user_id = user_id;
-        this.paid = paid;
+        this.carport_length = carport_length;
+        this.carport_width = carport_width;
+        this.shed_length = shed_length;
+        this.shed_width = shed_width;
+        this.status = status;
     }
 
     public int getId() {
@@ -28,8 +36,24 @@ public class Orders {
         return user_id;
     }
 
-    public boolean isPaid() {
-        return paid;
+    public double getCarport_length() {
+        return carport_length;
+    }
+
+    public double getCarport_width() {
+        return carport_width;
+    }
+
+    public double getShed_length() {
+        return shed_length;
+    }
+
+    public double getShed_width() {
+        return shed_width;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     @Override
@@ -38,7 +62,11 @@ public class Orders {
                 "id=" + id +
                 ", date=" + date +
                 ", user_id=" + user_id +
-                ", paid=" + paid +
+                ", carport_length=" + carport_length +
+                ", carport_width=" + carport_width +
+                ", shed_length=" + shed_length +
+                ", shed_width=" + shed_width +
+                ", status='" + status + '\'' +
                 '}';
     }
 }
