@@ -17,7 +17,6 @@ public class UserController
     User user;
     public static void login(Context ctx, ConnectionPool connectionPool)
     {
-        Map<Integer, Material> materialMap;
 
         String name = ctx.formParam("email");
         String password = ctx.formParam("password");
@@ -25,16 +24,7 @@ public class UserController
         {
             User user = UserMapper.login(name, password, connectionPool);
             ctx.sessionAttribute("currentUser", user);
-            materialMap = (HashMap<Integer, Material>) ctx.sessionAttribute("materialMap");
-            if (materialMap == null)
-            {
 
-                // Hent alle tops fra DB og gem i Hashmap
-                materialMap = MaterialMapper.getAllMaterial(connectionPool);
-                ctx.sessionAttribute("materialMap", materialMap);
-                List<Material> materialList = new ArrayList<>(materialMap.values());
-                ctx.sessionAttribute("materialList", materialList);
-            }
         }
         catch (DatabaseException e)
         {

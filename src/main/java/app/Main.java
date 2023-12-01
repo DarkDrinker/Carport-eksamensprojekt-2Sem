@@ -28,13 +28,13 @@ public class Main {
         app.get("/carport", ctx -> ctx.render("carport.html"));
         app.post("/carport", ctx -> ctx.render("carport.html"));
         app.get("/materials", ctx -> {
-            OrderController.allMaterial(ctx, connectionPool);
+            OrderController.initializeMaterialMap(ctx, connectionPool);
             ctx.render("materials.html");
         });
         app.get("/order", ctx -> ctx.render("order.html"));
         app.post("/order", ctx -> {
             OrderController.allOrders(ctx, connectionPool);
-            ctx.render("cart.html");
+            ctx.render("myorders.html");
         });
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));

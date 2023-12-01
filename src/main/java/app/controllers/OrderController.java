@@ -17,11 +17,22 @@ import java.util.Map;
 
 public class OrderController {
 
+    public static void initializeMaterialMap(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        Map<Integer, Material> materialMap = ctx.sessionAttribute("materialMap");
 
+        if (materialMap == null) {
+            // Hent alle materialer fra DB og gem i Hashmap
+            materialMap = MaterialMapper.getAllMaterial(connectionPool);
+            ctx.sessionAttribute("materialMap", materialMap);
+
+            List<Material> materialList = new ArrayList<>(materialMap.values());
+            ctx.sessionAttribute("materialList", materialList);
+        }
+    }
     public static void allMaterial(Context ctx, ConnectionPool connectionPool){
 
         try {
-            List<Material> materialList =  new ArrayList<>( MaterialMapper.getAllMaterial(connectionPool).values());
+            List<Material> materialList =  new ArrayList<>(MaterialMapper.getAllMaterial(connectionPool).values());
             ctx.attribute("materialList", materialList);
 
         } catch (DatabaseException e) {
@@ -31,15 +42,16 @@ public class OrderController {
     public static void allOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException
     {
         User user = (User) ctx.sessionAttribute("currentUser");
-        Cart cart = (Cart) ctx.sessionAttribute("cart");
+
         double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
         double carportWidth = Double.parseDouble(ctx.formParam("carport_width"));
         double shedLength = Double.parseDouble(ctx.formParam("shed_length"));
         double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
+        String status = ctx.formParam("status");
 
-        Orders orders = new Orders(0, new Date(System.currentTimeMillis()), user.getId(), carportLength, carportWidth, shedLength, shedWidth, "Pending");
+        Orders orders = new Orders(0, new Date(System.currentTimeMillis()), user.getId(), carportLength, carportWidth, shedLength, shedWidth, status);
         try {
-            orders = OrdersMapper.insertOrders(orders, cart.getCartItems(), connectionPool );
+            orders = OrdersMapper.insertOrders(orders, connectionPool);
             ctx.render("cart.html");
 
         } catch (DatabaseException e) {

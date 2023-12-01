@@ -16,7 +16,7 @@ public class OrdersMapper {
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-                ps.setDate(1, orders.getDate());
+                ps.setObject(1, orders.getDate());
                 ps.setInt(2, orders.getUser_id());
                 ps.setDouble(3, orders.getCarport_length());
                 ps.setDouble(4, orders.getCarport_width());
