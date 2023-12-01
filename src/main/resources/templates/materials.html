@@ -17,10 +17,11 @@
 <section>
     <h2>Materiale Liste</h2>
     <ol>
-        <li th:each="material : ${#ctx.session.materialList}">
+        <li th:each="material : ${materialList}">
             <p th:text="'Materiale ' + ${material.material_id} + ' ' + ${material.material_description} + ' størrelse ' + ${material.size} + ' - beløb: ' + ${material.price} + ' kroner'"></p>
         </li>
     </ol>
+
 
 </section><br>
 
