@@ -1,10 +1,11 @@
 package app;
 
-import app.config.ThymeleafConfig;
+import config.ThymeleafConfig;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
+
 public class Main {
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
@@ -26,6 +27,8 @@ public class Main {
         app.get("/", ctx -> ctx.render("carport.html"));
         app.get("/carport", ctx -> ctx.render("carport.html"));
         app.post("/carport", ctx -> ctx.render("carport.html"));
+        app.get("/createuser", ctx -> ctx.render("createuser.html"));
+        app.post("/createuser",ctx -> UserController.createuser(ctx, connectionPool ));
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
         app.post("/login", ctx -> UserController.login(ctx, connectionPool));
