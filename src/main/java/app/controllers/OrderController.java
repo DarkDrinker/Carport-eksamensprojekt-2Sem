@@ -1,53 +1,80 @@
 package app.controllers;
 
+import app.entities.User;
 import app.exceptions.DatabaseException;
-import app.models.Remme;
-import app.models.Spaer;
-import app.models.Stolper;
+import app.models.Material;
+import app.models.Orders;
 import app.persistence.ConnectionPool;
-import app.persistence.RemmeMapper;
-import app.persistence.SpaerMapper;
-import app.persistence.StolperMapper;
+import app.persistence.MaterialMapper;
+import app.persistence.OrdersMapper;
 import io.javalin.http.Context;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrderController {
 
+    public static void initializeMaterialMap(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        Map<Integer, Material> materialMap = ctx.sessionAttribute("materialMap");
 
-    public static void allRemme(Context ctx, ConnectionPool connectionPool){
+        if (materialMap == null) {
+            // Hent alle materialer fra DB og gem i Hashmap
+            materialMap = MaterialMapper.getAllMaterial(connectionPool);
+            ctx.sessionAttribute("materialMap", materialMap);
+
+            List<Material> materialList = new ArrayList<>(materialMap.values());
+            ctx.sessionAttribute("materialList", materialList);
+        }
+    }
+    public static void allMaterial(Context ctx, ConnectionPool connectionPool){
 
         try {
-            List<Remme> remmeList =  new ArrayList<>( RemmeMapper.getAllRemme(connectionPool).values());
-            ctx.attribute("remme", remmeList);
+            List<Material> materialList =  new ArrayList<>(MaterialMapper.getAllMaterial(connectionPool).values());
+            ctx.attribute("materialList", materialList);
 
         } catch (DatabaseException e) {
             throw new RuntimeException(e);
         }
     }
+    public static void allOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException
+    {
+        User user = (User) ctx.sessionAttribute("currentUser");
 
-    public static void allStolper(Context ctx, ConnectionPool connectionPool){
+        double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
+        double carportWidth = Double.parseDouble(ctx.formParam("carport_width"));
+        double shedLength = Double.parseDouble(ctx.formParam("shed_length"));
+        double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
+        String status = ctx.formParam("status");
 
+        Orders orders = new Orders(0, new Date(System.currentTimeMillis()), user.getId(), carportLength, carportWidth, shedLength, shedWidth, status);
         try {
-            List<Stolper> stolperList =  new ArrayList<>( StolperMapper.getAllStolper(connectionPool).values());
-            ctx.attribute("stolper", stolperList);
+            orders = OrdersMapper.insertOrders(orders, connectionPool);
+            ctx.render("cart.html");
 
         } catch (DatabaseException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException("Fejl i allOrders"+e);
         }
     }
+        /*public static void processOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+            User user = (User) ctx.sessionAttribute("currentUser");
+            Cart cart = (Cart) ctx.sessionAttribute("cart");
 
-    public static void allSpaer(Context ctx, ConnectionPool connectionPool){
+            double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
+            double carportWidth = Double.parseDouble(ctx.formParam("carport_width"));
+            double shedLength = Double.parseDouble(ctx.formParam("shed_length"));
+            double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
 
-        try {
-            List<Spaer> spaerList =  new ArrayList<>( SpaerMapper.getAllSpaer(connectionPool).values());
-            ctx.attribute("spaer", spaerList);
+            Orders orders = new Orders(0, new Date(System.currentTimeMillis()), user.getId(), carportLength, carportWidth, shedLength, shedWidth, "Pending");
 
-        } catch (DatabaseException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
+           try {
+                OrdersMapper.insertOrders(orders, cart.getCartItems(), connectionPool);
+                ctx.render("order-confirmation.html");
+            } catch (DatabaseException e) {
+                throw new DatabaseException("Fejl i processOrders");
+            }
+        }*/
 }
 

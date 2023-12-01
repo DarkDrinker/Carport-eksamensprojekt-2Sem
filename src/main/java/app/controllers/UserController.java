@@ -1,23 +1,30 @@
 package app.controllers;
 import app.entities.User;
 import app.exceptions.DatabaseException;
+import app.models.Material;
 import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
 import app.persistence.UserMapper;
 import io.javalin.http.Context;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserController
 {
     User user;
     public static void login(Context ctx, ConnectionPool connectionPool)
     {
+
         String name = ctx.formParam("email");
         String password = ctx.formParam("password");
         try
         {
             User user = UserMapper.login(name, password, connectionPool);
-            ctx.render("carport.html");
+            ctx.sessionAttribute("currentUser", user);
+
         }
         catch (DatabaseException e)
         {
@@ -33,6 +40,8 @@ public class UserController
         String password2 = ctx.formParam("password2");
         String adresse = ctx.formParam("adresse");
         String email = ctx.formParam("email");
+        String city = ctx.formParam("city");
+        int zip = Integer.parseInt(ctx.formParam("zip"));
 
 
         // Validering af passwords - at de to matcher
@@ -40,7 +49,7 @@ public class UserController
         {
             try
             {
-                UserMapper.createuser(name, password1, adresse, email, connectionPool);
+                UserMapper.createuser(name, password1, adresse, email, city, zip, connectionPool);
                 ctx.attribute("message", "Du er nu oprette. Log på for at komme i gang.");
                 ctx.render("cupcakes.html");
 
