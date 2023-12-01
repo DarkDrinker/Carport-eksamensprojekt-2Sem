@@ -2,33 +2,39 @@
 
 /* FOG Standard blå farve har #174B87 som hex kode */
 
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: auto;
-    background-color: white;
-
-}
-
-li {
-    float: right;
-}
-
-li a {
-    display: block;
-    color: black;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-li a:hover{
+header{
     background-color: #174B87;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+    list-style: none;
+}
+nav{
+display: inherit;
+    align-items: center;
+    height: inherit;
+}
+ul{
+    list-style-type: none;
+    display: flex;
+    padding-inline-start: unset;
+    margin-block: unset;
+    height: inherit;
+}
+li{
+    padding: 20px;
+    font-size: x-large;
 }
 
-.top-nav img {
-    object-fit: contain;
-    width: auto;
-    height: auto;
-    float: left;
+a{
+    color: white;
+    text-decoration:none;
+}
+
+li:hover{
+    background-color: white;
+}
+li:hover a{
+  color: #174B87;
 }
