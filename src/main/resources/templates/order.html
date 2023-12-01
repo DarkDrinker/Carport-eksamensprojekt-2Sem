@@ -22,30 +22,26 @@
 
             <section>
                 <h3>Størrelse</h3>
-                <form action="/process-length" method="post">
-                    <label for="length">Længde:</label>
-                    <input type="number" name="length" id="length" value="1" min="1" required>
-                    <button type="submit" id="submit-length">Læg i kurv</button>
-                </form><br><br>
-                <form action="/process-width" method="post">
-                    <label for="width">Bredde:</label>
-                    <input type="number" name="width" id="width" value="1" min="1" required>
-                    <button type="submit" id="submit-width">Læg i kurv</button>
+                <form action="/process-dimensions" method="post">
+                    <label for="carport_length">Carport længde:</label>
+                    <input type="number" name="carport_length" id="carport_length" value="1" min="1" required>
+                    <button type="submit" id="submit-submit-length">Læg i kurv</button>
+                <br><br>
+                    <label for="carport_width">Carport bredde:</label>
+                    <input type="number" name="carport_width" id="carport_width" value="1" min="1" required>
+                    <button type="submit" id="submit-carport_width">Læg i kurv</button>
+                <br><br>
+                    <label for="shed_length">Skur længde:</label>
+                    <input type="number" name="shed_length" id="shed_length" value="0" min="0" required>
+                    <button type="submit" id="submit-shed_length">Læg i kurv</button>
+                <br><br>
+                    <label for="shed_width">Skur bredde:</label>
+                    <input type="number" name="shed_width" id="shed_width" value="0" min="0" required>
+                    <button type="submit" id="submit">Læg i kurv</button>
                 </form><br>
             </section>
 
-            <form action="/order" method="post">
-                <div>
-                    <select name="material_id">
-                        <option th:each="material : ${#ctx.session.materialList}"
-                                th:value="${material.material_id}"
-                                th:text="'Materiale '+ ${material.material_id + ' ' +material.material_description + ' størrelse '+ material.size +' - beløb: ' + material.price + ' kroner'}"></option>
-                    </select>
-                    <button type="submit" id="submit-remme">Læg i kurv</button>
-                </div><br>
 
-
-        </form><br>
         <form method="get" action="/cart">
          <button type="submit" th:href="@{/cart}">Giv mig et tilbud</button>
         </form>

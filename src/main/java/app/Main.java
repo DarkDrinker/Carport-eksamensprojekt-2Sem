@@ -27,9 +27,14 @@ public class Main {
         app.get("/", ctx -> ctx.render("carport.html"));
         app.get("/carport", ctx -> ctx.render("carport.html"));
         app.post("/carport", ctx -> ctx.render("carport.html"));
-        app.get("/order", ctx -> {
+        app.get("/materials", ctx -> {
             OrderController.allMaterial(ctx, connectionPool);
-            ctx.render("order.html");
+            ctx.render("materials.html");
+        });
+        app.get("/order", ctx -> ctx.render("order.html"));
+        app.post("/order", ctx -> {
+            OrderController.processOrder(ctx, connectionPool);
+            ctx.render("order-confirmation.html");
         });
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
