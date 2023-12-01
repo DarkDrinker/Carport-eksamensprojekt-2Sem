@@ -33,8 +33,8 @@ public class Main {
         });
         app.get("/order", ctx -> ctx.render("order.html"));
         app.post("/order", ctx -> {
-            OrderController.processOrder(ctx, connectionPool);
-            ctx.render("order-confirmation.html");
+            OrderController.allOrders(ctx, connectionPool);
+            ctx.render("cart.html");
         });
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));

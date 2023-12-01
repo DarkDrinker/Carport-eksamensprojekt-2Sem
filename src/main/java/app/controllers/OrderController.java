@@ -40,13 +40,13 @@ public class OrderController {
         Orders orders = new Orders(0, new Date(System.currentTimeMillis()), user.getId(), carportLength, carportWidth, shedLength, shedWidth, "Pending");
         try {
             orders = OrdersMapper.insertOrders(orders, cart.getCartItems(), connectionPool );
-            ctx.render("order.html");
+            ctx.render("cart.html");
 
         } catch (DatabaseException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException("Fejl i allOrders"+e);
         }
     }
-        public static void processOrder(Context ctx, ConnectionPool connectionPool) {
+        /*public static void processOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
             User user = (User) ctx.sessionAttribute("currentUser");
             Cart cart = (Cart) ctx.sessionAttribute("cart");
 
@@ -57,12 +57,12 @@ public class OrderController {
 
             Orders orders = new Orders(0, new Date(System.currentTimeMillis()), user.getId(), carportLength, carportWidth, shedLength, shedWidth, "Pending");
 
-            try {
+           try {
                 OrdersMapper.insertOrders(orders, cart.getCartItems(), connectionPool);
                 ctx.render("order-confirmation.html");
             } catch (DatabaseException e) {
-                throw new RuntimeException(e);
+                throw new DatabaseException("Fejl i processOrders");
             }
-        }
+        }*/
 }
 
