@@ -24,7 +24,7 @@ public class Main {
 
         // Routing
 
-        app.get("/", ctx -> ctx.render("materials.html"));
+        app.get("/", ctx -> ctx.render("carport.html"));
         app.get("/carport", ctx -> ctx.render("carport.html"));
         app.post("/carport", ctx -> ctx.render("carport.html"));
         app.get("/materials", ctx -> {
