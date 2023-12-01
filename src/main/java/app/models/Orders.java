@@ -32,8 +32,8 @@ public class Orders {
         return id;
     }
 
-    public Date getDate() {
-        return date;
+    public java.sql.Date getDate() {
+        return (java.sql.Date) date;
     }
 
     public int getUser_id() {
