@@ -24,7 +24,10 @@
             <li>
                 <a href="not a working link">Kurv</a>
             </li>
-            <h2>Order Details</h2>
+
+
+            <h2>Order Detaljer</h2>
+
 
             <!-- Display Orders information -->
             <p>Date: <span th:text="${orders.date}"></span></p>
@@ -36,16 +39,19 @@
             <p>Status: <span th:text="${orders.status}"></span></p>
 
             <!-- Display associated materials -->
-            <h3>Materials</h3>
+
+            <h3>Materialer</h3>
             <ol>
                 <li th:each="material : ${orders.materials}">
-                    <p th:text="'Materiale ' + ${material.material_id} + ' ' + ${material.material_description} + ' størrelse ' + ${material.size}"></p>
+                    <p th:text=" ${material.material_id} +' Materiale ' + ' ' + ${material.material_description} + ' størrelse ' + ${material.size}"></p>
                 </li>
             </ol>
 
             <!-- Display total_price for the entire order -->
-            <h3>Total Order Price</h3>
-            <p th:text="'Total Order Price: ' + ${orderline.total_price}"></p>
+
+            <h3>Samlet Beløb</h3>
+            <p th:text="'Samlet beløb: ' + ${orderline.total_price}"></p>
+
 
             <li>
                 <div th:switch="${#ctx.session.currentUser != null}" >
@@ -56,9 +62,11 @@
             <li>
                 <div th:switch="${#ctx.session.currentUser != null}" >
                     <a th:case="false"></a>
+
                     <a th:case="true" href="/order">orders</a>
+
+                    <a th:case="true" href="/payment">Betaling</a>
                 </div>
-            </li>
         </ul>
     </nav>
 </header>
