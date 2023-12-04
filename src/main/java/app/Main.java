@@ -32,7 +32,6 @@ public class Main {
         app.post("/createuser",ctx -> UserController.createuser(ctx, connectionPool ));
         app.get("/materials", ctx -> {
             OrderController.initializeMaterialMap(ctx, connectionPool);
-            OrderController.allMaterial(ctx, connectionPool);
             ctx.render("materials.html");
         });
         app.get("/order", ctx -> ctx.render("order.html"));

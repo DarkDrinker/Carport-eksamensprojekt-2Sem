@@ -1,26 +1,23 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:replace="~{fragments :: head('FOG')}"></div>
 
-<head th:fragment="head(title)">
-    <title th:text="${title}">Materiale</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-</head>
 
 <body>
-<header th:fragment="header(title)">
-    <img src="images/fog_logo_2015-3003583891.jpg" height="250" width="250"/>
-    <h1 th:text="${title}"></h1>
-</header>
+<div th:replace="~{fragments :: top-nav}"></div>
 
 <section>
     <h2>Materiale Liste</h2>
     <ol>
-        <li th:each="material : ${materialList}">
+        <li th:each="material : ${#ctx.session.materialList}">
+<<<<<<< Updated upstream
             <p th:text="'Materiale ' + ${material.material_id} + ' ' + ${material.material_description} + ' størrelse ' + ${material.size} + ' - beløb: ' + ${material.price} + ' kroner'"></p>
+=======
+            <p th:text=" ${material.material_id} + 'Materiale ' + ${material.material_description} + ' størrelse ' + ${material.size} + ' - beløb: ' + ${material.price} + ' kroner'"></p>
+>>>>>>> Stashed changes
         </li>
     </ol>
+
 
 
 </section><br>
