@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Frontpage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+
+<header th:fragment="header" style="width:100%;border-bottom:1px solid black;">
+    <img src="../public/images/fog_logo_2015-3003583891.jpg" th:src="@{/images/fog_logo_2015-3003583891.jpg}" height=100px width="100px"/>
+</header>
+
+<form method="post">
+    <input type="text" name="email" placeholder="email"/>
+    <input type="password" name="password" placeholder="password"/>
+    <button type="submit" formaction="/login" >log pā</button>
+
+    <p th:text="${#ctx.message}"> </p>
+</form>
+
+</body>
+</html>
