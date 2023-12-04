@@ -15,3 +15,8 @@ target/classes/templates/fragments.html
 target/classes/templates/frontpage.html
 target/classes/templates/materials.html
 target/classes/templates/order.html
+target/classes/public/css/styles.css
+target/classes/templates/fragments.html
+target/classes/templates/frontpage.html
+target/classes/templates/materials.html
+target/classes/templates/order.html
