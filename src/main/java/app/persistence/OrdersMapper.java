@@ -1,6 +1,7 @@
 package app.persistence;
 
 import app.exceptions.DatabaseException;
+import app.models.Orderline;
 import app.models.Orders;
 
 import java.sql.*;
@@ -46,5 +47,23 @@ public class OrdersMapper {
         orders.setId(newOrderId);
         return orders;
 
+    }
+
+    public static Orderline insertOrderline(Orderline orderline, int orderId, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "INSERT INTO orderline (order_id, quantity, top_id, bottom_id, total_price) VALUES (?,?,?,?,?)";
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, orderId);
+                ps.setInt(2, orderline.getQuantity());
+
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new DatabaseException("Fejl i insertOrderline med SQL query: " + e.getMessage());
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Fejl i insertOrderline med forbindelse til database: " + e.getMessage());
+        }
+
+        return orderline;
     }
 }
