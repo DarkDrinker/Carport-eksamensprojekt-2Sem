@@ -3,16 +3,12 @@
 <div th:replace="~{fragments :: head('FOG')}"></div>
 <body>
 <div th:replace="~{fragments :: top-nav}"></div>
-<div class="login">
+<div class="logincontainer">
     <form method="post" id="myInput">
-        <label>
-            email
-            <input type="text" name="email" placeholder="email"/>
-        </label>
-        <label>
-            password
-            <input type="password" name="password" placeholder="password"/>
-        </label>
+        <label for="email">Type in your email</label><br>
+        <input type="text" id="email" name="email" placeholder="email" required/><br>
+        <label for="password">type in password</label><br>
+        <input type="password" id="password" name="password" placeholder="password" required/><br>
         <button type="submit" id="myBtn" formaction="/login" >log pā</button>
 
         <p th:text="${#ctx.message}"> </p>
