@@ -28,8 +28,12 @@ public class Main {
         app.get("/carport", ctx -> ctx.render("carport.html"));
         app.post("/carport", ctx -> ctx.render("carport.html"));
         app.get("/materials", ctx -> {
+
             OrderController.initializeMaterialMap(ctx, connectionPool);
+<<<<<<< Updated upstream
             //OrderController.allMaterial(ctx, connectionPool);
+=======
+>>>>>>> Stashed changes
             ctx.render("materials.html");
         });
         app.get("/order", ctx -> ctx.render("order.html"));

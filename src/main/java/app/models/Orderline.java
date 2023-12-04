@@ -7,12 +7,30 @@ public class Orderline {
     private int orders_id;
     Material material;
     private int quantity;
-
+    private double total_price;
+    private int material_id;
     public Orderline(int id, int orders_id, Material material, int quantity) {
         this.id = id;
         this.orders_id = orders_id;
         this.material = material;
         this.quantity = quantity;
+    }
+
+    public Orderline(int id, int orders_id, Material material, int quantity, double total_price, int material_id) {
+        this.id = id;
+        this.orders_id = orders_id;
+        this.material = material;
+        this.quantity = quantity;
+        this.total_price = total_price;
+        this.material_id = material_id;
+    }
+
+    public Orderline(int id, int orders_id, Material material, int quantity, int material_id) {
+        this.id = id;
+        this.orders_id = orders_id;
+        this.material = material;
+        this.quantity = quantity;
+        this.material_id = material_id;
     }
 
     public int getId() {
@@ -31,6 +49,14 @@ public class Orderline {
         return quantity;
     }
 
+    public double getTotal_price() {
+        return total_price;
+    }
+
+    public int getMaterial_id() {
+        return material_id;
+    }
+
     @Override
     public String toString() {
         return "Orderline{" +
@@ -38,6 +64,8 @@ public class Orderline {
                 ", orders_id=" + orders_id +
                 ", material=" + material +
                 ", quantity=" + quantity +
+                ", total_price=" + total_price +
+                ", material_id=" + material_id +
                 '}';
     }
 }

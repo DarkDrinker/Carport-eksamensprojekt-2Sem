@@ -3,6 +3,7 @@ package app.controllers;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.models.Material;
+import app.models.Orderline;
 import app.models.Orders;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
@@ -10,10 +11,7 @@ import app.persistence.OrdersMapper;
 import io.javalin.http.Context;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class OrderController {
 
@@ -26,21 +24,16 @@ public class OrderController {
             ctx.sessionAttribute("materialMap", materialMap);
 
             List<Material> materialList = new ArrayList<>(materialMap.values());
+
+            // Sort the materialList by material_id
+            materialList.sort(Comparator.comparing(Material::getMaterial_id));
+
             ctx.sessionAttribute("materialList", materialList);
         }
     }
-    public static void allMaterial(Context ctx, ConnectionPool connectionPool){
 
-        try {
-            List<Material> materialList =  new ArrayList<>(MaterialMapper.getAllMaterial(connectionPool).values());
-            ctx.attribute("materialList", materialList);
 
-        } catch (DatabaseException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public static void allOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException
-    {
+    public static void allOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         User user = (User) ctx.sessionAttribute("currentUser");
 
         double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
@@ -50,14 +43,23 @@ public class OrderController {
         String status = ctx.formParam("status");
 
         Orders orders = new Orders(0, new Date(System.currentTimeMillis()), user.getId(), carportLength, carportWidth, shedLength, shedWidth, status);
+
+        List<Orderline> orderlines = new ArrayList<>();
+
+        // Add your logic to populate the orderlines list based on the form parameters or other data
+
         try {
-            orders = OrdersMapper.insertOrders(orders, connectionPool);
+            // Call the insertOrders method to insert the order and order lines
+            orders = OrdersMapper.insertOrders(orders, orderlines, connectionPool);
+
+            // Redirect or render your desired page
             ctx.render("cart.html");
 
         } catch (DatabaseException e) {
-            throw new DatabaseException("Fejl i allOrders"+e);
+            throw new DatabaseException("Fejl i allOrders" + e);
         }
     }
+
         /*public static void processOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
             User user = (User) ctx.sessionAttribute("currentUser");
             Cart cart = (Cart) ctx.sessionAttribute("cart");

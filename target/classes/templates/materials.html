@@ -10,9 +10,14 @@
     <h2>Materiale Liste</h2>
     <ol>
         <li th:each="material : ${#ctx.session.materialList}">
+<<<<<<< Updated upstream
             <p th:text="'Materiale ' + ${material.material_id} + ' ' + ${material.material_description} + ' størrelse ' + ${material.size} + ' - beløb: ' + ${material.price} + ' kroner'"></p>
+=======
+            <p th:text=" ${material.material_id} + 'Materiale ' + ${material.material_description} + ' størrelse ' + ${material.size} + ' - beløb: ' + ${material.price} + ' kroner'"></p>
+>>>>>>> Stashed changes
         </li>
     </ol>
+
 
 
 </section><br>

@@ -5,18 +5,20 @@ import app.models.Orderline;
 import app.models.Orders;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrdersMapper {
 
 
 
-    public static Orders insertOrders(Orders orders, ConnectionPool connectionPool) throws DatabaseException {
+    public static Orders insertOrders(Orders orders, List<Orderline> orderlines, ConnectionPool connectionPool) throws DatabaseException {
+        String sqlOrders = "INSERT INTO orders (date, user_id, carport_length, carport_width, shed_length, shed_width, status) VALUES (?,?,?,?,?,?,?)";
 
-        String sql = "INSERT INTO orders (date, user_id, carport_length, carport_width, shed_length, shed_width, status) VALUES (?,?,?,?,?,?,?)";
         int newOrderId = 0;
-        try (Connection connection = connectionPool.getConnection()) {
-            try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sqlOrders, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setObject(1, orders.getDate());
                 ps.setInt(2, orders.getUser_id());
                 ps.setDouble(3, orders.getCarport_length());
@@ -27,29 +29,29 @@ public class OrdersMapper {
 
                 int rowsAffected = ps.executeUpdate();
 
-                // Hent det nye id for ordren
                 if (rowsAffected == 1) {
                     ResultSet keys = ps.getGeneratedKeys();
                     keys.next();
                     newOrderId = keys.getInt(1);
                 }
-
             } catch (SQLException e) {
-                throw new DatabaseException("Fejl i insertOrders med setDate");
+                throw new DatabaseException("Error in insertOrders with setDate");
             }
-
         } catch (SQLException e) {
-            throw new DatabaseException("Fejl i insertOrders med getConnection");
+            throw new DatabaseException("Error in insertOrders with getConnection");
         }
-        /*for (Orderline orderline : orderlines) {
+
+        // Insert order lines
+        for (Orderline orderline : orderlines) {
             insertOrderline(orderline, newOrderId, connectionPool);
-        }*/
+        }
+
         orders.setId(newOrderId);
         return orders;
-
     }
 
     public static Orderline insertOrderline(Orderline orderline, int orderId, ConnectionPool connectionPool) throws DatabaseException {
+<<<<<<< Updated upstream
         String sql = "INSERT INTO orderline (order_id, quantity, top_id, bottom_id, total_price) VALUES (?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -62,8 +64,29 @@ public class OrdersMapper {
             }
         } catch (SQLException e) {
             throw new DatabaseException("Fejl i insertOrderline med forbindelse til database: " + e.getMessage());
+=======
+        String sql = "INSERT INTO orderline (order_id, material_id, quantity, total_price) VALUES (?,?,?,?)";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, orderId);
+                ps.setInt(2, orderline.getMaterial_id());
+                ps.setInt(3, orderline.getQuantity());
+                ps.setDouble(4, orderline.getTotal_price());
+
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new DatabaseException("Error in insertOrderline with SQL query");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error in insertOrderline with database connection");
+>>>>>>> Stashed changes
         }
 
         return orderline;
     }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 }
