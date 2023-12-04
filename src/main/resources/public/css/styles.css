@@ -16,6 +16,7 @@ nav{
     height: inherit;
 }
 ul{
+    align-items: center;
     list-style-type: none;
     display: flex;
     padding-inline-start: unset;
@@ -38,3 +39,50 @@ li:hover{
 li:hover a{
   color: #174B87;
 }
+
+.logincontainer .icon {
+    display: none;
+}
+
+.icon {
+    display: none;
+    padding: 25px;
+}
+
+@media screen and (max-width: 500px) {
+    .icon{
+        display: flex;
+    }
+    .links{
+        display: none;
+    }
+    .dropdownlinks{
+        display: none;
+    }
+}
+
+
+.logincontainer input[type=text]{
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-image: url("/public/images/user-png-icon.png");
+    background-color: white;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    }
+.logincontainer input[type=password]{
+    background-image: url("/public/images/password-icon-png.jpg");
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.logincontainer form {border: 3px solid #f1f1f1;}
+
