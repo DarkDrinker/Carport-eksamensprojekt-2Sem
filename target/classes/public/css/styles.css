@@ -11,7 +11,7 @@ header{
     list-style: none;
 }
 nav{
-display: inherit;
+    display: inherit;
     align-items: center;
     height: inherit;
 }

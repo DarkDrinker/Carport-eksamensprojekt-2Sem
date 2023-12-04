@@ -12,19 +12,28 @@
 
 
 <header th:fragment="top-nav">
-    <img style="height: inherit" src="/images/fog_logo_2015-3003583891.jpg" alt="Logo">
+    <a href="/frontpage" style="height: inherit">
+        <img style="height: inherit" src="/images/fog_logo_2015-3003583891.jpg" alt="Logo">
+    </a>
+
     <nav>
         <ul>
             <li>
-                <a href="Find Fog">Find Fog</a>
+                <a href="not a working link">Find Fog</a>
             </li>
             <li>
-                <a href="Kurv">Kurv</a>
+                <a href="not a working link">Kurv</a>
             </li>
             <li>
                 <div th:switch="${#ctx.session.currentUser != null}" >
-                    <a th:case="false" class="split" href="/login">Login </a>
-                    <a th:case="true" class="split" th:text="${#ctx.session.currentUser.name}" href="/logout"></a>
+                    <a th:case="false" href="/login">Login </a>
+                    <a th:case="true" th:text="${#ctx.session.currentUser.name}" href="/logout"></a>
+                </div>
+            </li>
+            <li>
+                <div th:switch="${#ctx.session.currentUser != null}" >
+                    <a th:case="false"></a>
+                    <a th:case="true" href="/order">orders</a>
                 </div>
             </li>
         </ul>

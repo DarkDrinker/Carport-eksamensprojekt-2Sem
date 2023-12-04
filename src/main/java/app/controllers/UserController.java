@@ -51,7 +51,7 @@ public class UserController
             {
                 UserMapper.createuser(name, password1, adresse, email, city, zip, connectionPool);
                 ctx.attribute("message", "Du er nu oprette. Log på for at komme i gang.");
-                ctx.render("carport.html");
+                ctx.render("frontpage.html");
 
             }
             catch (DatabaseException e)
