@@ -29,7 +29,7 @@ public class Main {
         app.post("/carport", ctx -> ctx.render("carport.html"));
         app.get("/materials", ctx -> {
             OrderController.initializeMaterialMap(ctx, connectionPool);
-            OrderController.allMaterial(ctx, connectionPool);
+            //OrderController.allMaterial(ctx, connectionPool);
             ctx.render("materials.html");
         });
         app.get("/order", ctx -> ctx.render("order.html"));

@@ -9,41 +9,36 @@
 </head>
 
 <body>
-<div id="page-content">
-    <div id="top-bar">
-        <header th:fragment="top-bar" >
-            <div class="sticky">
-                <img src="images/fog_logo_2015-3003583891.jpg" style="width:100%; max-height: 50px"  alt="FOGLOGO"/>
-            </div>
 
 
-        </header>
+<header th:fragment="top-nav">
+    <a href="/frontpage" style="height: inherit">
+        <img style="height: inherit" src="/images/fog_logo_2015-3003583891.jpg" alt="Logo">
+    </a>
 
-        <footer th:fragment="footer">
-            <h1 ><a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a></h1>
-            <a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a>
-            <a th:if="${#ctx.session.currentUser} != null" th:href="@{/logout}">Log ud</a>
-            <a href="/public">Startside</a>
-        </footer>
-    </div>
-</div>
+    <nav>
+        <ul>
+            <li>
+                <a href="not a working link">Find Fog</a>
+            </li>
+            <li>
+                <a href="not a working link">Kurv</a>
+            </li>
+            <li>
+                <div th:switch="${#ctx.session.currentUser != null}" >
+                    <a th:case="false" href="/login">Login </a>
+                    <a th:case="true" th:text="${#ctx.session.currentUser.name}" href="/logout"></a>
+                </div>
+            </li>
+            <li>
+                <div th:switch="${#ctx.session.currentUser != null}" >
+                    <a th:case="false"></a>
+                    <a th:case="true" href="/order">orders</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</header>
 
-
-<!--
-<div id="page-container">
-    <div id="page-content">
-        <header th:fragment="topnav">
-            <img src="images/fog_logo_2015-3003583891.jpg" height="50px" width="100%"/>
-        </header>
-
-        <footer th:fragment="footer">
-            <h1 ><a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a></h1>
-            <a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a>
-            <a th:if="${#ctx.session.currentUser} != null" th:href="@{/logout}">Log ud</a>
-            <a href="/public">Startside</a>
-        </footer>
-    </div>
-</div>
--->
 </body>
 </html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:replace="~{fragments :: head('FOG')}"></div>
+<body>
+
+<div th:replace="~{fragments :: top-nav}"></div>
+
+<form method="post">
+    <input type="text" name="email" placeholder="email"/>
+    <input type="password" name="password" placeholder="password"/>
+    <button type="submit" formaction="/login" >log pā</button>
+
+    <p th:text="${#ctx.message}"> </p>
+</form>
+
+</body>
+</html>
