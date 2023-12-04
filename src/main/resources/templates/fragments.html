@@ -32,7 +32,6 @@
             </li>
             <li>
                 <div th:switch="${#ctx.session.currentUser != null}" >
-                    <a th:case="false"></a>
                     <a th:case="true" href="/order">orders</a>
                 </div>
             </li>

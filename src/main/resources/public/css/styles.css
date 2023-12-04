@@ -16,6 +16,7 @@ nav{
     height: inherit;
 }
 ul{
+    align-items: center;
     list-style-type: none;
     display: flex;
     padding-inline-start: unset;
@@ -37,4 +38,8 @@ li:hover{
 }
 li:hover a{
   color: #174B87;
+}
+
+.login input{
+
 }
