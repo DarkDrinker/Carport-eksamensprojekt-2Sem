@@ -5,6 +5,7 @@ import app.exceptions.DatabaseException;
 import app.models.Material;
 import app.models.Orderline;
 import app.models.Orders;
+import app.persistence.Calculator;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
 import app.persistence.OrdersMapper;
@@ -58,6 +59,41 @@ public class OrderController {
         } catch (DatabaseException e) {
             throw new DatabaseException("Fejl i allOrders" + e);
         }
+    }
+
+
+
+   /* public static void calcPosts(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        int id = Integer.parseInt(ctx.formParam("id"));
+        int post = (int) Calculator.calculatePost(id, connectionPool);
+        ctx.attribute("post", post);
+        ctx.render("salesperson.html");
+    }
+
+    public static void calcRafters(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        int id = Integer.parseInt(ctx.formParam("id"));
+        int rafter = (int) Calculator.calculateRafter(id, connectionPool);
+        ctx.attribute("rafter", rafter);
+        ctx.render("salesperson.html");
+    }
+
+    public static void calcStraps(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        int id = Integer.parseInt(ctx.formParam("id"));
+        int strap = (int) Calculator.calculateStraps(id, connectionPool);
+        ctx.attribute("strap", strap);
+        ctx.render("salesperson.html");*/
+    }
+    public static void calculateAndRender(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        int id = Integer.parseInt(ctx.formParam("id"));
+        double numberOfPosts = Calculator.calculatePost(id, connectionPool);
+        double numberOfRafters = Calculator.calculateRafter(id, connectionPool);
+        //double numberOfStraps = Calculator.calculateStraps(id, connectionPool);
+
+        ctx.attribute("numberOfPosts", (int) numberOfPosts);
+        ctx.attribute("numberOfRafters", (int) numberOfRafters);
+        //ctx.attribute("numberOfStraps", (int) numberOfStraps);
+
+        ctx.render("salesperson.html");
     }
 
         /*public static void processOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {

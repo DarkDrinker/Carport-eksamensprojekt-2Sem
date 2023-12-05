@@ -2,13 +2,13 @@ package app.models;
 
 public class Orderline {
 
-
     private int id;
     private int orders_id;
-    Material material;
+    private Material material;
     private int quantity;
     private double total_price;
     private int material_id;
+
     public Orderline(int id, int orders_id, Material material, int quantity) {
         this.id = id;
         this.orders_id = orders_id;
@@ -56,6 +56,14 @@ public class Orderline {
     public int getMaterial_id() {
         return material_id;
     }
+
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
 
     @Override
     public String toString() {

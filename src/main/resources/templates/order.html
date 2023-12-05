@@ -27,6 +27,37 @@
                 <label for="shed_width">Skur bredde:</label>
                 <input type="number" name="shed_width" id="shed_width" value="0" min="0" required>
                 <br><br>
+
+                <label for="material1">Vælg Stolpe:</label>
+                <select name="material" id="material1" required>
+                    <th:block th:each="material : ${materialList}">
+                        <!-- Kun vis materiale med material_id 12, 14, og 16 -->
+                        <option th:if="${material.material_id == 12 or material.material_id == 14 or material.material_id == 16}"
+                                th:value="${material.material_id}" th:text="${'Materiale ' + material.material_id + ' ' + material.material_description + ' størrelse ' + material.size}"></option>
+                    </th:block>
+                </select>
+                <br><br>
+
+                <label for="material2">Vælg Spær:</label>
+                <select name="material" id="material2" required>
+                    <th:block th:each="material : ${materialList}">
+                        <!-- kun vis materiale med material_id mellem 41 and 64 -->
+                        <option th:if="${material.material_id >= 41 and material.material_id <= 64}"
+                                th:value="${material.material_id}" th:text="${'Materiale ' + material.material_id + ' ' + material.material_description + ' størrelse ' + material.size}"></option>
+                    </th:block>
+                </select>
+                <br><br>
+
+                <label for="material3">Vælg Remme:</label>
+                <select name="material" id="material3" required>
+                    <th:block th:each="material : ${materialList}">
+                        <!-- kun vis materiale med material_id mellem 41 and 64 -->
+                        <option th:if="${material.material_id >= 41 and material.material_id <= 64}"
+                                th:value="${material.material_id}" th:text="${'Materiale ' + material.material_id + ' ' + material.material_description + ' størrelse ' + material.size}"></option>
+                    </th:block>
+                </select>
+                    <br><br>
+
                 <input type="hidden" name="status" value="Pending">
                 <button type="submit" id="submit">Giv mig et tilbud</button>
             </form>

@@ -14,7 +14,7 @@ import java.util.List;
         public static Orders insertOrders(Orders orders, List<Orderline> orderlines, ConnectionPool connectionPool) throws DatabaseException {
             String sqlOrders = "INSERT INTO orders (date, user_id, carport_length, carport_width, shed_length, shed_width, status) VALUES (?,?,?,?,?,?,?)";
 
-            int newOrderId = 0;
+            int newOrdersId = 0;
 
             try (Connection connection = connectionPool.getConnection()) {
                 try (PreparedStatement ps = connection.prepareStatement(sqlOrders, Statement.RETURN_GENERATED_KEYS)) {
@@ -31,7 +31,7 @@ import java.util.List;
                     if (rowsAffected == 1) {
                         ResultSet keys = ps.getGeneratedKeys();
                         keys.next();
-                        newOrderId = keys.getInt(1);
+                        newOrdersId = keys.getInt(1);
                     }
                 } catch (SQLException e) {
                     throw new DatabaseException("Error in insertOrders with setDate");
@@ -42,10 +42,10 @@ import java.util.List;
 
             // Insert order lines
             for (Orderline orderline : orderlines) {
-                insertOrderline(orderline, newOrderId, connectionPool);
+                insertOrderline(orderline, newOrdersId, connectionPool);
             }
 
-            orders.setId(newOrderId);
+            orders.setId(newOrdersId);
             return orders;
         }
 
@@ -68,5 +68,29 @@ import java.util.List;
             }
 
             return orderline;
+        }
+
+        public static List<Orders> getSize(int id, ConnectionPool connectionPool) throws DatabaseException{
+
+            List<Orders> sizelist= new ArrayList<>();
+            String sql = "select carport_length, carport_width, shed_length, shed_width from orders where id=?";
+
+            try (Connection connection = connectionPool.getConnection()) {
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                    ps.setInt(1, id);
+                    ResultSet rs = ps.executeQuery();
+                    while (rs.next()) {
+                        double carport_length = rs.getDouble("carport_length");
+                        double carport_width = rs.getDouble("carport_width");
+                        double shed_length = rs.getDouble("shed_length");
+                        double shed_width = rs.getDouble("shed_width");
+                        sizelist.add(new Orders(carport_length, carport_width, shed_length, shed_width));
+                    }
+                }
+
+            } catch (SQLException e) {
+                throw new DatabaseException("Fejl i getSize " + e);
+            }
+            return sizelist;
         }
     }

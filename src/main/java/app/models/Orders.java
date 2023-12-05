@@ -24,6 +24,13 @@ public class Orders {
         this.status = status;
     }
 
+    public Orders(double carport_length, double carport_width, double shed_length, double shed_width) {
+        this.carport_length = carport_length;
+        this.carport_width = carport_width;
+        this.shed_length = shed_length;
+        this.shed_width = shed_width;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
