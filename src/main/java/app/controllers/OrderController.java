@@ -81,8 +81,8 @@ public class OrderController {
         int id = Integer.parseInt(ctx.formParam("id"));
         int strap = (int) Calculator.calculateStraps(id, connectionPool);
         ctx.attribute("strap", strap);
-        ctx.render("salesperson.html");*/
-    }
+        ctx.render("salesperson.html");
+    }*/
     public static void calculateAndRender(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         int id = Integer.parseInt(ctx.formParam("id"));
         double numberOfPosts = Calculator.calculatePost(id, connectionPool);
