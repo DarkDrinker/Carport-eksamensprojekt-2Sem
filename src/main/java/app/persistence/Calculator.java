@@ -2,6 +2,8 @@ package app.persistence;
 
 import app.exceptions.DatabaseException;
 import app.models.Orders;
+
+import java.util.Arrays;
 import java.util.List;
 
 public class Calculator {
@@ -63,23 +65,26 @@ public class Calculator {
         // List of available rafter lengths
         int[] rafterLengths = {300, 360, 420, 480, 540, 600};
 
+        // Sort the array in descending order to start with the longest rafters
+        Arrays.sort(rafterLengths);
+        int[] descendingRafterLengths = new int[rafterLengths.length];
+        for (int i = 0; i < rafterLengths.length; i++) {
+            descendingRafterLengths[i] = rafterLengths[rafterLengths.length - 1 - i];
+        }
+
         // Find the combination of rafters that best fits the width
         int remainingWidth = width;
         int raftersCount = 0;
 
         // Loop through rafter lengths and calculate the count
-        for (int length : rafterLengths) {
-            while (remainingWidth <= length) {
+        for (int length : descendingRafterLengths) {
+            while (remainingWidth >= length) {
                 remainingWidth -= length;
                 raftersCount++;
             }
         }
 
-        // Calculate the surplus or remaining width after using complete rafters
-        int surplus = remainingWidth;
-
-        // Allow for negative values considering rafters can be cut off
-        return raftersCount - Math.abs(surplus / rafterLengths[rafterLengths.length - 1]);
+        return raftersCount;
     }
 
 
@@ -108,23 +113,27 @@ public class Calculator {
         // List of available strap lengths
         int[] strapLengths = {300, 360, 420, 480, 540, 600};
 
+        // Sort the array in descending order to start with the longest straps
+        Arrays.sort(strapLengths);
+        int[] descendingStrapLengths = new int[strapLengths.length];
+        for (int i = 0; i < strapLengths.length; i++) {
+            descendingStrapLengths[i] = strapLengths[strapLengths.length - 1 - i];
+        }
+
         // Find the combination of straps that best fits the side length
         int remainingLength = side;
         int strapsCount = 0;
 
         // Loop through strap lengths and calculate the count
-        for (int length : strapLengths) {
-            while (remainingLength <= length) {
+        for (int length : descendingStrapLengths) {
+            while (remainingLength >= length) {
                 remainingLength -= length;
                 strapsCount++;
             }
         }
 
-        // Calculate the surplus or remaining length after using complete straps
-        int surplus = remainingLength;
-
-        // Allow for negative values considering straps can be cut off
-        return strapsCount - Math.abs(surplus / strapLengths[strapLengths.length - 1]);
+        return strapsCount;
     }
+
 
 }
