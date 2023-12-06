@@ -51,11 +51,11 @@ public class Calculator {
 
 
     private static int calculateRafterCount(int dimension) {
-        // Assuming a rafter is needed for every 110 units of length, except at the beginning and end
+        // Assuming a rafter is needed for every 55 units of length, except at the beginning and end
         int rafterLength = 55;
 
-        // Calculate the number of rafters, but ensure there is a strap at the beginning and end
-        return Math.max(0, (int) Math.ceil((double) (dimension - rafterLength * 2) / rafterLength));
+        // Calculate the number of rafters, considering there is a strap at the beginning and end
+        return Math.max(0, (int) Math.ceil((double) dimension / rafterLength)-2);
     }
 
 
@@ -69,13 +69,17 @@ public class Calculator {
 
         // Loop through rafter lengths and calculate the count
         for (int length : rafterLengths) {
-            while (remainingWidth >= length) {
+            while (remainingWidth <= length) {
                 remainingWidth -= length;
                 raftersCount++;
             }
         }
 
-        return raftersCount;
+        // Calculate the surplus or remaining width after using complete rafters
+        int surplus = remainingWidth;
+
+        // Allow for negative values considering rafters can be cut off
+        return raftersCount - Math.abs(surplus / rafterLengths[rafterLengths.length - 1]);
     }
 
 
@@ -110,14 +114,17 @@ public class Calculator {
 
         // Loop through strap lengths and calculate the count
         for (int length : strapLengths) {
-            while (remainingLength >= length) {
+            while (remainingLength <= length) {
                 remainingLength -= length;
                 strapsCount++;
             }
         }
 
-        return strapsCount;
-    }
+        // Calculate the surplus or remaining length after using complete straps
+        int surplus = remainingLength;
 
+        // Allow for negative values considering straps can be cut off
+        return strapsCount - Math.abs(surplus / strapLengths[strapLengths.length - 1]);
+    }
 
 }
