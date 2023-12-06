@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      lang="en">
 
 <head th:fragment="head(title)">
   <title th:text="${title}">Materiale</title>
@@ -38,7 +39,7 @@
       <option value="Betalt" th:selected="${order.status == 'Betalt'}">Betalt</option>
     </select>
     <button type="submit">Opdatere Status</button>
-
+  </form>
 
 </body>
 

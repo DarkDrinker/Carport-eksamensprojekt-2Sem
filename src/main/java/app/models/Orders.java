@@ -47,19 +47,19 @@ public class Orders {
         return user_id;
     }
 
-    public double getCarport_length() {
+    public int getCarport_length() {
         return carport_length;
     }
 
-    public double getCarport_width() {
+    public int getCarport_width() {
         return carport_width;
     }
 
-    public double getShed_length() {
+    public int getShed_length() {
         return shed_length;
     }
 
-    public double getShed_width() {
+    public int getShed_width() {
         return shed_width;
     }
 

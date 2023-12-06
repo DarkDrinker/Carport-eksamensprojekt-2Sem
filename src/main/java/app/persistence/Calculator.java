@@ -2,7 +2,12 @@ package app.persistence;
 
 import app.exceptions.DatabaseException;
 import app.models.Orders;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Calculator {
 
@@ -24,46 +29,100 @@ public class Calculator {
             numberOfPosts += carportPost + shedPost;
         }
 
-        return numberOfPosts;
+        // Så vil der være et minimum af 4 stolper
+        return Math.max(numberOfPosts, 4);
     }
 
-    public static double calculateRafter(int id, ConnectionPool connectionPool) throws DatabaseException {
-        List<Orders> squareList = OrdersMapper.getSize(id, connectionPool);
-        int numberOfRafters = 0;
 
-        for (Orders order : squareList) {
-            // Beregn de antal spær man skal bruge
-            double carportRafter = (order.getCarport_length() * order.getCarport_width()) / 3;
-            double shedRafter = ((order.getShed_length() * order.getShed_width()) / 3) - 3;
+    public static int calculateRafter(int id, ConnectionPool connectionPool) throws DatabaseException {
+        List<Orders> orderList = OrdersMapper.getSize(id, connectionPool);
+        int totalRafters = 0;
 
-            // Hvor man runder dem op til hele tal
-            carportRafter = Math.ceil(carportRafter);
-            shedRafter = Math.ceil(shedRafter);
+        for (Orders order : orderList) {
+            int carportWidth = (int) order.getCarport_width();
+            int carportLength = (int) order.getCarport_length();
 
-            // Og lægger dem sammen
-            numberOfRafters += carportRafter + shedRafter;
+            // Beregner carport spær basered på længde og bredde, og ganger dem sammen
+            int carportRafters = calculateRafterCount(carportLength) * calculateRafterWidth(carportWidth);
+
+            int shedWidth = (int) order.getShed_width();
+            int shedRafters = calculateRafterCount(shedWidth);
+
+            totalRafters += carportRafters + shedRafters;
         }
 
-        return numberOfRafters;
+        return totalRafters;
     }
 
-   /* public static double calculateStraps(int id, ConnectionPool connectionPool) throws DatabaseException {
-        List<Orders> squareList = OrdersMapper.getSize(id, connectionPool);
+
+    private static int calculateRafterCount(int dimension) {
+        // Assuming a rafter is needed for every 110 units of length, except at the beginning and end
+        int rafterLength = 55;
+
+        // Calculate the number of rafters, but ensure there is a strap at the beginning and end
+        return Math.max(0, (int) Math.ceil((double) (dimension - rafterLength * 2) / rafterLength));
+    }
+
+
+    private static int calculateRafterWidth(int width) {
+        // List of available rafter lengths
+        int[] rafterLengths = {300, 360, 420, 480, 540, 600};
+
+        // Find the combination of rafters that best fits the width
+        int remainingWidth = width;
+        int raftersCount = 0;
+
+        // Loop through rafter lengths and calculate the count
+        for (int length : rafterLengths) {
+            while (remainingWidth >= length) {
+                remainingWidth -= length;
+                raftersCount++;
+            }
+        }
+
+        return raftersCount;
+    }
+
+
+    public static double calculateStraps(int id, ConnectionPool connectionPool) throws DatabaseException {
+        List<Orders> orderList = OrdersMapper.getSize(id, connectionPool);
         int numberOfStraps = 0;
 
-        for (Orders order : squareList) {
-            // Beregn de antal remme man skal bruge
-            double carportStrap = (order.getCarport_length() * order.getCarport_width()) / ;
-            double shedStrap = ((order.getShed_length() * order.getShed_width()) / ) - ;
+        for (Orders order : orderList) {
+            // Calculate straps for carport length and width
+            int carportLengthStraps = calculateStrapsLength(order.getCarport_length());
+            int carportWidthStraps = calculateStrapsLength(order.getCarport_width());
 
-            // Hvor man runder dem op til hele tal
-            carportStrap = Math.ceil(carportStrap);
-            shedStrap = Math.ceil(shedStrap);
+            // Calculate straps for shed length and width
+            int shedLengthStraps = calculateStrapsLength(order.getShed_length());
+            int shedWidthStraps = calculateStrapsLength(order.getShed_width());
 
-            // Og lægger dem sammen
-            numberOfStraps += carportStrap + shedStrap;
+            // Sum up the straps
+            numberOfStraps += carportLengthStraps + carportWidthStraps + shedLengthStraps + shedWidthStraps;
         }
 
-        return numberOfStraps;
-    }*/
+        // Ensure a minimum of 4 straps
+        return Math.max(numberOfStraps, 4);
+    }
+
+    private static int calculateStrapsLength(int side) {
+        // List of available strap lengths
+        int[] strapLengths = {300, 360, 420, 480, 540, 600};
+
+        // Find the combination of straps that best fits the side length
+        int remainingLength = side;
+        int strapsCount = 0;
+
+        // Loop through strap lengths and calculate the count
+        for (int length : strapLengths) {
+            while (remainingLength >= length) {
+                remainingLength -= length;
+                strapsCount++;
+            }
+        }
+
+        return strapsCount;
+    }
+
+
 }

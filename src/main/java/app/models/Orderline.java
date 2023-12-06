@@ -37,6 +37,10 @@ public class Orderline {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getOrders_id() {
         return orders_id;
     }

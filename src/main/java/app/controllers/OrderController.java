@@ -61,7 +61,18 @@ public class OrderController {
         }
     }
 
+    public static void calculateAndRender(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        int id = Integer.parseInt(ctx.formParam("id"));
+        double numberOfPosts = Calculator.calculatePost(id, connectionPool);
+        double numberOfRafters = Calculator.calculateRafter(id, connectionPool);
+        double numberOfStraps = Calculator.calculateStraps(id, connectionPool);
 
+        ctx.attribute("numberOfPosts", (int) numberOfPosts);
+        ctx.attribute("numberOfRafters", (int) numberOfRafters);
+        ctx.attribute("numberOfStraps", (int) numberOfStraps);
+
+        ctx.render("salesperson.html");
+    }
 
    /* public static void calcPosts(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         int id = Integer.parseInt(ctx.formParam("id"));
@@ -83,18 +94,7 @@ public class OrderController {
         ctx.attribute("strap", strap);
         ctx.render("salesperson.html");
     }*/
-    public static void calculateAndRender(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        int id = Integer.parseInt(ctx.formParam("id"));
-        double numberOfPosts = Calculator.calculatePost(id, connectionPool);
-        double numberOfRafters = Calculator.calculateRafter(id, connectionPool);
-        //double numberOfStraps = Calculator.calculateStraps(id, connectionPool);
 
-        ctx.attribute("numberOfPosts", (int) numberOfPosts);
-        ctx.attribute("numberOfRafters", (int) numberOfRafters);
-        //ctx.attribute("numberOfStraps", (int) numberOfStraps);
-
-        ctx.render("salesperson.html");
-    }
 
         /*public static void processOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
             User user = (User) ctx.sessionAttribute("currentUser");
