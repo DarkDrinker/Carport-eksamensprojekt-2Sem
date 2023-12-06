@@ -48,19 +48,19 @@ public class Orders {
     }
 
     public int getCarport_length() {
-        return carport_length;
+        return (int) carport_length;
     }
 
     public int getCarport_width() {
-        return carport_width;
+        return (int) carport_width;
     }
 
     public int getShed_length() {
-        return shed_length;
+        return (int) shed_length;
     }
 
     public int getShed_width() {
-        return shed_width;
+        return (int) shed_width;
     }
 
     public String getStatus() {
