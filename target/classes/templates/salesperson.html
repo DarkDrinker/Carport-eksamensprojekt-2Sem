@@ -18,14 +18,14 @@
 <section>
   <h3>Order Details</h3>
   <!-- Display order details from the model -->
-  <p>ID: <span th:text="${order.id}"></span></p>
-  <p>Dato: <span th:text="${order.date}"></span></p>
-  <p>User ID: <span th:text="${order.user_id}"></span></p>
-  <p>Carport Længde: <span th:text="${order.carport_length}"></span></p>
-  <p>Carport Bredde: <span th:text="${order.carport_width}"></span></p>
-  <p>Shed Længde: <span th:text="${order.shed_length}"></span></p>
-  <p>Shed Bredde: <span th:text="${order.shed_width}"></span></p>
-  <p>Status: <span th:text="${order.status}"></span></p>
+  <p>ID: <span th:text="${orders.id}"></span></p>
+  <p>Dato: <span th:text="${orders.date}"></span></p>
+  <p>User ID: <span th:text="${orders.user_id}"></span></p>
+  <p>Carport Længde: <span th:text="${orders.carport_length}"></span></p>
+  <p>Carport Bredde: <span th:text="${orders.carport_width}"></span></p>
+  <p>Skur Længde: <span th:text="${orders.shed_length}"></span></p>
+  <p>Skur Bredde: <span th:text="${orders.shed_width}"></span></p>
+  <p>Status: <span th:text="${orders.status}"></span></p>
   <p>Antal Stolper: <span th:text="${numberOfPosts}"></span></p>
   <p>Antal Spær: <span th:text="${numberOfRafters}"></span></p>
   <p>Antal Remme: <span th:text="${numberOfStraps}"></span></p>
