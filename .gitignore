@@ -20,3 +20,28 @@ target/classes/templates/fragments.html
 target/classes/templates/frontpage.html
 target/classes/templates/materials.html
 target/classes/templates/order.html
+target/classes/app/persistence/Calculator.class
+target/classes/app/persistence/Calculator.class
+target/classes/app/Main 2.class
+target/classes/app/controllers/OrderController.class
+target/classes/app/services/Calculator.class
+target/classes/config/ThymeleafConfig 2.class
+target/classes/public/images/byg-selv-carporte.png
+target/classes/templates/carport.html
+target/classes/templates/cart.html
+target/classes/templates/createuser 2.html
+target/classes/templates/fragments 2.html
+target/classes/templates/frontpage 2.html
+target/classes/templates/frontpage.html
+target/classes/templates/login 2.html
+target/classes/templates/order 2.html
+target/classes/templates/materials 2.html
+target/classes/templates/order.html
+target/classes/templates/salesperson 2.html
+target/classes/app/persistence/Calculator.class
+target/classes/app/controllers/OrderController.class
+target/classes/templates/carport.html
+target/classes/templates/frontpage.html
+target/classes/templates/order.html
+target/classes/templates/carport.html
+target/classes/app/controllers/OrderController.class
