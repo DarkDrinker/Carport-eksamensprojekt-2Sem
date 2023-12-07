@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:replace="~{fragments :: head('FOG')}"></div>
+
+<head th:fragment="head(title)">
+    <title th:text="${title}">Materiale</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+
+<body>
+<div th:replace="~{fragments :: top-nav}"></div>
+
+<section>
+    <h2>Materiale Liste</h2>
+    <ol>
+<<<<<<< Updated upstream
+        <li th:each="material : ${#ctx.session.materialList}">
+            <p th:text="'Materiale ' + ${material.material_id} + ' ' + ${material.material_description} + ' størrelse ' + ${material.size} + ' - beløb: ' + ${material.price} + ' kroner'"></p>
+=======
+        <li th:each="material : ${#ctx.session.materialList}">
+            <p th:text=" ${material.material_id} + ' Materiale ' + ${material.material_description} + ' størrelse ' + ${material.size} + ' - beløb: ' + ${material.price} + ' kroner'"></p>
+>>>>>>> Stashed changes
+        </li>
+    </ol>
+
+
+</section><br>
+
+<form method="get" action="/order">
+    <button type="submit" th:href="@{/order}">Bestilling</button>
+</form>
+</body>
+
+</html>

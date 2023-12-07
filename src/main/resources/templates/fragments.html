@@ -6,44 +6,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-<div id="page-content">
-    <div id="top-bar">
-        <header th:fragment="top-bar" >
-            <div class="sticky">
-                <img src="../public/images/fog_logo_2015-3003583891.jpg" style="width:100%; max-height: 50px"  alt="FOGLOGO"/>
-            </div>
 
+<header th:fragment="top-nav" >
+    <a href="/frontpage" style="height: inherit">
+        <img style="height: inherit" src="/images/fog_logo_2015-3003583891.jpg" alt="Logo">
+    </a>
 
-        </header>
+    <nav class="menu">
+        <ul class="links">
+            <li>
+                <a href="not a working link">Find Fog</a>
+            </li>
+            <li>
+                <a href="not a working link">Kurv</a>
+            </li>
+            <li>
+                <div th:switch="${#ctx.session.currentUser != null}" >
+                    <a th:case="false" href="/login">Login </a>
+                    <a th:case="true" th:text="${#ctx.session.currentUser.name}" href="/logout"></a>
+                </div>
+            </li>
+        </ul>
+        <div class="icon">
+            <button class="dropdownmenubutton">
+              <i class="fa fa-bars"></i>
+            </button>
+            <ul class="dropdownlinks">
+                <li>
+                    <a href="not a working link">Find Fog</a>
+                </li>
+                <li>
+                    <a href="not a working link">Kurv</a>
+                </li>
+                <li>
+                    <div th:switch="${#ctx.session.currentUser != null}" >
+                        <a th:case="false" href="/login">Login </a>
+                        <a th:case="true" th:text="${#ctx.session.currentUser.name}" href="/logout"></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <script>
+            const dropdownBtn = document.querySelector('.dropdownmenubutton');
+            const dropdownLinks = document.querySelector('.dropdownlinks');
 
-        <footer th:fragment="footer">
-            <h1 ><a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a></h1>
-            <a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a>
-            <a th:if="${#ctx.session.currentUser} != null" th:href="@{/logout}">Log ud</a>
-            <a href="/public">Startside</a>
-        </footer>
-    </div>
-</div>
+            dropdownBtn.addEventListener('click', function() {
+                dropdownLinks.classList.toggle('show');
+            });
+        </script>
+    </nav>
+</header>
 
-
-<!--
-<div id="page-container">
-    <div id="page-content">
-        <header th:fragment="topnav">
-            <img src="images/fog_logo_2015-3003583891.jpg" height="50px" width="100%"/>
-        </header>
-
-        <footer th:fragment="footer">
-            <h1 ><a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a></h1>
-            <a th:if="${#ctx.session.currentUser} == null" th:href="@{/createuser}">Opret bruger</a>
-            <a th:if="${#ctx.session.currentUser} != null" th:href="@{/logout}">Log ud</a>
-            <a href="/public">Startside</a>
-        </footer>
-    </div>
-</div>
--->
+<script>
+    function myFunction() {
+        var x = document.getElementById("menu");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+        } else {
+            x.className = "topnav";
+        }
+    }
+</script>
 </body>
 </html>

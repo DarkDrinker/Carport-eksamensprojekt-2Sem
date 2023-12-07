@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:replace="~{fragments :: head('FOG')}"></div>
+
+<body>
+<div th:replace="~{fragments :: top-nav}"></div><
+
+<div id="page-container">
+
+    <div id="page-content">
+        <p>Indtast venligst brugerinfo:</p>
+        <div class="centered-form">
+            <form method="post">
+
+                <input type="text" name="name" placeholder="Navn"/>
+                <input type="password" name="password1" placeholder="password"/>
+                <input type="password" name="password2" placeholder="gentag password"/>
+                <input type="adresse" name="adresse" placeholder="Skriv adresse"/>
+                <input type="email" name="email" placeholder="Skriv email"/>
+                <button type="submit" formaction="/createuser">Opret bruger</button>
+
+                <p class="errormessage" th:text="${#ctx.message}"></p>
+            </form>
+        </div>
+        <div th:replace="~{fragments :: footer}"></div>
+    </div>
+</div>
+</body>
+
+
+</html>

@@ -5,24 +5,32 @@ public class Orderline {
 
     private int id;
     private int orders_id;
-    Stolper stolper;
-    Remme remme;
-    Spaer spaer;
-    private double width;
-    private double length;
+    Material material;
+    private int quantity;
     private double total_price;
-    private boolean paid;
-
-    public Orderline(int id, int orders_id, Stolper stolper, Remme remme, Spaer spaer, double width, double length, double total_price, boolean paid) {
+    private int material_id;
+    public Orderline(int id, int orders_id, Material material, int quantity) {
         this.id = id;
         this.orders_id = orders_id;
-        this.stolper = stolper;
-        this.remme = remme;
-        this.spaer = spaer;
-        this.width = width;
-        this.length = length;
+        this.material = material;
+        this.quantity = quantity;
+    }
+
+    public Orderline(int id, int orders_id, Material material, int quantity, double total_price, int material_id) {
+        this.id = id;
+        this.orders_id = orders_id;
+        this.material = material;
+        this.quantity = quantity;
         this.total_price = total_price;
-        this.paid = paid;
+        this.material_id = material_id;
+    }
+
+    public Orderline(int id, int orders_id, Material material, int quantity, int material_id) {
+        this.id = id;
+        this.orders_id = orders_id;
+        this.material = material;
+        this.quantity = quantity;
+        this.material_id = material_id;
     }
 
     public int getId() {
@@ -33,32 +41,20 @@ public class Orderline {
         return orders_id;
     }
 
-    public Stolper getStolper() {
-        return stolper;
+    public Material getMaterial() {
+        return material;
     }
 
-    public Remme getRemme() {
-        return remme;
-    }
-
-    public Spaer getSpaer() {
-        return spaer;
-    }
-
-    public double getWidth() {
-        return width;
-    }
-
-    public double getLength() {
-        return length;
+    public int getQuantity() {
+        return quantity;
     }
 
     public double getTotal_price() {
         return total_price;
     }
 
-    public boolean isPaid() {
-        return paid;
+    public int getMaterial_id() {
+        return material_id;
     }
 
     @Override
@@ -66,13 +62,10 @@ public class Orderline {
         return "Orderline{" +
                 "id=" + id +
                 ", orders_id=" + orders_id +
-                ", stolper=" + stolper +
-                ", remme=" + remme +
-                ", spaer=" + spaer +
-                ", width=" + width +
-                ", length=" + length +
+                ", material=" + material +
+                ", quantity=" + quantity +
                 ", total_price=" + total_price +
-                ", paid=" + paid +
+                ", material_id=" + material_id +
                 '}';
     }
 }
