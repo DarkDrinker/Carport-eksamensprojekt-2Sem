@@ -24,6 +24,13 @@ public class Orders {
         this.status = status;
     }
 
+    public Orders(double carport_length, double carport_width, double shed_length, double shed_width) {
+        this.carport_length = carport_length;
+        this.carport_width = carport_width;
+        this.shed_length = shed_length;
+        this.shed_width = shed_width;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -40,20 +47,20 @@ public class Orders {
         return user_id;
     }
 
-    public double getCarport_length() {
-        return carport_length;
+    public int getCarport_length() {
+        return (int) carport_length;
     }
 
-    public double getCarport_width() {
-        return carport_width;
+    public int getCarport_width() {
+        return (int) carport_width;
     }
 
-    public double getShed_length() {
-        return shed_length;
+    public int getShed_length() {
+        return (int) shed_length;
     }
 
-    public double getShed_width() {
-        return shed_width;
+    public int getShed_width() {
+        return (int) shed_width;
     }
 
     public String getStatus() {

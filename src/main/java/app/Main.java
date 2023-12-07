@@ -36,9 +36,11 @@ public class Main {
         });
         app.get("/order", ctx -> ctx.render("order.html"));
         app.post("/order", ctx -> {
+            OrderController.initializeMaterialMap(ctx, connectionPool);
             OrderController.allOrders(ctx, connectionPool);
-            ctx.render("myorders.html");
+            ctx.render("cart.html");
         });
+
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
         app.post("/login", ctx -> UserController.login(ctx, connectionPool));
