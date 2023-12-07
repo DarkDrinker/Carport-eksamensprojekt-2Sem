@@ -45,3 +45,9 @@ target/classes/templates/frontpage.html
 target/classes/templates/order.html
 target/classes/templates/carport.html
 target/classes/app/controllers/OrderController.class
+target/classes/app/controllers/OrderController.class
+target/classes/app/persistence/Calculator.class
+target/classes/templates/carport.html
+target/classes/templates/frontpage.html
+target/classes/templates/order.html
+target/classes/app/controllers/OrderController.class
