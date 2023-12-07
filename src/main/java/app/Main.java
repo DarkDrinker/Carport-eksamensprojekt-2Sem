@@ -7,6 +7,8 @@ import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
+import java.util.List;
+
 public class Main {
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
@@ -38,7 +40,12 @@ public class Main {
         app.post("/order", ctx -> {
             OrderController.initializeMaterialMap(ctx, connectionPool);
             OrderController.allOrders(ctx, connectionPool);
-            ctx.render("cart.html");
+            ctx.render("salesperson.html");
+        });
+        app.get("/salesperson", ctx -> ctx.render("salesperson.html"));
+        app.post("/salesperson", ctx -> {
+            OrderController.calculateAndRender(ctx, connectionPool);
+            OrderController.insertOrders(ctx, List.of(), connectionPool);
         });
 
         app.get("/cart", ctx -> ctx.render("cart.html"));

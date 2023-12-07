@@ -31,6 +31,38 @@ public class Orders {
         this.shed_width = shed_width;
     }
 
+    public Orders() {
+
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public void setCarport_length(double carport_length) {
+        this.carport_length = carport_length;
+    }
+
+    public void setCarport_width(double carport_width) {
+        this.carport_width = carport_width;
+    }
+
+    public void setShed_length(double shed_length) {
+        this.shed_length = shed_length;
+    }
+
+    public void setShed_width(double shed_width) {
+        this.shed_width = shed_width;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public void setId(int id) {
         this.id = id;
     }

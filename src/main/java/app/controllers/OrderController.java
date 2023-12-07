@@ -73,6 +73,36 @@ public class OrderController {
 
         ctx.render("salesperson.html");
     }
+    public static void insertOrders(Context ctx, List<Orderline> orderlines, ConnectionPool connectionPool) throws DatabaseException {
+        User user = ctx.sessionAttribute("currentUser");
+
+        double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
+        double carportWidth = Double.parseDouble(ctx.formParam("carport_width"));
+        double shedLength = Double.parseDouble(ctx.formParam("shed_length"));
+        double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
+
+        // Create Orders object with the additional parameters
+        Orders orders = new Orders();
+        orders.setUser_id(user.getId());
+        orders.setCarport_length(carportLength);
+        orders.setCarport_width(carportWidth);
+        orders.setShed_length(shedLength);
+        orders.setShed_width(shedWidth);
+        orders.setStatus("Pending");
+
+        // Assuming you have a method in OrdersMapper to insert orders with orderlines
+        Orders insertedOrder = OrdersMapper.insertOrders(orders, orderlines, connectionPool);
+
+        // Add the dimensions to the context for Thymeleaf
+        ctx.attribute("carportLength", orders.getCarport_length());
+        ctx.attribute("carportWidth", orders.getCarport_width());
+        ctx.attribute("shedLength", orders.getShed_length());
+        ctx.attribute("shedWidth", orders.getShed_width());
+
+        // Redirect or render as needed
+        ctx.redirect("/salesperson"); // Example redirect
+    }
+
 
    /* public static void calcPosts(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         int id = Integer.parseInt(ctx.formParam("id"));
