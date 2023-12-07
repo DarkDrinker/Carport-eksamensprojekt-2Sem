@@ -17,6 +17,7 @@
             <form action="/salesperson" method="post">
                 <label for="carport_length">Carport længde i cm:</label>
                 <input type="number" name="carport_length" id="carport_length" value="1" min="1" required>
+                <p class="errorboxcarportlength" id="errorboxcarportlength" style="display: none;"> din carport virker ikke ned afkwiogj</p>
                 <br><br>
                 <label for="carport_width">Carport bredde i cm:</label>
                 <input type="number" name="carport_width" id="carport_width" value="1" min="1" required>
@@ -33,12 +34,17 @@
             </form>
         </section>
         <br>
-
-
-        <footer th:fragment="footer">
-            <a th:if="${#ctx.session.currentUser} != null" th:href="@{/logout}">Log ud</a>
-        </footer>
     </div>
 </div>
+<script>
+    document.addEventListener("mouseout", this:"car]", )
+    function checklength() {
+        console.log("hello")
+        var input = document.getElementById("carport_length")
+        if(input === 5){
+            console.log("hello1")
+        }
+    }
+</script>
 </body>
 </html>
