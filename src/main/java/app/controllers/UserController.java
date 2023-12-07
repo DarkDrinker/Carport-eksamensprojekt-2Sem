@@ -18,13 +18,14 @@ public class UserController
     public static void login(Context ctx, ConnectionPool connectionPool)
     {
 
-        String name = ctx.formParam("email");
+        String email = ctx.formParam("email");
         String password = ctx.formParam("password");
         try
         {
-            User user = UserMapper.login(name, password, connectionPool);
+            User user = UserMapper.login(email, password, connectionPool);
             ctx.sessionAttribute("currentUser", user);
             ctx.render("frontpage.html");
+
 
         }
         catch (DatabaseException e)

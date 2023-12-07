@@ -15,16 +15,16 @@
         <section>
             <h3>Størrelse</h3>
             <form action="/cart" method="post">
-                <label for="carport_length">Carport længde:</label>
+                <label for="carport_length">Carport længde i cm:</label>
                 <input type="number" name="carport_length" id="carport_length" value="1" min="1" required>
                 <br><br>
-                <label for="carport_width">Carport bredde:</label>
+                <label for="carport_width">Carport bredde i cm:</label>
                 <input type="number" name="carport_width" id="carport_width" value="1" min="1" required>
                 <br><br>
-                <label for="shed_length">Skur længde:</label>
+                <label for="shed_length">Skur længde i cm:</label>
                 <input type="number" name="shed_length" id="shed_length" value="0" min="0" required>
                 <br><br>
-                <label for="shed_width">Skur bredde:</label>
+                <label for="shed_width">Skur bredde i cm:</label>
                 <input type="number" name="shed_width" id="shed_width" value="0" min="0" required>
                 <br><br>
 
@@ -33,7 +33,7 @@
                     <th:block th:each="material : ${#ctx.session.materialList}">
                         <!-- Kun vis materiale med material_id 12, 14, og 16 -->
                         <option th:if="${material.material_id == 12 or material.material_id == 14 or material.material_id == 16}"
-                                th:value="${material.size}" th:text="${'Materiale ' + material.material_id + ' ' + material.material_description}"></option>
+                                th:value="${material.material_id}" th:text="${material.material_id + ' ' + material.material_description}"></option>
                     </th:block>
                 </select>
                 <br><br>
@@ -43,7 +43,7 @@
                     <th:block th:each="material : ${#ctx.session.materialList}">
                         <!-- kun vis materiale med material_id 41, 47, 53, 59 -->
                         <option th:if="${material.material_id == 41 or material.material_id == 47 or material.material_id == 53 or material.material_id == 59}"
-                                th:value="${material.size}" th:text="${material.material_description}"></option>
+                                th:value="${material.material_id}" th:text="${material.material_description}"></option>
                     </th:block>
                 </select>
                 <br><br>
@@ -51,11 +51,13 @@
                 <label for="material3">Vælg Remme:</label>
                 <select name="material3" id="material3" required>
                     <th:block th:each="material : ${#ctx.session.materialList}">
-                        <!-- kun vis remme med material_id mellem 41 and 64 og med en size der passer -->
+                        <!-- kun vis remme med material_id 41, 47, 53, 59-->
                         <option th:if="${material.material_id == 41 or material.material_id == 47 or material.material_id == 53 or material.material_id == 59}"
-                                th:value="${material.size}" th:text="${material.material_description}"></option>
+                                th:value="${material.material_id}" th:text="${material.material_description}"></option>
                     </th:block>
                 </select>
+
+                <br><br>
 
                 <br><br>
 
