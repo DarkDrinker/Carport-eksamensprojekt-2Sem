@@ -24,6 +24,7 @@ public class UserController
         {
             User user = UserMapper.login(name, password, connectionPool);
             ctx.sessionAttribute("currentUser", user);
+            ctx.render("frontpage.html");
 
         }
         catch (DatabaseException e)
