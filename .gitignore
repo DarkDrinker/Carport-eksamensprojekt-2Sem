@@ -51,3 +51,8 @@ target/classes/templates/carport.html
 target/classes/templates/frontpage.html
 target/classes/templates/order.html
 target/classes/app/controllers/OrderController.class
+target/classes/public/css/styles.css
+target/classes/public/images/ReadyMadeCarport.png
+target/classes/templates/frontpage.html
+target/classes/templates/order.html
+target/classes/templates/standardcarport.html
