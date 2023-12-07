@@ -31,10 +31,6 @@ public class Orders {
         this.shed_width = shed_width;
     }
 
-    public Orders() {
-
-    }
-
     public void setDate(Date date) {
         this.date = date;
     }

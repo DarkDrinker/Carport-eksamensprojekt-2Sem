@@ -81,17 +81,8 @@ public class OrderController {
         double shedLength = Double.parseDouble(ctx.formParam("shed_length"));
         double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
 
-        // Create Orders object with the additional parameters
-        Orders orders = new Orders();
-        orders.setUser_id(user.getId());
-        orders.setCarport_length(carportLength);
-        orders.setCarport_width(carportWidth);
-        orders.setShed_length(shedLength);
-        orders.setShed_width(shedWidth);
-        orders.setStatus("Pending");
-
         // Assuming you have a method in OrdersMapper to insert orders with orderlines
-        Orders insertedOrder = OrdersMapper.insertOrders(orders, orderlines, connectionPool);
+        Orders orders = new Orders(0, new Date(System.currentTimeMillis()), user.getId(), carportLength, carportWidth, shedLength, shedWidth, "Pending");
 
         // Add the dimensions to the context for Thymeleaf
         ctx.attribute("carportLength", orders.getCarport_length());
