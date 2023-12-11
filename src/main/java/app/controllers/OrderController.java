@@ -35,45 +35,48 @@ public class OrderController {
 
 
     public static void allOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        User user = (User) ctx.sessionAttribute("currentUser");
+        // Retrieve the current user from the session
+        User user = ctx.sessionAttribute("currentUser");
 
+        // Extract form parameters for order details
         double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
         double carportWidth = Double.parseDouble(ctx.formParam("carport_width"));
         double shedLength = Double.parseDouble(ctx.formParam("shed_length"));
         double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
         String status = ctx.formParam("status");
 
+        // Create an Orders object with the extracted details
         Orders orders = new Orders(0, new Date(System.currentTimeMillis()), user.getId(), carportLength, carportWidth, shedLength, shedWidth, status);
 
-        List<Orderline> orderlines = new ArrayList<>();
-
-        // Add your logic to populate the orderlines list based on the form parameters or other data
-
         try {
-            // Call the insertOrders method to insert the order and order lines
-            orders = OrdersMapper.insertOrders(orders, orderlines, connectionPool);
+            // Call the insertOrders method to insert the order into the database and get the generated id
+            int generatedOrderId = OrdersMapper.insertOrders(orders, connectionPool);
 
-            // Redirect or render your desired page
-            ctx.render("cart.html");
+            // Use the generatedOrderId for further processing or pass it to other methods as needed
+            // For example, pass it to the calculateAndRender method
+            calculateAndRender(ctx, generatedOrderId, connectionPool);
 
         } catch (DatabaseException e) {
-            throw new DatabaseException("Fejl i allOrders" + e);
+            // Handle any database exception by rethrowing or logging
+            throw new DatabaseException("Fejl i allOrders: " + e.getMessage());
         }
     }
 
-    public static void calculateAndRender(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        int id = Integer.parseInt(ctx.formParam("id"));
-        double numberOfPosts = Calculator.calculatePost(id, connectionPool);
-        double numberOfRafters = Calculator.calculateRafter(id, connectionPool);
-        double numberOfStraps = Calculator.calculateStraps(id, connectionPool);
+
+    public static void calculateAndRender(Context ctx, int generatedOrderId, ConnectionPool connectionPool) throws DatabaseException {
+        // Use the generatedOrderId for further processing
+        double numberOfPosts = Calculator.calculatePost(generatedOrderId, connectionPool);
+        double numberOfRafters = Calculator.calculateRafter(generatedOrderId, connectionPool);
+        double numberOfStraps = Calculator.calculateStraps(generatedOrderId, connectionPool);
 
         ctx.attribute("numberOfPosts", (int) numberOfPosts);
         ctx.attribute("numberOfRafters", (int) numberOfRafters);
         ctx.attribute("numberOfStraps", (int) numberOfStraps);
 
-        ctx.render("salesperson.html");
-    }
-    public static void insertOrders(Context ctx, List<Orderline> orderlines, ConnectionPool connectionPool) throws DatabaseException {
+
+            ctx.render("salesperson.html");
+        }
+    public static int insertOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         User user = ctx.sessionAttribute("currentUser");
 
         double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
@@ -81,17 +84,11 @@ public class OrderController {
         double shedLength = Double.parseDouble(ctx.formParam("shed_length"));
         double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
 
-        // Assuming you have a method in OrdersMapper to insert orders with orderlines
+
         Orders orders = new Orders(0, new Date(System.currentTimeMillis()), user.getId(), carportLength, carportWidth, shedLength, shedWidth, "Pending");
 
-        // Add the dimensions to the context for Thymeleaf
-        ctx.attribute("carportLength", orders.getCarport_length());
-        ctx.attribute("carportWidth", orders.getCarport_width());
-        ctx.attribute("shedLength", orders.getShed_length());
-        ctx.attribute("shedWidth", orders.getShed_width());
-
-        // Redirect or render as needed
-        ctx.redirect("/salesperson"); // Example redirect
+        // Call the insertOrders method to insert the order into the database and get the generated id
+        return OrdersMapper.insertOrders(orders, connectionPool);
     }
 
 

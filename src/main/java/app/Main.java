@@ -44,8 +44,10 @@ public class Main {
         });
         app.get("/salesperson", ctx -> ctx.render("salesperson.html"));
         app.post("/salesperson", ctx -> {
-            OrderController.calculateAndRender(ctx, connectionPool);
-            OrderController.insertOrders(ctx, List.of(), connectionPool);
+            // Insert the order and get the generatedOrderId
+            int generatedOrderId = OrderController.insertOrders(ctx, connectionPool);
+            // Calculate and render using the generatedOrderId
+            OrderController.calculateAndRender(ctx, generatedOrderId, connectionPool);
         });
 
         app.get("/cart", ctx -> ctx.render("cart.html"));

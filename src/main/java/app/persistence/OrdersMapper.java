@@ -11,15 +11,13 @@ import java.util.List;
     public class OrdersMapper {
 
 
-        public static Orders insertOrders(Orders orders, List<Orderline> orderlines, ConnectionPool connectionPool) throws DatabaseException {
-            String sqlOrders = "INSERT INTO orders (date, user_id, carport_length, carport_width, shed_length, shed_width, status) VALUES (?,?,?,?,?,?,?)";
-
-            int newOrdersId = 0;
+        public static int insertOrders(Orders orders, ConnectionPool connectionPool) throws DatabaseException {
+            String sql = "INSERT INTO orders (user_id, date, carport_length, carport_width, shed_length, shed_width, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             try (Connection connection = connectionPool.getConnection()) {
-                try (PreparedStatement ps = connection.prepareStatement(sqlOrders, Statement.RETURN_GENERATED_KEYS)) {
-                    ps.setObject(1, orders.getDate());
-                    ps.setInt(2, orders.getUser_id());
+                try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                    ps.setInt(1, orders.getUser_id());
+                    ps.setTimestamp(2, new Timestamp(orders.getDate().getTime()));
                     ps.setDouble(3, orders.getCarport_length());
                     ps.setDouble(4, orders.getCarport_width());
                     ps.setDouble(5, orders.getShed_length());
@@ -28,26 +26,28 @@ import java.util.List;
 
                     int rowsAffected = ps.executeUpdate();
 
-                    if (rowsAffected == 1) {
-                        ResultSet keys = ps.getGeneratedKeys();
-                        keys.next();
-                        newOrdersId = keys.getInt(1);
+                    if (rowsAffected == 0) {
+                        throw new DatabaseException("Inserting order fejlede, ingen rækker affected.");
                     }
-                } catch (SQLException e) {
-                    throw new DatabaseException("Error in insertOrders with setDate");
+
+                    // Retrieve the generated id
+                    try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            return generatedKeys.getInt(1);
+                        } else {
+                            throw new DatabaseException("Inserting order fejlede, ingen ID udtaget.");
+                        }
+                    }
                 }
             } catch (SQLException e) {
-                throw new DatabaseException("Error in insertOrders with getConnection");
+                throw new DatabaseException("Fejl i insertOrders: " + e.getMessage());
             }
-
-            // Insert order lines
-            for (Orderline orderline : orderlines) {
-                insertOrderline(orderline, newOrdersId, connectionPool);
-            }
-
-            orders.setId(newOrdersId);
-            return orders;
         }
+
+        // Insert order lines
+           /* for (Orderline orderline : orderlines) {
+                insertOrderline(orderline, newOrdersId, connectionPool);
+            }*/
 
         public static Orderline insertOrderline(Orderline orderline, int orderId, ConnectionPool connectionPool) throws DatabaseException {
             String sqlOrderline = "INSERT INTO orderline (order_id, material_id, quantity, total_price) VALUES (?,?,?,?)";
@@ -93,4 +93,5 @@ import java.util.List;
             }
             return sizelist;
         }
+
     }
