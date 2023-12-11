@@ -16,9 +16,9 @@ public class Calculator {
         int numberOfPosts = 0;
 
         for (Orders order : squareList) {
-            // Beregn de antal stolper man skal bruge
-            double carportPost = (order.getCarport_length() * order.getCarport_width()) / 5.5;
-            double shedPost = ((order.getShed_length() * order.getShed_width()) / 5.5) - 2;
+            // Beregn de antal stolper man skal bruge ved hver 5.5m2 som er 55000cm2 og vi beregner i cm og cm2
+            double carportPost = (order.getCarport_length() * order.getCarport_width()) / 55000;
+            double shedPost = ((order.getShed_length() * order.getShed_width()) / 55000) - 2;
 
             // Hvor man runder dem op til hele tal
             carportPost = Math.ceil(carportPost);
