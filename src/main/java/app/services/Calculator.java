@@ -108,11 +108,13 @@ public class Calculator {
 
         int remainingLength = side;
 
-        // Initialize with a large value to ensure it gets updated
+        // Initialize with a large value to ensure it gets updated, no number left behind,
+        // all numbers are in consideration
         int minStrapsCount = Integer.MAX_VALUE;
 
         // Iterate through all possible combinations of straps, this here goes through each
-        // straplength and sees what can be used where there are least amount of strap surplus
+        // straplength and sees what can be used where there are least amount of strap surplus,
+        // bitmasking/binary (<<),
         for (int i = 0; i < (1 << strapLengths.length); i++) {
             int currentLength = 0;
             int currentStrapsCount = 0;
