@@ -17,7 +17,6 @@
             <form action="/salesperson" method="post" id="formlist">
                 <label for="carport_length">Carport længde i cm:</label>
                 <input type="number" name="carport_length" id="carport_length" value="1" min="1" required>
-                <p class="errorboxcarportlength" id="errorboxcarportlength" style="display: none;"> din carport virker ikke ned afkwiogj</p>
                 <br><br>
                 <label for="carport_width">Carport bredde i cm:</label>
                 <input type="number" name="carport_width" id="carport_width" value="1" min="1" required>
@@ -36,17 +35,5 @@
         <br>
     </div>
 </div>
-<script>
-    const carportL = document.getElementById("formlist");
-    carportL.addEventListener(
-        "mouseout",
-        (event) => {
-            var element = document.getElementById("errorboxcarportlength")
-            // highlight the mouseleave target
-            element.target.style.display = "flex";
-        },
-        false,
-    )
-</script>
 </body>
 </html>

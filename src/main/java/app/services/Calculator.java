@@ -53,32 +53,28 @@ public class Calculator {
 
 
     private static int calculateRafterCount(int dimension) {
-        // Assuming a rafter is needed for every 55 units of length, except at the beginning and end
+        // Assuming a rafter is needed for every 55 units of length
         int rafterLength = 55;
 
         // Calculate the number of rafters, considering there is a strap at the beginning and end
-        return Math.max(0, (int) Math.ceil((double) dimension / rafterLength)-2);
+        return Math.max(0, (int) Math.ceil((double) dimension / rafterLength));
     }
 
 
     private static int calculateRafterWidth(int width) {
         // List of available rafter lengths
-        int[] rafterLengths = {300, 360, 420, 480, 540, 600};
+        int[] rafterLengths = {600, 540, 480, 420, 360, 300};
 
         // Sort the array in descending order to start with the longest rafters
         Arrays.sort(rafterLengths);
-        int[] descendingRafterLengths = new int[rafterLengths.length];
-        for (int i = 0; i < rafterLengths.length; i++) {
-            descendingRafterLengths[i] = rafterLengths[rafterLengths.length - 1 - i];
-        }
 
         // Find the combination of rafters that best fits the width
         int remainingWidth = width;
         int raftersCount = 0;
 
         // Loop through rafter lengths and calculate the count
-        for (int length : descendingRafterLengths) {
-            if (remainingWidth >= length) {
+        for (int length : rafterLengths) {
+            while (remainingWidth >= length) {
                 remainingWidth -= length;
                 raftersCount++;
             }
@@ -88,7 +84,6 @@ public class Calculator {
     }
 
 
-
     public static double calculateStraps(int id, ConnectionPool connectionPool) throws DatabaseException {
         List<Orders> orderList = OrdersMapper.getSize(id, connectionPool);
         int numberOfStraps = 0;
@@ -96,66 +91,51 @@ public class Calculator {
         for (Orders order : orderList) {
             // Calculate straps for carport length and width
             int carportLengthStraps = calculateStrapsLength(order.getCarport_length());
-            int carportWidthStraps = calculateStrapsWidth(order.getCarport_width());
 
-            // Sum up the straps
-            numberOfStraps += carportLengthStraps + carportWidthStraps;
+            // Add the current count to the total count
+            numberOfStraps += carportLengthStraps;
         }
 
         // Ensure a minimum of 4 straps
-        return Math.max(numberOfStraps, 4);
+        numberOfStraps = Math.max(numberOfStraps, 4);
+
+        return numberOfStraps;
     }
 
-    private static int calculateStrapsLength(int side) {
+    public static int calculateStrapsLength(int side) {
         // List of available strap lengths
-        int[] strapLengths = {300, 360, 420, 480, 540, 600};
+        int[] strapLengths = {600, 540, 480, 420, 360, 300};
 
-        // Sort the array in descending order to start with the longest straps
-        Arrays.sort(strapLengths);
-        int[] descendingStrapLengths = new int[strapLengths.length];
-        for (int i = 0; i < strapLengths.length; i++) {
-            descendingStrapLengths[i] = strapLengths[strapLengths.length - 1 - i];
-        }
-
-        // Find the combination of straps that best fits the side length
         int remainingLength = side;
-        int strapsCount = 0;
 
-        // Loop through strap lengths and calculate the count
-        for (int length : descendingStrapLengths) {
-            while (remainingLength >= length) {
-                remainingLength -= length;
-                strapsCount++;
+        // Initialize with a large value to ensure it gets updated
+        int minStrapsCount = Integer.MAX_VALUE;
+
+        // Iterate through all possible combinations of straps, this here goes through each
+        // straplength and sees what can be used where there are least amount of strap surplus
+        for (int i = 0; i < (1 << strapLengths.length); i++) {
+            int currentLength = 0;
+            int currentStrapsCount = 0;
+
+            // Check which straps to include in the current combination, goes through and sees if
+            // there is that you can straps use if there is length surplus and adds one more strap to the total
+            for (int j = 0; j < strapLengths.length; j++) {
+                if ((i & (1 << j)) != 0) {
+                    currentLength += strapLengths[j];
+                    currentStrapsCount++;
+                }
+            }
+
+            // Check if the current combination covers the side length without surplus, it is to see
+            // if there is length left and if there are then there are room for another strap
+            if (currentLength >= side && currentLength - side < remainingLength) {
+                remainingLength = currentLength - side;
+                minStrapsCount = currentStrapsCount;
             }
         }
 
-        return (strapsCount*2);
-    }
-    public static int calculateStrapsWidth(int width) {
-        // List of available strap lengths
-        int[] strapLengths = {300, 360, 420, 480, 540, 600};
-
-        // Sort the array in descending order to start with the longest straps
-        Arrays.sort(strapLengths);
-        int[] descendingStrapLengths = new int[strapLengths.length];
-        for (int i = 0; i < strapLengths.length; i++) {
-            descendingStrapLengths[i] = strapLengths[strapLengths.length - 1 - i];
-        }
-
-        // Find the combination of straps that best fits the width
-        int remainingWidth = width;
-        int strapsCount = 0;
-
-        // Loop through strap lengths and calculate the count
-        for (int length : descendingStrapLengths) {
-            while (remainingWidth >= length) {
-                remainingWidth -= length;
-                strapsCount++;
-            }
-        }
-
-        // Multiply the count by 2 to account for both sides of the width
-        return (strapsCount * 2);
+        // Multiply the count by 4 to account for both sides of the length
+        return minStrapsCount * 4;
     }
 
 }

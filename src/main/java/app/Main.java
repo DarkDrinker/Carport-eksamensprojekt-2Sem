@@ -48,6 +48,7 @@ public class Main {
             int generatedOrderId = OrderController.insertOrders(ctx, connectionPool);
             // Calculate and render using the generatedOrderId
             OrderController.calculateAndRender(ctx, generatedOrderId, connectionPool);
+            //ctx.render("salesperson.html");
         });
 
         app.get("/cart", ctx -> ctx.render("cart.html"));
