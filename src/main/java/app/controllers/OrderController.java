@@ -53,7 +53,6 @@ public class OrderController {
             int generatedOrderId = OrdersMapper.insertOrders(orders, connectionPool);
 
             // Use the generatedOrderId for further processing or pass it to other methods as needed
-            // For example, pass it to the calculateAndRender method
             calculateAndRender(ctx, generatedOrderId, connectionPool);
 
         } catch (DatabaseException e) {
@@ -91,6 +90,14 @@ public class OrderController {
         return OrdersMapper.insertOrders(orders, connectionPool);
     }
 
+    public static void showOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        Orders orders = ctx.sessionAttribute("order");
+        if (orders != null) {
+            ctx.attribute("ordersArrayList", insertOrders(ctx, connectionPool));
+            ctx.render("salesperson.html");
+        }
+
+    }
 
    /* public static void calcPosts(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         int id = Integer.parseInt(ctx.formParam("id"));

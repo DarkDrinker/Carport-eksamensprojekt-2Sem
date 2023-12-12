@@ -47,7 +47,9 @@ public class Main {
             // Insert the order and get the generatedOrderId
             int generatedOrderId = OrderController.insertOrders(ctx, connectionPool);
             // Calculate and render using the generatedOrderId
+            OrderController.showOrders(ctx, connectionPool);
             OrderController.calculateAndRender(ctx, generatedOrderId, connectionPool);
+            ctx.render("salesperson.html");
         });
 
         app.get("/cart", ctx -> ctx.render("cart.html"));
