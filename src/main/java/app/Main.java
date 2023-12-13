@@ -1,13 +1,11 @@
 package app;
-
 import app.controllers.OrderController;
 import config.ThymeleafConfig;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
-
-import java.util.List;
+import static app.controllers.UserController.checkUserLoggedIn;
 
 public class Main {
     private static final String USER = "postgres";
@@ -38,20 +36,20 @@ public class Main {
         });
         app.get("/order", ctx -> ctx.render("order.html"));
         app.post("/order", ctx -> {
-            OrderController.initializeMaterialMap(ctx, connectionPool);
-            OrderController.allOrders(ctx, connectionPool);
-            ctx.render("salesperson.html");
+            boolean isLoggedIn = checkUserLoggedIn(ctx);
+            if (isLoggedIn) {
+                OrderController.allOrders(ctx, connectionPool);
+                ctx.redirect("/salesperson");
+            } else {
+                ctx.attribute("isLoggedIn", false); // Flag to prompt for email
+                ctx.render("order.html"); // Render the same order form but with email prompt
+            }
         });
         app.get("/salesperson", ctx -> ctx.render("salesperson.html"));
         app.post("/salesperson", ctx -> {
-            // Insert the order and get the generatedOrderId
-            int generatedOrderId = OrderController.insertOrders(ctx, connectionPool);
-            // Calculate and render using the generatedOrderId
-            OrderController.showOrders(ctx, connectionPool);
-            OrderController.calculateAndRender(ctx, generatedOrderId, connectionPool);
+            OrderController.allOrders(ctx, connectionPool);
             ctx.render("salesperson.html");
         });
-
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
         app.post("/login", ctx -> UserController.login(ctx, connectionPool));

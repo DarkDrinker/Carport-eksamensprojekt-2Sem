@@ -68,7 +68,11 @@ public class UserController
         }
 
     }
-
+    //Checks if the user is logged in
+    public static boolean checkUserLoggedIn(Context ctx) {
+        User user = ctx.sessionAttribute("currentUser");
+        return user != null;
+    }
     public static void logout(Context ctx)
     {
         // Invalidate session
