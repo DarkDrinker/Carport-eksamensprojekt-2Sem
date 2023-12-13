@@ -26,7 +26,6 @@ public class UserController
             ctx.sessionAttribute("currentUser", user);
             ctx.render("frontpage.html");
 
-
         }
         catch (DatabaseException e)
         {
