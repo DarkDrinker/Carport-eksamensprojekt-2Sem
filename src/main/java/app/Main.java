@@ -34,16 +34,14 @@ public class Main {
             OrderController.initializeMaterialMap(ctx, connectionPool);
             ctx.render("materials.html");
         });
-        app.get("/order", ctx -> ctx.render("order.html"));
+        app.get("/order", ctx -> {
+            boolean isLoggedIn = UserController.checkUserLoggedIn(ctx);
+            ctx.attribute("isLoggedIn", isLoggedIn);
+            ctx.render("order.html");
+        });
         app.post("/order", ctx -> {
-            boolean isLoggedIn = checkUserLoggedIn(ctx);
-            if (isLoggedIn) {
                 OrderController.allOrders(ctx, connectionPool);
                 ctx.redirect("/salesperson");
-            } else {
-                ctx.attribute("isLoggedIn", false); // Flag to prompt for email
-                ctx.render("order.html"); // Render the same order form but with email prompt
-            }
         });
         app.get("/salesperson", ctx -> ctx.render("salesperson.html"));
         app.post("/salesperson", ctx -> {
