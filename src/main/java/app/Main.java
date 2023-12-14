@@ -5,6 +5,15 @@ import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
+<<<<<<< Updated upstream
+=======
+
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+>>>>>>> Stashed changes
 import static app.controllers.UserController.checkUserLoggedIn;
 
 public class Main {
@@ -40,8 +49,16 @@ public class Main {
             ctx.render("order.html");
         });
         app.post("/order", ctx -> {
+            boolean isLoggedIn = UserController.checkUserLoggedIn(ctx);
+            if (isLoggedIn) {
                 OrderController.allOrders(ctx, connectionPool);
                 ctx.redirect("/salesperson");
+            } else {
+                String email = ctx.formParam("email");
+                OrderController.processGuestOrder(ctx, connectionPool, email);
+                ctx.attribute("email", email);  // Set the email to be used in the template
+                ctx.render("salesperson.html"); // Directly render the salesperson page with the email
+            }
         });
         app.get("/salesperson", ctx -> ctx.render("salesperson.html"));
         app.post("/salesperson", ctx -> {

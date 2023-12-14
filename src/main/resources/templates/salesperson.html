@@ -20,6 +20,9 @@
     <p>ID: <span th:text="${orderDetails.id}"></span></p>
     <p>Dato: <span th:text="${orderDetails.date}"></span></p>
     <p>User ID: <span th:text="${orderDetails.user_id}"></span></p>
+    <div th:if="${email != null}">
+      <p>Email: <span th:text="${email}"></span></p>
+    </div>
     <p>Carport Længde: <span th:text="${orderDetails.carport_length}"></span></p>
     <p>Carport Bredde: <span th:text="${orderDetails.carport_width}"></span></p>
     <p>Skur Længde: <span th:text="${orderDetails.shed_length}"></span></p>

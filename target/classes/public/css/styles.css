@@ -46,7 +46,6 @@ li:hover a{
 
 .icon {
     display: none;
-    padding: 25px;
 }
 
 @media screen and (max-width: 500px) {
@@ -56,11 +55,41 @@ li:hover a{
     .links{
         display: none;
     }
-    .dropdownlinks{
-        display: none;
-    }
 }
 
+.dropdownlinks {
+    right: 8px;
+    top: 108px;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdownlinks a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.show {
+    display: block;
+}
+.icon .dropdownmenubutton {
+    cursor: pointer;
+    font-size: 25px;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+    margin: 0;
+}
 
 .logincontainer input[type=text]{
     width: 100%;
@@ -86,3 +115,21 @@ li:hover a{
 
 .logincontainer form {border: 3px solid #f1f1f1;}
 
+<<<<<<< Updated upstream
+=======
+.frontpage-imgcontainer div{
+    margin-top: 10px;
+    display: flex;
+    width: 100%;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    width: fill-available;
+}
+.frontpage-imgcontainer div > a{
+    width: inherit;
+    max-width: 50%;
+}
+.frontpage-imgcontainer div > a > img{
+    width: inherit;
+}
+>>>>>>> Stashed changes

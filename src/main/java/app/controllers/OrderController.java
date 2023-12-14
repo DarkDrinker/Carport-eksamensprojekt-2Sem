@@ -18,7 +18,7 @@ import static app.persistence.OrdersMapper.getAllOrders;
 import static app.persistence.OrdersMapper.getOrderById;
 
 public class OrderController {
-
+    private static final int GUEST_USER_ID = 0;
     public static void initializeMaterialMap(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         Map<Integer, Material> materialMap = ctx.sessionAttribute("materialMap");
 
@@ -41,6 +41,9 @@ public class OrderController {
         // Retrieve the current user from the session
         User user = ctx.sessionAttribute("currentUser");
 
+        // If the user is logged in, we will use their ID and if not we will use a default ID (0 as a placeholder)
+        int userId = (user != null) ? user.getId() : GUEST_USER_ID;
+
         // Extract form parameters for order details
         double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
         double carportWidth = Double.parseDouble(ctx.formParam("carport_width"));
@@ -49,7 +52,7 @@ public class OrderController {
         String status = ctx.formParam("status");
 
         // Create an Orders object with the extracted details
-        Orders orders = new Orders(0, new Date(System.currentTimeMillis()), user.getId(), carportLength, carportWidth, shedLength, shedWidth, status);
+        Orders orders = new Orders(0, new Date(System.currentTimeMillis()), userId, carportLength, carportWidth, shedLength, shedWidth, status);
 
         try {
             // Call the insertOrders method to insert the order into the database and get the generated id
@@ -81,7 +84,36 @@ public class OrderController {
         ctx.render("salesperson.html");
     }
 
+    public static void processGuestOrder(Context ctx, ConnectionPool connectionPool, String guestEmail) throws DatabaseException {        // Retrieve the current user from the session
+        User user = ctx.sessionAttribute("currentUser");
+        // If the user is logged in, we will use their ID and if not we will use a default ID (0 as a placeholder)
+        int userId = (user != null) ? user.getId() : GUEST_USER_ID;
 
+        // Extract form parameters for order details
+        double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
+        double carportWidth = Double.parseDouble(ctx.formParam("carport_width"));
+        double shedLength = Double.parseDouble(ctx.formParam("shed_length"));
+        double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
+        String status = ctx.formParam("status");
+
+        // Create an Orders object with the extracted details
+        Orders orders = new Orders(0, new Date(System.currentTimeMillis()), userId, carportLength, carportWidth, shedLength, shedWidth, status);
+
+        try {
+            // Call the insertOrders method to insert the order into the database and get the generated id
+            int generatedOrderId = OrdersMapper.insertOrders(orders, connectionPool);
+
+            // Retrieve the inserted order details
+            Orders insertedOrder = getOrderById(generatedOrderId, connectionPool);
+
+            // Use the insertedOrder for further processing or pass it to other methods as needed
+            calculateAndRender(ctx, insertedOrder, connectionPool);
+
+        } catch (DatabaseException e) {
+            // Handle any database exception by rethrowing or logging
+            throw new DatabaseException("Fejl i processGuestOrder: " + e.getMessage());
+        }
+    }
 
    /* public static int insertOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         User user = ctx.sessionAttribute("currentUser");
@@ -106,7 +138,7 @@ public class OrderController {
                 ctx.attribute("orderDetails", order);
                 ctx.render("salesperson.html");
             } else {
-                ctx.status(404).result("Order not found");
+                ctx.status(404).result("Order ikke fundet");
             }
         } catch (NumberFormatException e) {
             ctx.status(400).result("Invalid order ID format");
