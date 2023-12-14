@@ -1,14 +1,17 @@
 package app.persistence;
 
+import app.controllers.OrderController;
 import app.exceptions.DatabaseException;
 import app.models.Orderline;
 import app.models.Orders;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-    public class OrdersMapper {
+public class OrdersMapper {
 
 
         public static int insertOrders(Orders orders, ConnectionPool connectionPool) throws DatabaseException {
@@ -93,5 +96,57 @@ import java.util.List;
             }
             return sizelist;
         }
+
+        public static Orders getOrderById(int id, ConnectionPool connectionPool) throws DatabaseException {
+            Orders order = null;
+            String sql = "SELECT * FROM orders WHERE id=?";
+
+            try (Connection connection = connectionPool.getConnection()) {
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                    ps.setInt(1, id);
+                    ResultSet rs = ps.executeQuery();
+                    if (rs.next()) {
+                        Date date = rs.getDate("date");
+                        int user_id = rs.getInt("user_id");
+                        double carport_length = rs.getDouble("carport_length");
+                        double carport_width = rs.getDouble("carport_width");
+                        double shed_length = rs.getDouble("shed_length");
+                        double shed_width = rs.getDouble("shed_width");
+                        String status = rs.getString("status");
+                        order = new Orders(id, date, user_id, carport_length, carport_width, shed_length, shed_width, status);
+                    }
+                }
+            } catch (SQLException e) {
+                throw new DatabaseException("Error in getOrderById: " + e.getMessage());
+            }
+
+            return order;
+        }
+    public static Map<Integer, Orders> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
+        Map<Integer, Orders> ordersMap = new HashMap<>();
+        String sql = "SELECT * FROM orders where id=?";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    Date date= rs.getDate("date");
+                    int user_id = rs.getInt("user_id");
+                    double carport_length = rs.getDouble("carport_length");
+                    double carport_width = rs.getDouble("carport_width");
+                    double shed_length = rs.getDouble("shed_length");
+                    double shed_width = rs.getDouble("shed_width");
+                    String status = rs.getString("status");
+                    Orders order = new Orders(id, date, user_id, carport_length, carport_width, shed_length, shed_width, status);
+                    ordersMap.put(id, order);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error in getAllOrders: " + e.getMessage());
+        }
+
+        return ordersMap;
+    }
 
     }

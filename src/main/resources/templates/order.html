@@ -27,7 +27,11 @@
                 <label for="shed_width">Skur bredde i cm:</label>
                 <input type="number" name="shed_width" id="shed_width" value="0" min="0" required>
                 <br><br>
-
+                <div th:if="${!isLoggedIn}">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" required>
+                    <br><br>
+                </div>
                 <input type="hidden" name="status" value="Pending">
                 <button type="submit" id="submit">Giv mig et tilbud</button>
             </form>

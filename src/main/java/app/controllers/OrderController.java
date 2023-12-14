@@ -14,6 +14,9 @@ import io.javalin.http.Context;
 import java.sql.Date;
 import java.util.*;
 
+import static app.persistence.OrdersMapper.getAllOrders;
+import static app.persistence.OrdersMapper.getOrderById;
+
 public class OrderController {
 
     public static void initializeMaterialMap(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
@@ -52,8 +55,11 @@ public class OrderController {
             // Call the insertOrders method to insert the order into the database and get the generated id
             int generatedOrderId = OrdersMapper.insertOrders(orders, connectionPool);
 
-            // Use the generatedOrderId for further processing or pass it to other methods as needed
-            calculateAndRender(ctx, generatedOrderId, connectionPool);
+            // Retrieve the inserted order details
+            Orders insertedOrder = getOrderById(generatedOrderId, connectionPool);
+
+            // Use the insertedOrder for further processing or pass it to other methods as needed
+            calculateAndRender(ctx, insertedOrder, connectionPool);
 
         } catch (DatabaseException e) {
             // Handle any database exception by rethrowing or logging
@@ -61,21 +67,23 @@ public class OrderController {
         }
     }
 
+    public static void calculateAndRender(Context ctx, Orders orders, ConnectionPool connectionPool) throws DatabaseException {
+        // Use the orders for further processing
+        double numberOfPosts = Calculator.calculatePost(orders.getId(), connectionPool);
+        double numberOfRafters = Calculator.calculateRafter(orders.getId(), connectionPool);
+        double numberOfStraps = Calculator.calculateStraps(orders.getId(), connectionPool);
 
-    public static void calculateAndRender(Context ctx, int generatedOrderId, ConnectionPool connectionPool) throws DatabaseException {
-        // Use the generatedOrderId for further processing
-        double numberOfPosts = Calculator.calculatePost(generatedOrderId, connectionPool);
-        double numberOfRafters = Calculator.calculateRafter(generatedOrderId, connectionPool);
-        double numberOfStraps = Calculator.calculateStraps(generatedOrderId, connectionPool);
-
+        ctx.attribute("orderDetails", orders);
         ctx.attribute("numberOfPosts", (int) numberOfPosts);
         ctx.attribute("numberOfRafters", (int) numberOfRafters);
         ctx.attribute("numberOfStraps", (int) numberOfStraps);
 
+        ctx.render("salesperson.html");
+    }
 
-            ctx.render("salesperson.html");
-        }
-    public static int insertOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+
+
+   /* public static int insertOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         User user = ctx.sessionAttribute("currentUser");
 
         double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
@@ -89,17 +97,37 @@ public class OrderController {
         // Call the insertOrders method to insert the order into the database and get the generated id
         return OrdersMapper.insertOrders(orders, connectionPool);
     }
-
     public static void showOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        Orders orders = ctx.sessionAttribute("order");
-        if (orders != null) {
-            ctx.attribute("ordersArrayList", insertOrders(ctx, connectionPool));
-            ctx.render("salesperson.html");
-        }
+        try {
+            int orderId = Integer.parseInt(ctx.pathParam("id"));
+            Orders order = getOrderById(orderId, connectionPool);
 
+            if (order != null) {
+                ctx.attribute("orderDetails", order);
+                ctx.render("salesperson.html");
+            } else {
+                ctx.status(404).result("Order not found");
+            }
+        } catch (NumberFormatException e) {
+            ctx.status(400).result("Invalid order ID format");
+        } catch (DatabaseException e) {
+            throw new DatabaseException("Fejl i showOrders: " + e.getMessage());
+        }
+    }
+    public static void initializeOrdersMap(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        Map<Integer, Orders> ordersMap = ctx.sessionAttribute("ordersMap");
+
+        if (ordersMap == null) {
+            ordersMap = getAllOrders(connectionPool); // Fetch all orders
+            ctx.sessionAttribute("ordersMap", ordersMap);
+
+            List<Orders> ordersList = new ArrayList<>(ordersMap.values());
+            ordersList.sort(Comparator.comparing(Orders::getId));
+            ctx.sessionAttribute("ordersList", ordersList);
+        }
     }
 
-   /* public static void calcPosts(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static void calcPosts(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         int id = Integer.parseInt(ctx.formParam("id"));
         int post = (int) Calculator.calculatePost(id, connectionPool);
         ctx.attribute("post", post);
