@@ -6,14 +6,6 @@ import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
-
-
-import java.io.IOException;
-import java.util.List;
-=======
-import static app.controllers.UserController.checkUserLoggedIn;
-
-
 public class Main {
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
@@ -36,7 +28,7 @@ public class Main {
         app.get("/frontpage", ctx -> ctx.render("frontpage.html"));
         app.post("/frontpage", ctx -> ctx.render("frontpage.html"));
         app.get("/createuser", ctx -> ctx.render("createuser.html"));
-        app.post("/createuser",ctx -> UserController.createuser(ctx, connectionPool ));
+        //app.post("/createuser",ctx -> UserController.createuser(ctx, connectionPool ));
         app.get("/materials", ctx -> {
             OrderController.initializeMaterialMap(ctx, connectionPool);
             ctx.render("materials.html");
@@ -58,7 +50,7 @@ public class Main {
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
         app.post("/login", ctx -> UserController.login(ctx, connectionPool));
-        app.get("/logout", ctx -> UserController.logout(ctx));
+        app.get("/logout", UserController::logout);
         //app.get("/orders/{id}", ctx -> OrderController.getorders(ctx, connectionPool));
     }
 }

@@ -8,21 +8,21 @@
 <div id="page-container">
 
     <div id="page-content">
-        <p>Indtast venligst brugerinfo:</p>
+        <p></p>
         <div class="centered-form">
             <form method="post">
-
-                <input type="text" name="name" placeholder="Navn"/>
-                <input type="password" name="password1" placeholder="password"/>
-                <input type="password" name="password2" placeholder="gentag password"/>
-                <input type="adresse" name="adresse" placeholder="Skriv adresse"/>
-                <input type="email" name="email" placeholder="Skriv email"/>
+                <label>Indtast venligst brugerinfo: <br><br>
+                <input type="text" name="name" placeholder="Navn"/><br><br>
+                <input type="password" name="password1" placeholder="password"/><br><br>
+                <input type="password" name="password2" placeholder="gentag password"/><br><br>
+                <input type="adresse" name="adresse" placeholder="Skriv adresse"/><br><br>
+                <input type="email" name="email" placeholder="Skriv email"/><br><br>
                 <button type="submit" formaction="/createuser">Opret bruger</button>
-
+                </label>
                 <p class="errormessage" th:text="${#ctx.message}"></p>
+
             </form>
         </div>
-        <div th:replace="~{fragments :: footer}"></div>
     </div>
 </div>
 </body>
