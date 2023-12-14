@@ -5,15 +5,11 @@ import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
-<<<<<<< Updated upstream
-=======
 
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
->>>>>>> Stashed changes
 import static app.controllers.UserController.checkUserLoggedIn;
 
 public class Main {
