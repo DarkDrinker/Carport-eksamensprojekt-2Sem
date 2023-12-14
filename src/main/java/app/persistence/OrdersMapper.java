@@ -47,7 +47,7 @@ public class OrdersMapper {
             }
         }
 
-        // Insert order lines
+        // Insert orderlines
            /* for (Orderline orderline : orderlines) {
                 insertOrderline(orderline, newOrdersId, connectionPool);
             }*/
@@ -64,10 +64,10 @@ public class OrdersMapper {
 
                     ps.executeUpdate();
                 } catch (SQLException e) {
-                    throw new DatabaseException("Error in insertOrderline with SQL query");
+                    throw new DatabaseException("Fejl i insertOrderline med SQL query");
                 }
             } catch (SQLException e) {
-                throw new DatabaseException("Error in insertOrderline with database connection");
+                throw new DatabaseException("Fejl i insertOrderline med database connection");
             }
 
             return orderline;
@@ -117,7 +117,7 @@ public class OrdersMapper {
                     }
                 }
             } catch (SQLException e) {
-                throw new DatabaseException("Error in getOrderById: " + e.getMessage());
+                throw new DatabaseException("Fejl i getOrderById: " + e.getMessage());
             }
 
             return order;
@@ -143,7 +143,7 @@ public class OrdersMapper {
                 }
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error in getAllOrders: " + e.getMessage());
+            throw new DatabaseException("Fejl i getAllOrders: " + e.getMessage());
         }
 
         return ordersMap;
