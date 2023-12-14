@@ -19,9 +19,7 @@
     <nav class="menu">
         <ul class="links">
             <li>
-                <a th:if="${#ctx.session.currentUser != null}" style="display: none"></a>
-                <a th:if="${#ctx.session.currentUser.role == 'Admin'}" href="/saleswindow">Overview of sales</a>
-
+                <a href="/saleswindow">Overview of sales</a>
             </li>
             <li>
                 <a href="not a working link">Find Fog</a>
@@ -30,7 +28,7 @@
                 <a href="not a working link">Kurv</a>
             </li>
             <li>
-                <div th:switch="${#ctx.session.currentUser != null}" >
+                <div th:switch="${#ctx.session.currentUser != null}">
                     <a th:case="false" href="/login">Login</a>
                     <a th:case="true" th:text="${#ctx.session.currentUser.name}" href="/logout"></a>
                 </div>

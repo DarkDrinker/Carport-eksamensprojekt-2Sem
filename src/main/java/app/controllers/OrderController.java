@@ -82,11 +82,21 @@ public class OrderController {
     }
     public static void GrabAllOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         try {
-            Map<Integer, Orders> allOrders= getAllOrders(connectionPool);
+            Map<Integer, Orders> allOrders = getAllOrders(connectionPool);
             ctx.sessionAttribute("allorders", allOrders);
-
         } catch (DatabaseException e) {
-            throw new DatabaseException("fejl i henting af orders" + e.getMessage());
+            // Handle any database exception by rethrowing or logging
+            throw new DatabaseException("Fejl i GrabAllOrders: " + e.getMessage());
+        }
+    }
+
+    public static void GrabOneOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        int id = Integer.parseInt(ctx.pathParam("orderId"));
+        try {
+            Orders order = getOrderById(id, connectionPool);
+            ctx.sessionAttribute("SessionOrder", order);
+        } catch (DatabaseException e) {
+            e.getMessage();
         }
     }
 

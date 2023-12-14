@@ -1,6 +1,5 @@
 package app;
 import app.controllers.OrderController;
-import app.util.EmailSender;
 import config.ThymeleafConfig;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
@@ -43,9 +42,14 @@ public class Main {
                 ctx.redirect("/salesperson");
         });
         app.get("/saleswindow", ctx -> {
-            OrderController.GrabAllOrders(ctx, connectionPool);
-            ctx.render("saleswindow.html");
+                OrderController.GrabAllOrders(ctx, connectionPool);
+                ctx.render("saleswindow.html");
         });
+        app.get("/saleswindow/{orderId}", ctx -> {
+            OrderController.GrabOneOrder(ctx, connectionPool);
+            ctx.render("sale.html");
+        });
+
         app.get("/salesperson", ctx -> ctx.render("sale.html"));
         app.post("/salesperson", ctx -> {
             OrderController.allOrders(ctx, connectionPool);

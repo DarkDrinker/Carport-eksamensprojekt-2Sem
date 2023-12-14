@@ -3,6 +3,7 @@
 <div th:replace="~{fragments :: head('FOG')}"></div>
 <body>
 <div th:replace="~{fragments :: top-nav}"></div>
+
 <div id="order-container"></div>
 
 <script th:inline="javascript">
@@ -32,7 +33,6 @@
 
     // Debugging statement to log orderDetails
     console.log("orderDetails:", orderDetails);
-
     // Function to create order boxes
     function createOrderBoxes() {
         var container = document.getElementById("order-container");
@@ -48,8 +48,8 @@
                 box.className = "order-box";
                 box.href = "#"; // Set the href to '#' for now, replace with actual URL
                 box.innerHTML = "Order ID: " + order.id + "<br>" +
-                    "Product: " + details.productName + "<br>" +
-                    "Quantity: " + details.quantity;
+                    "user_id: " + details.user_id + "<br>" +
+                    "date: " + details.date;
 
                 // Add a click event to toggle details visibility or navigate to a new page
                 box.addEventListener("click", function (orderId) {
@@ -76,11 +76,12 @@
         var url = "/saleswindow/" + orderId;
         console.log("Navigating to:", url);
         // Uncomment the following line to actually navigate to the URL
-        // window.location.href = url;
+        window.location.href = url;
     }
 
     // Call the function to create order boxes
     createOrderBoxes();
+
     /*]]>*/
 </script>
 
