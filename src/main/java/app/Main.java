@@ -1,11 +1,18 @@
 package app;
 import app.controllers.OrderController;
+import app.util.EmailSender;
 import config.ThymeleafConfig;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
+
+
+import java.io.IOException;
+import java.util.List;
+=======
 import static app.controllers.UserController.checkUserLoggedIn;
+
 
 public class Main {
     private static final String USER = "postgres";
@@ -55,3 +62,11 @@ public class Main {
         //app.get("/orders/{id}", ctx -> OrderController.getorders(ctx, connectionPool));
     }
 }
+
+//Excempel på at man kan sende en mail, kan dog ikke få den sat fast på en knap.
+/*try {
+            EmailSender emailSender = new EmailSender();
+            emailSender.sendEmail();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/

@@ -11,6 +11,7 @@ header{
     list-style: none;
 }
 nav{
+    padding: 0px 10px;
     display: inherit;
     align-items: center;
     height: inherit;
@@ -86,3 +87,20 @@ li:hover a{
 
 .logincontainer form {border: 3px solid #f1f1f1;}
 
+.frontpage-imgcontainer div{
+    margin-top: 10px;
+    display: flex;
+    margin-top: 10px;
+    width: 100%;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    width: fill-available;
+}
+.frontpage-imgcontainer a{
+    width: inherit;
+    max-width: 50%;
+}
+.frontpage-imgcontainer img{
+    width: inherit;
+
+}
