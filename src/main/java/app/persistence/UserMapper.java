@@ -19,7 +19,12 @@ public class UserMapper {
                ResultSet rs = ps.executeQuery();
                if(rs.next()){
                    int id = rs.getInt("id");
-                   return new User(id, email, password);
+                   String name = rs.getString("name");
+                   String adresse = rs.getString("adresse");
+                   String role = rs.getString("role");
+                   String city = rs.getString("city");
+                   int zip = rs.getInt("zip");
+                   return new User(id, name, adresse, email, role, city, zip);
                } else {
                 throw new DatabaseException("Login er desværre forkert");
                }
@@ -82,6 +87,4 @@ public class UserMapper {
             throw new DatabaseException("Forbindelse kunne ikke oprettes");
         }
     }
-
-
 }

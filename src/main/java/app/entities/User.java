@@ -11,10 +11,14 @@ public class User {
     private int zip;
 
 
-    public User(int id, String password, String email) {
+    public User(int id, String name, String adresse, String email, String role, String city, int zip) {
         this.id = id;
-        this.password = password;
+        this.adresse = adresse;
         this.email = email;
+        this.name = name;
+        this.role = role;
+        this.city = city;
+        this.zip = zip;
     }
 
     public User(int id, String name, String password, String adresse, String email, String role, String city, int zip) {
