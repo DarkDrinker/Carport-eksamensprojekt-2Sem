@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<div th:replace="~{fragments :: head('FOG')}"></div>
+
+<body>
+<div th:replace="~{fragments :: top-nav}"></div>
+
+<section>
+  <h3>Order Details</h3>
+ <div>
+    <p>ID: <span th:text=${#ctx.session.SessionOrder.id}"></span></p>
+    <p>Dato: <span th:text="${#ctx.session.SessionOrder.date}"></span></p>
+    <p>User ID: <span th:text="${#ctx.session.SessionOrder.user_id}"></span></p>
+    <p>Carport Længde: <span th:text="${#ctx.session.SessionOrder.carport_length}"></span></p>
+    <p>Carport Bredde: <span th:text="${#ctx.session.SessionOrder.carport_width}"></span></p>
+    <p>Skur Længde: <span th:text="${#ctx.session.SessionOrder.shed_length}"></span></p>
+    <p>Skur Bredde: <span th:text="${#ctx.session.SessionOrder.shed_width}"></span></p>
+    <p>Status: <span th:text="${#ctx.session.SessionOrder.status}"></span></p>
+    <!--<p>Antal Stolper: <span th:text="${numberOfPosts}"></span></p>
+    <p>Antal Spær: <span th:text="${numberOfRafters}"></span></p>
+    <p>Antal Remme: <span th:text="${numberOfStraps}"></span></p>
+    -->
+  </div>
+
+  <form action="/update-status" method="post">
+    <input type="hidden" name="orderId" th:value="${#ctx.session.SessionOrder.id}" />
+    <label for="status">Ny Status:</label>
+    <select name="status" id="status" required>
+      <option value="Accepteret" th:selected="${#ctx.session.SessionOrder.status == 'Accepteret'}">Accepteret</option>
+      <option value="Betalt" th:selected="${#ctx.session.SessionOrder.status == 'Betalt'}">Betalt</option>
+    </select>
+    <button type="submit">Opdatere Status</button>
+  </form>
+</section>
+
+</body>
+
+</html>

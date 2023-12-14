@@ -19,17 +19,21 @@
     <nav class="menu">
         <ul class="links">
             <li>
+                <a href="/saleswindow">Overview of sales</a>
+            </li>
+            <li>
                 <a href="not a working link">Find Fog</a>
             </li>
             <li>
                 <a href="not a working link">Kurv</a>
             </li>
             <li>
-                <div th:switch="${#ctx.session.currentUser != null}" >
+                <div th:switch="${#ctx.session.currentUser != null}">
                     <a th:case="false" href="/login">Login</a>
                     <a th:case="true" th:text="${#ctx.session.currentUser.name}" href="/logout"></a>
                 </div>
             </li>
+
         </ul>
         <div class="icon">
             <button class="dropdownmenubutton">
