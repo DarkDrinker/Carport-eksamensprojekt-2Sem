@@ -124,7 +124,7 @@ public class OrdersMapper {
         }
     public static Map<Integer, Orders> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         Map<Integer, Orders> ordersMap = new HashMap<>();
-        String sql = "SELECT * FROM orders where id=?";
+        String sql = "SELECT * FROM orders ORDER BY id DESC";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {

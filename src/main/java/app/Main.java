@@ -42,10 +42,14 @@ public class Main {
                 OrderController.allOrders(ctx, connectionPool);
                 ctx.redirect("/salesperson");
         });
-        app.get("/salesperson", ctx -> ctx.render("salesperson.html"));
+        app.get("/saleswindow", ctx -> {
+            OrderController.GrabAllOrders(ctx, connectionPool);
+            ctx.render("saleswindow.html");
+        });
+        app.get("/salesperson", ctx -> ctx.render("sale.html"));
         app.post("/salesperson", ctx -> {
             OrderController.allOrders(ctx, connectionPool);
-            ctx.render("salesperson.html");
+            ctx.render("sale.html");
         });
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
