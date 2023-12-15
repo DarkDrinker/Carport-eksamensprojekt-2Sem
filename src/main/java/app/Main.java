@@ -8,15 +8,6 @@ import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
-
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import static app.controllers.UserController.checkUserLoggedIn;
-
-
 public class Main {
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
@@ -44,6 +35,7 @@ public class Main {
             OrderController.initializeMaterialMap(ctx, connectionPool);
             ctx.render("materials.html");
         });
+
         app.get("/order", ctx -> {
             boolean isLoggedIn = UserController.checkUserLoggedIn(ctx);
             ctx.attribute("isLoggedIn", isLoggedIn);
@@ -94,12 +86,20 @@ public class Main {
         app.post("/saleswindow", ctx -> {
             OrderController.allOrders(ctx, connectionPool);
             ctx.render("saleswindow.html");
+
+        app.get("/saleswindow", ctx -> {
+            OrderController.GrabAllOrders(ctx, connectionPool);
+            ctx.render("saleswindow.html");
+        });
+        app.get("/saleswindow/{orderId}", ctx -> {
+            OrderController.GrabOneOrder(ctx, connectionPool);
+            ctx.render("sale.html");
+
         });
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
         app.post("/login", ctx -> UserController.login(ctx, connectionPool));
-        app.get("/logout", ctx -> UserController.logout(ctx));
-        //app.get("/orders/{id}", ctx -> OrderController.getorders(ctx, connectionPool));
+        app.get("/logout", UserController::logout);
     }
 }
 
