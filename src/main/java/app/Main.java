@@ -1,5 +1,7 @@
 package app;
 import app.controllers.OrderController;
+import app.entities.User;
+import app.models.Orders;
 import app.util.EmailSender;
 import config.ThymeleafConfig;
 import app.controllers.UserController;
@@ -32,6 +34,44 @@ public class Main {
         app.get("/materials", ctx -> {
             OrderController.initializeMaterialMap(ctx, connectionPool);
             ctx.render("materials.html");
+        });
+
+        app.get("/order", ctx -> {
+            boolean isLoggedIn = UserController.checkUserLoggedIn(ctx);
+            ctx.attribute("isLoggedIn", isLoggedIn);
+            ctx.render("order.html");
+        });
+        app.post("/order", ctx -> {
+            boolean isLoggedIn = UserController.checkUserLoggedIn(ctx);
+            if (isLoggedIn) {
+                OrderController.allOrders(ctx, connectionPool);
+               {
+                    ctx.redirect("/sale"); // Redirect non-admin users to a confirmation page
+                }
+            } else {
+                String email = ctx.formParam("email");
+                OrderController.processGuestOrder(ctx, connectionPool, email);
+                ctx.attribute("email", email);
+                ctx.render("sale.html"); // Render order confirmation for guests
+            }
+        });
+        app.get("/sale", ctx -> {
+            Orders orderDetails = ctx.sessionAttribute("orderDetails");
+            ctx.attribute("orderDetails", orderDetails);
+            ctx.render("sale.html");
+        });
+        app.post("/sale", ctx -> {
+            OrderController.allOrders(ctx, connectionPool);
+            ctx.render("sale.html");
+        });
+        app.get("/saleswindow", ctx -> {
+            User currentUser = ctx.sessionAttribute("currentUser");
+            if (currentUser != null && "Admin".equals(currentUser.getRole())) {
+                OrderController.GrabAllOrders(ctx, connectionPool); // Fetch all orders
+                ctx.render("saleswindow.html");
+            } else {
+                ctx.redirect("/frontpage");
+            }
         });
         app.get("/saleswindow", ctx -> {
             OrderController.GrabAllOrders(ctx, connectionPool);

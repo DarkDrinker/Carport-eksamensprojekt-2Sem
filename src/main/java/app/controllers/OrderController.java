@@ -82,6 +82,7 @@ public class OrderController {
         ctx.attribute("numberOfStraps", (int) numberOfStraps);
 
         ctx.render("sale.html");
+
     }
     public static void GrabAllOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         try {
@@ -132,7 +133,6 @@ public class OrderController {
             throw new DatabaseException("Fejl i processGuestOrder: " + e.getMessage());
         }
     }
-
    /* public static int insertOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         User user = ctx.sessionAttribute("currentUser");
 

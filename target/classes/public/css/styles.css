@@ -116,15 +116,9 @@ li:hover a{
 
 .logincontainer form {border: 3px solid #f1f1f1;}
 
-
 .frontpage-imgcontainer div{
     margin-top: 10px;
     display: flex;
-
-.frontpage-imgcontainer div{
-    margin-top: 10px;
-    display: flex;
-    margin-top: 10px;
     width: 100%;
     width: -webkit-fill-available;
     width: -moz-available;
@@ -137,13 +131,3 @@ li:hover a{
 .frontpage-imgcontainer div > a > img{
     width: inherit;
 }
-
-.frontpage-imgcontainer a{
-    width: inherit;
-    max-width: 50%;
-}
-.frontpage-imgcontainer img{
-    width: inherit;
-
-}
-
