@@ -66,27 +66,13 @@ public class Main {
         });
         app.get("/saleswindow", ctx -> {
             User currentUser = ctx.sessionAttribute("currentUser");
-            if (currentUser != null && "admin".equals(currentUser.getRole())) {
+            if (currentUser != null && "Admin".equals(currentUser.getRole())) {
                 OrderController.GrabAllOrders(ctx, connectionPool); // Fetch all orders
                 ctx.render("saleswindow.html");
             } else {
                 ctx.redirect("/frontpage");
             }
         });
-       /* app.get("/saleswindow/:orderId", ctx -> {
-            User currentUser = ctx.sessionAttribute("currentUser");
-            if (currentUser != null && "admin".equals(currentUser.getRole())) {
-                OrderController.GrabOneOrder(ctx, connectionPool); // Fetch details of a specific order
-                ctx.render("saleswindow.html"); // Render the same page with details of the specific order
-            } else {
-                ctx.redirect("/frontpage");
-            }
-        });*/
-
-        app.post("/saleswindow", ctx -> {
-            OrderController.allOrders(ctx, connectionPool);
-            ctx.render("saleswindow.html");
-
         app.get("/saleswindow", ctx -> {
             OrderController.GrabAllOrders(ctx, connectionPool);
             ctx.render("saleswindow.html");
@@ -94,7 +80,6 @@ public class Main {
         app.get("/saleswindow/{orderId}", ctx -> {
             OrderController.GrabOneOrder(ctx, connectionPool);
             ctx.render("sale.html");
-
         });
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
