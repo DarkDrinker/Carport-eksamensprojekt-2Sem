@@ -81,7 +81,7 @@ public class Main {
                 ctx.redirect("/frontpage");
             }
         });
-        app.get("/saleswindow/:orderId", ctx -> {
+       /* app.get("/saleswindow/:orderId", ctx -> {
             User currentUser = ctx.sessionAttribute("currentUser");
             if (currentUser != null && "admin".equals(currentUser.getRole())) {
                 OrderController.GrabOneOrder(ctx, connectionPool); // Fetch details of a specific order
@@ -89,7 +89,7 @@ public class Main {
             } else {
                 ctx.redirect("/frontpage");
             }
-        });
+        });*/
 
         app.post("/saleswindow", ctx -> {
             OrderController.allOrders(ctx, connectionPool);
