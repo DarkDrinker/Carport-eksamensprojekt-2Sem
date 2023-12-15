@@ -1,5 +1,7 @@
 package app;
 import app.controllers.OrderController;
+import app.entities.User;
+import app.models.Orders;
 import app.util.EmailSender;
 import config.ThymeleafConfig;
 import app.controllers.UserController;
@@ -51,18 +53,47 @@ public class Main {
             boolean isLoggedIn = UserController.checkUserLoggedIn(ctx);
             if (isLoggedIn) {
                 OrderController.allOrders(ctx, connectionPool);
-                ctx.redirect("/salesperson");
+               {
+                    ctx.redirect("/sale"); // Redirect non-admin users to a confirmation page
+                }
             } else {
                 String email = ctx.formParam("email");
                 OrderController.processGuestOrder(ctx, connectionPool, email);
-                ctx.attribute("email", email);  // Set the email to be used in the template
-                ctx.render("salesperson.html"); // Directly render the salesperson page with the email
+                ctx.attribute("email", email);
+                ctx.render("sale.html"); // Render order confirmation for guests
             }
         });
-        app.get("/salesperson", ctx -> ctx.render("salesperson.html"));
-        app.post("/salesperson", ctx -> {
+        app.get("/sale", ctx -> {
+            Orders orderDetails = ctx.sessionAttribute("orderDetails");
+            ctx.attribute("orderDetails", orderDetails);
+            ctx.render("sale.html");
+        });
+        app.post("/sale", ctx -> {
             OrderController.allOrders(ctx, connectionPool);
-            ctx.render("salesperson.html");
+            ctx.render("sale.html");
+        });
+        app.get("/saleswindow", ctx -> {
+            User currentUser = ctx.sessionAttribute("currentUser");
+            if (currentUser != null && "admin".equals(currentUser.getRole())) {
+                OrderController.GrabAllOrders(ctx, connectionPool); // Fetch all orders
+                ctx.render("saleswindow.html");
+            } else {
+                ctx.redirect("/frontpage");
+            }
+        });
+        app.get("/saleswindow/:orderId", ctx -> {
+            User currentUser = ctx.sessionAttribute("currentUser");
+            if (currentUser != null && "admin".equals(currentUser.getRole())) {
+                OrderController.GrabOneOrder(ctx, connectionPool); // Fetch details of a specific order
+                ctx.render("saleswindow.html"); // Render the same page with details of the specific order
+            } else {
+                ctx.redirect("/frontpage");
+            }
+        });
+
+        app.post("/saleswindow", ctx -> {
+            OrderController.allOrders(ctx, connectionPool);
+            ctx.render("saleswindow.html");
         });
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));

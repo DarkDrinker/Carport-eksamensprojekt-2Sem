@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:fragment="head(title)">
+    <title th:text="${title}">Sales Window</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<header th:fragment="header(title)">
+    <img src="images/fog_logo_2015-3003583891.jpg" height="250" width="250"/>
+    <h1 th:text="${title}">Sales Window</h1>
+</header>
+<div th:replace="~{fragments :: top-nav}"></div>
+<div id="order-container"></div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Retrieve order data from the session
+    var orderData = /*[[${session.allorders}]]*/ {};
+
+    // Initialize orderDetails as an empty object
+    var orderDetails = {};
+
+    // Populate orderDetails based on the data in orderData
+    function createOrderBoxes() {
+        var container = document.getElementById("order-container");
+
+        for (var orderId in orderData) {
+            if (orderData.hasOwnProperty(orderId)) {
+                var order = orderData[orderId];
+                var box = document.createElement("a");
+                box.className = "order-box";
+                box.href = "javascript:void(0);"; // Using JavaScript void to prevent actual navigation
+                box.innerHTML = `Order ID: ${order.id}<br>User ID: ${order.user_id}<br>Date: ${order.date}`;
+
+                // Click event to navigate to order details
+                box.addEventListener("click", function(orderId) {
+                    return function() {
+                        navigateToOrderDetails(orderId);
+                    };
+                }(order.id));
+
+                container.appendChild(box);
+
+                // Create a div to hold order details (assuming details are available in orderData)
+                var detailsDiv = document.createElement("div");
+                detailsDiv.className = "order-details";
+                detailsDiv.innerHTML = "Product: " + order.productName + "<br>Quantity: " + order.quantity;
+                container.appendChild(detailsDiv);
+            }
+        }
+    }
+
+    function navigateToOrderDetails(orderId) {
+        var url = "/saleswindow/" + orderId;
+        console.log("Navigating to:", url);
+        window.location.href = url; // Navigate to the detailed page
+    }
+
+    createOrderBoxes();
+    /*]]>*/
+</script>
+</body>
+</html>
+<!--<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:replace="~{fragments :: head('FOG')}"></div>
+<body>
+<div th:replace="~{fragments :: top-nav}"></div>
+
+<div id="order-container"></div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Retrieve order data from the session
+    var orderData = /*[[${session.allorders}]]*/ null;
+
+    // Initialize orderDetails as an empty object
+    var orderDetails = {};
+
+    // Populate orderDetails based on the data in orderData
+    for (var orderId in orderData) {
+        if (orderData.hasOwnProperty(orderId)) {
+            var order = orderData[orderId];
+            orderDetails[orderId] = {
+                "id": order.id,
+                "date": order.date,
+                "user_id": order.user_id,
+                "carport_length": order.carport_length,
+                "carport_width": order.carport_width,
+                "shed_length": order.shed_length,
+                "shed_width": order.shed_width,
+                "status": order.status
+            };
+        }
+    }
+
+    // Debugging statement to log orderDetails
+    console.log("orderDetails:", orderDetails);
+    // Function to create order boxes
+    function createOrderBoxes() {
+        var container = document.getElementById("order-container");
+
+        // Iterate through order data
+        for (var orderId in orderData) {
+            if (orderData.hasOwnProperty(orderId)) {
+                var order = orderData[orderId];
+                var details = orderDetails[orderId]; // Retrieve corresponding order details
+
+                // Create an anchor element for each order ID
+                var box = document.createElement("a");
+                box.className = "order-box";
+                box.href = "#"; // Set the href to '#' for now, replace with actual URL
+                box.innerHTML = "Order ID: " + order.id + "<br>" +
+                    "user_id: " + details.user_id + "<br>" +
+                    "date: " + details.date;
+
+                // Add a click event to toggle details visibility or navigate to a new page
+                box.addEventListener("click", function (orderId) {
+                    return function () {
+                        navigateToOrderDetails(orderId);
+                    };
+                }(order.id));
+
+                container.appendChild(box);
+
+                // Create a div to hold order details
+                var detailsDiv = document.createElement("div");
+                detailsDiv.className = "order-details";
+                detailsDiv.innerHTML = "Product: " + details.productName + "<br>Quantity: " + details.quantity;
+
+                container.appendChild(detailsDiv);
+            }
+        }
+    }
+
+    // Function to navigate to order details page
+    function navigateToOrderDetails(orderId) {
+        // Replace this with the actual URL to navigate to
+        var url = "/saleswindow/" + orderId;
+        console.log("Navigating to:", url);
+        // Uncomment the following line to actually navigate to the URL
+        window.location.href = url;
+    }
+
+    // Call the function to create order boxes
+    createOrderBoxes();
+
+    /*]]>*/
+</script>
+
+</body>
+</html>
+-->

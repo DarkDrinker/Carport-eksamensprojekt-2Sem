@@ -81,7 +81,7 @@ public class OrderController {
         ctx.attribute("numberOfRafters", (int) numberOfRafters);
         ctx.attribute("numberOfStraps", (int) numberOfStraps);
 
-        ctx.render("salesperson.html");
+        ctx.render("sale.html");
     }
 
     public static void processGuestOrder(Context ctx, ConnectionPool connectionPool, String guestEmail) throws DatabaseException {        // Retrieve the current user from the session
@@ -115,6 +115,26 @@ public class OrderController {
         }
     }
 
+    public static void GrabAllOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        try {
+            Map<Integer, Orders> allOrders = getAllOrders(connectionPool);
+            ctx.sessionAttribute("allorders", allOrders);
+        } catch (DatabaseException e) {
+            // Handle any database exception by rethrowing or logging
+            throw new DatabaseException("Fejl i GrabAllOrders: " + e.getMessage());
+        }
+    }
+
+    public static void GrabOneOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        int id = Integer.parseInt(ctx.pathParam("orderId"));
+        try {
+            Orders order = getOrderById(id, connectionPool);
+            ctx.sessionAttribute("SessionOrder", order);
+        } catch (DatabaseException e) {
+            e.getMessage();
+        }
+    }
+
    /* public static int insertOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         User user = ctx.sessionAttribute("currentUser");
 
@@ -136,7 +156,7 @@ public class OrderController {
 
             if (order != null) {
                 ctx.attribute("orderDetails", order);
-                ctx.render("salesperson.html");
+                ctx.render("sale.html");
             } else {
                 ctx.status(404).result("Order ikke fundet");
             }
@@ -163,21 +183,21 @@ public class OrderController {
         int id = Integer.parseInt(ctx.formParam("id"));
         int post = (int) Calculator.calculatePost(id, connectionPool);
         ctx.attribute("post", post);
-        ctx.render("salesperson.html");
+        ctx.render("sale.html");
     }
 
     public static void calcRafters(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         int id = Integer.parseInt(ctx.formParam("id"));
         int rafter = (int) Calculator.calculateRafter(id, connectionPool);
         ctx.attribute("rafter", rafter);
-        ctx.render("salesperson.html");
+        ctx.render("sale.html");
     }
 
     public static void calcStraps(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         int id = Integer.parseInt(ctx.formParam("id"));
         int strap = (int) Calculator.calculateStraps(id, connectionPool);
         ctx.attribute("strap", strap);
-        ctx.render("salesperson.html");
+        ctx.render("sale.html");
     }*/
 
 
