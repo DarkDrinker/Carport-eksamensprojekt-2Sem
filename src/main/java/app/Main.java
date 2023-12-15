@@ -55,15 +55,7 @@ public class Main {
                 ctx.render("sale.html"); // Render order confirmation for guests
             }
         });
-        app.get("/sale", ctx -> {
-            Orders orderDetails = ctx.sessionAttribute("orderDetails");
-            ctx.attribute("orderDetails", orderDetails);
-            ctx.render("sale.html");
-        });
-        app.post("/sale", ctx -> {
-            OrderController.allOrders(ctx, connectionPool);
-            ctx.render("sale.html");
-        });
+
         app.get("/saleswindow", ctx -> {
             User currentUser = ctx.sessionAttribute("currentUser");
             if (currentUser != null && "Admin".equals(currentUser.getRole())) {
@@ -73,13 +65,14 @@ public class Main {
                 ctx.redirect("/frontpage");
             }
         });
-        app.get("/saleswindow", ctx -> {
-            OrderController.GrabAllOrders(ctx, connectionPool);
-            ctx.render("saleswindow.html");
-        });
         app.get("/saleswindow/{orderId}", ctx -> {
-            OrderController.GrabOneOrder(ctx, connectionPool);
-            ctx.render("sale.html");
+            User currentUser = ctx.sessionAttribute("currentUser");
+            if (currentUser != null && "Admin".equals(currentUser.getRole())) {
+                OrderController.GrabOneOrder(ctx, connectionPool);
+                ctx.render("sale.html");
+            } else {
+                ctx.redirect("/frontpage");
+            }
         });
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
@@ -89,7 +82,19 @@ public class Main {
 }
 
 //Excempel på at man kan sende en mail, kan dog ikke få den sat fast på en knap.
-/*try {
+/*
+ });
+        app.get("/sale", ctx -> {
+            Orders orderDetails = ctx.sessionAttribute("orderDetails");
+            ctx.attribute("orderDetails", orderDetails);
+            ctx.render("sale.html");
+        });
+        app.post("/sale", ctx -> {
+            OrderController.allOrders(ctx, connectionPool);
+            ctx.render("sale.html");
+        });
+
+try {
             EmailSender emailSender = new EmailSender();
             emailSender.sendEmail();
         } catch (IOException e) {

@@ -53,7 +53,7 @@ public class OrdersMapper {
             }*/
 
         public static Orderline insertOrderline(Orderline orderline, int orderId, ConnectionPool connectionPool) throws DatabaseException {
-            String sqlOrderline = "INSERT INTO orderline (order_id, material_id, quantity, total_price) VALUES (?,?,?,?)";
+            String sqlOrderline = "INSERT INTO orderline (orders_id, material_id, quantity, total_price) VALUES (?,?,?,?)";
 
             try (Connection connection = connectionPool.getConnection()) {
                 try (PreparedStatement ps = connection.prepareStatement(sqlOrderline)) {
@@ -131,7 +131,7 @@ public class OrdersMapper {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     int id = rs.getInt("id");
-                    Date date= rs.getDate("date");
+                    Date date = rs.getDate("date");
                     int user_id = rs.getInt("user_id");
                     double carport_length = rs.getDouble("carport_length");
                     double carport_width = rs.getDouble("carport_width");
@@ -143,7 +143,7 @@ public class OrdersMapper {
                 }
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Fejl i getAllOrders: " + e.getMessage());
+            throw new DatabaseException("Fejl i getAllOrders 333: " + e.getMessage());
         }
 
         return ordersMap;
