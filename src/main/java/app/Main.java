@@ -74,13 +74,18 @@ public class Main {
         });
         app.get("/saleswindow", ctx -> {
             User currentUser = ctx.sessionAttribute("currentUser");
+<<<<<<< Updated upstream
             if (currentUser != null && "admin".equals(currentUser.getRole())) {
+=======
+            if (currentUser != null && "Admin".equals(currentUser.getRole())) {
+>>>>>>> Stashed changes
                 OrderController.GrabAllOrders(ctx, connectionPool); // Fetch all orders
                 ctx.render("saleswindow.html");
             } else {
                 ctx.redirect("/frontpage");
             }
         });
+<<<<<<< Updated upstream
        /* app.get("/saleswindow/:orderId", ctx -> {
             User currentUser = ctx.sessionAttribute("currentUser");
             if (currentUser != null && "admin".equals(currentUser.getRole())) {
@@ -90,6 +95,28 @@ public class Main {
                 ctx.redirect("/frontpage");
             }
         });*/
+=======
+        app.get("/saleswindow/{orderId}", ctx -> {
+            User currentUser = ctx.sessionAttribute("currentUser");
+            if (currentUser != null && "Admin".equals(currentUser.getRole())) {
+                OrderController.GrabOneOrder(ctx, connectionPool);
+                ctx.render("sale.html");
+            } else {
+                ctx.redirect("/frontpage");
+            }
+        });
+        app.get("/cart", ctx -> ctx.render("cart.html"));
+        app.get("/login", ctx -> ctx.render("login.html"));
+        app.post("/login", ctx -> UserController.login(ctx, connectionPool));
+        app.get("/logout", UserController::logout);
+    }
+}
+
+//Excempel på at man kan sende en mail, kan dog ikke få den sat fast på en knap.
+/*
+ });
+
+>>>>>>> Stashed changes
 
         app.post("/saleswindow", ctx -> {
             OrderController.allOrders(ctx, connectionPool);
