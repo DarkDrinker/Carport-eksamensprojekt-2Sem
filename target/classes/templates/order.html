@@ -4,14 +4,10 @@
 <div th:replace="~{fragments :: head('FOG')}"></div>
 
 <body>
-
+<div th:replace="~{fragments :: top-nav}"></div>
 <div id="page-container">
 
     <div id="page-content">
-        <div th:replace="~{fragments :: top-nav}"></div>
-
-
-
         <section>
             <h3>Størrelse</h3>
             <form action="/sale" method="post" id="formlist">
