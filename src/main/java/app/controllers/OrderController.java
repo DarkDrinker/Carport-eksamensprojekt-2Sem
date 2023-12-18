@@ -83,9 +83,13 @@ public class OrderController {
 
         // Retrieve the Material objects directly using their IDs
         Material postMaterial = materials.get(16); // For posts
-        // Assuming methods to get material IDs for rafter and straps by size
-        int rafterMaterialId = MaterialMapper.getMaterialIdBySize(totalRafters, connectionPool);
-        int strapMaterialId = MaterialMapper.getMaterialIdBySize(totalStraps, connectionPool);
+        int[] availableSizes = {600, 540, 480, 420, 360, 300};
+        int closestRafterSize = Calculator.getClosestSize((int)orders.getCarport_width(), availableSizes);
+        int closestStrapSize = Calculator.getClosestSize((int)orders.getCarport_length(), availableSizes);
+
+        // Retrieve the Material objects using the calculated sizes
+        int rafterMaterialId = MaterialMapper.getMaterialIdBySize(closestRafterSize, connectionPool);
+        int strapMaterialId = MaterialMapper.getMaterialIdBySize(closestStrapSize, connectionPool);
         Material rafterMaterial = materials.get(rafterMaterialId);
         Material strapMaterial = materials.get(strapMaterialId);
 
@@ -108,15 +112,15 @@ public class OrderController {
         ctx.sessionAttribute("totalPricePosts", totalPricePosts);
         ctx.sessionAttribute("totalPriceRafters", totalPriceRafters);
         ctx.sessionAttribute("totalPriceStraps", totalPriceStraps);
+        ctx.sessionAttribute("numberOfPosts", numberOfPosts);
+        ctx.sessionAttribute("totalRafters", totalRafters);
+        ctx.sessionAttribute("totalStraps", totalStraps);
 
         ctx.attribute("SessionOrder", orders);
         ctx.attribute("orderlines", orderlines);
 
         ctx.render("order-conformation.html");
     }
-
-
-
 
 
     public static void GrabAllOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {

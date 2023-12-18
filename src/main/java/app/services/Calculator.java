@@ -138,5 +138,22 @@ public class Calculator {
         // Multiply the count by 4 to account for both sides of the length
         return minStrapsCount * 2;
     }
+    public static int getClosestSize(int targetSize, int[] availableSizes) {
+        int closestSize = availableSizes[0];
+        int smallestDifference = Integer.MAX_VALUE;
+        for (int size : availableSizes) {
+            int currentDifference = size - targetSize;
+            // Check if the current difference is smaller in absolute terms than the smallest difference found so far
+            // Prefer negative differences (smaller sizes) over positive ones
+            if (Math.abs(currentDifference) < Math.abs(smallestDifference) ||
+                    (Math.abs(currentDifference) == Math.abs(smallestDifference) && currentDifference < smallestDifference)) {
+                closestSize = size;
+                smallestDifference = currentDifference;
+            }
+        }
+
+        return closestSize;
+    }
+
 
 }
