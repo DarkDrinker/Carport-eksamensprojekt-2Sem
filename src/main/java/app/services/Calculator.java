@@ -137,7 +137,7 @@ public class Calculator {
         }
 
         // Multiply the count by 4 to account for both sides of the length
-        return minStrapsCount * 4;
+        return minStrapsCount * 2;
     }
 
 }

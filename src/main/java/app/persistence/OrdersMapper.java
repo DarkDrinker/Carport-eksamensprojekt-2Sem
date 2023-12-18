@@ -2,6 +2,7 @@ package app.persistence;
 
 import app.controllers.OrderController;
 import app.exceptions.DatabaseException;
+import app.models.Material;
 import app.models.Orderline;
 import app.models.Orders;
 
@@ -52,26 +53,22 @@ public class OrdersMapper {
                 insertOrderline(orderline, newOrdersId, connectionPool);
             }*/
 
-        public static Orderline insertOrderline(Orderline orderline, int orderId, ConnectionPool connectionPool) throws DatabaseException {
-            String sqlOrderline = "INSERT INTO orderline (orders_id, material_id, quantity, total_price) VALUES (?,?,?,?)";
+    public static void insertOrderline(Orderline orderline, ConnectionPool connectionPool) throws SQLException, DatabaseException {
+        String sql = "INSERT INTO orderline (orders_id, material_id, quantity, total_price) VALUES (?, ?, ?, ?)";
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, orderline.getOrders_id());
+                ps.setInt(2, orderline.getMaterial().getMaterial_id());
+                ps.setInt(3, orderline.getQuantity());
+                ps.setDouble(4, orderline.getTotal_price());
 
-            try (Connection connection = connectionPool.getConnection()) {
-                try (PreparedStatement ps = connection.prepareStatement(sqlOrderline)) {
-                    ps.setInt(1, orderId);
-                    ps.setInt(2, orderline.getMaterial_id());
-                    ps.setInt(3, orderline.getQuantity());
-                    ps.setDouble(4, orderline.getTotal_price());
-
-                    ps.executeUpdate();
-                } catch (SQLException e) {
-                    throw new DatabaseException("Fejl i insertOrderline med SQL query");
+                int affectedRows = ps.executeUpdate();
+                if (affectedRows == 0) {
+                    throw new DatabaseException("Inserting orderline fejlede, ingen rækker affected.");
                 }
-            } catch (SQLException e) {
-                throw new DatabaseException("Fejl i insertOrderline med database connection");
             }
-
-            return orderline;
         }
+    }
 
         public static List<Orders> getSize(int id, ConnectionPool connectionPool) throws DatabaseException{
 

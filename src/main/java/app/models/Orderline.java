@@ -9,11 +9,12 @@ public class Orderline {
     private double total_price;
     private int material_id;
 
-    public Orderline(int id, int orders_id, Material material, int quantity) {
+    public Orderline(int id, int orders_id, Material material, int quantity, double total_price) {
         this.id = id;
         this.orders_id = orders_id;
         this.material = material;
         this.quantity = quantity;
+        this.total_price = total_price;
     }
 
     public Orderline(int id, int orders_id, Material material, int quantity, double total_price, int material_id) {

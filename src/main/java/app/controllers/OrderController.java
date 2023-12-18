@@ -12,6 +12,7 @@ import app.persistence.OrdersMapper;
 import io.javalin.http.Context;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.*;
 
 import static app.persistence.OrdersMapper.getAllOrders;
@@ -37,12 +38,10 @@ public class OrderController {
     }
 
 
-    public static void allOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static int allOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         // Retrieve the current user from the session
         User user = ctx.sessionAttribute("currentUser");
-
-        // If the user is logged in, we will use their ID and if not we will use a default ID (0 as a placeholder)
-        int userId = (user != null) ? user.getId() : GUEST_USER_ID;
+        int userId = (user != null) ? user.getId() : GUEST_USER_ID; // Use user ID or default ID
 
         // Extract form parameters for order details
         double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
@@ -51,39 +50,71 @@ public class OrderController {
         double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
         String status = ctx.formParam("status");
 
-        // Create an Orders object with the extracted details
+        // Create an Orders object
         Orders orders = new Orders(0, new Date(System.currentTimeMillis()), userId, carportLength, carportWidth, shedLength, shedWidth, status);
 
         try {
-            // Call the insertOrders method to insert the order into the database and get the generated id
+            // Insert the order and get the generated ID
             int generatedOrderId = OrdersMapper.insertOrders(orders, connectionPool);
-
-            // Retrieve the inserted order details
             Orders insertedOrder = getOrderById(generatedOrderId, connectionPool);
 
-            // Use the insertedOrder for further processing or pass it to other methods as needed
+            // Additional processing with insertedOrder
             calculateAndRender(ctx, insertedOrder, connectionPool);
 
+            // Return the generated order ID
+            return generatedOrderId;
         } catch (DatabaseException e) {
-            // Handle any database exception by rethrowing or logging
+            // Handle database exceptions
             throw new DatabaseException("Fejl i allOrders: " + e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void calculateAndRender(Context ctx, Orders orders, ConnectionPool connectionPool) throws DatabaseException {
-        // Use the orders for further processing
-        double numberOfPosts = Calculator.calculatePost(orders.getId(), connectionPool);
-        double numberOfRafters = Calculator.calculateRafter(orders.getId(), connectionPool);
-        double numberOfStraps = Calculator.calculateStraps(orders.getId(), connectionPool);
 
-        ctx.attribute("orderDetails", orders);
-        ctx.attribute("numberOfPosts", (int) numberOfPosts);
-        ctx.attribute("numberOfRafters", (int) numberOfRafters);
-        ctx.attribute("numberOfStraps", (int) numberOfStraps);
+    public static void calculateAndRender(Context ctx, Orders existingOrder, ConnectionPool connectionPool) throws DatabaseException, SQLException {
+        // Retrieve all materials from the database
+        Map<Integer, Material> materials = MaterialMapper.getAllMaterial(connectionPool);
 
-        ctx.render("sale.html");
+        // Calculate the quantities and sizes
+        int numberOfPosts = (int) Calculator.calculatePost(existingOrder.getId(), connectionPool);
+        int sizeRequiredForRafter = (int) Calculator.calculateRafter(existingOrder.getId(), connectionPool);
+        int sizeRequiredForStrap = (int) Calculator.calculateStraps(existingOrder.getId(), connectionPool);
 
+        // Retrieve the Material objects directly using their IDs
+        Material postMaterial = materials.get(16); // 16 is the ID for posts
+        Material rafterMaterial = materials.get(MaterialMapper.getMaterialIdBySize(sizeRequiredForRafter, connectionPool));
+        Material strapMaterial = materials.get(MaterialMapper.getMaterialIdBySize(sizeRequiredForStrap, connectionPool));
+
+        // Create orderlines with quantity and total price
+        Orderline postOrderline = new Orderline(0, existingOrder.getId(), postMaterial, numberOfPosts, (postMaterial.getPrice() * numberOfPosts));
+        Orderline rafterOrderline = new Orderline(0, existingOrder.getId(), rafterMaterial, sizeRequiredForRafter, (rafterMaterial.getPrice() * sizeRequiredForRafter));
+        Orderline strapOrderline = new Orderline(0, existingOrder.getId(), strapMaterial, sizeRequiredForStrap, (strapMaterial.getPrice() * sizeRequiredForStrap));
+
+        // Add these orderlines to a list for the template
+        List<Orderline> orderlines = Arrays.asList(postOrderline, rafterOrderline, strapOrderline);
+
+        OrdersMapper.insertOrderline(postOrderline, connectionPool);
+        OrdersMapper.insertOrderline(rafterOrderline, connectionPool);
+        OrdersMapper.insertOrderline(strapOrderline, connectionPool);
+
+        double totalPricePosts = postMaterial.getPrice() * numberOfPosts;
+        double totalPriceRafters = rafterMaterial.getPrice() * sizeRequiredForRafter;
+        double totalPriceStraps = strapMaterial.getPrice() * sizeRequiredForStrap;
+
+        ctx.sessionAttribute("totalPricePosts", totalPricePosts);
+        ctx.sessionAttribute("totalPriceRafters", totalPriceRafters);
+        ctx.sessionAttribute("totalPriceStraps", totalPriceStraps);
+
+        ctx.attribute("SessionOrder", existingOrder);
+        ctx.attribute("orderlines", orderlines);
+
+        ctx.render("saleswindow.html");
     }
+
+
+
+
     public static void GrabAllOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         try {
             Map<Integer, Orders> allOrders = getAllOrders(connectionPool);
@@ -128,7 +159,7 @@ public class OrderController {
             // Use the insertedOrder for further processing or pass it to other methods as needed
             calculateAndRender(ctx, insertedOrder, connectionPool);
 
-        } catch (DatabaseException e) {
+        } catch (DatabaseException | SQLException e) {
             // Handle any database exception by rethrowing or logging
             throw new DatabaseException("Fejl i processGuestOrder: " + e.getMessage());
         }

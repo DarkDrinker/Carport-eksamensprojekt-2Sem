@@ -58,7 +58,7 @@ public class Main {
 
         app.get("/saleswindow", ctx -> {
             User currentUser = ctx.sessionAttribute("currentUser");
-            if (currentUser != null && "Admin".equals(currentUser.getRole())) {
+            if (currentUser != null && "admin".equals(currentUser.getRole())) {
                 OrderController.GrabAllOrders(ctx, connectionPool); // Fetch all orders
                 ctx.render("saleswindow.html");
             } else {
@@ -67,7 +67,7 @@ public class Main {
         });
         app.get("/saleswindow/{orderId}", ctx -> {
             User currentUser = ctx.sessionAttribute("currentUser");
-            if (currentUser != null && "Admin".equals(currentUser.getRole())) {
+            if (currentUser != null && "admin".equals(currentUser.getRole())) {
                 OrderController.GrabOneOrder(ctx, connectionPool);
                 ctx.render("sale.html");
             } else {
