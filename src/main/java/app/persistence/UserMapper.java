@@ -1,10 +1,8 @@
 package app.persistence;
 import app.entities.User;
 import app.exceptions.DatabaseException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 
 public class UserMapper {
     public static User login(String email, String password, ConnectionPool connectionPool) throws DatabaseException{
@@ -41,7 +39,7 @@ public class UserMapper {
 
         try (Connection connection = connectionPool.getConnection())
         {
-            try (PreparedStatement ps = connection.prepareStatement(sql))
+            try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
             {
                 ps.setString(1, name);
                 ps.setString(2, password);
@@ -66,6 +64,36 @@ public class UserMapper {
 
             throw new DatabaseException(msg);
         }
+    }
+
+    public static int CreateMiniUser(String name, String email, String city, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "insert into \"user\" (name, email, city) values (?,?,?) RETURNING id";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setString(1, name);
+                ps.setString(2, email);
+                ps.setString(3, city);
+                int rowsAffected = ps.executeUpdate();
+
+                if (rowsAffected == 0) {
+                    throw new DatabaseException("Inserting order fejledebbjh, ingen rækker affected.");
+                }
+                // Retrieve the generated id
+                try{
+                    ResultSet generatedids = ps.getGeneratedKeys();
+                    if(generatedids.next()){
+                        return generatedids.getInt("id");
+                    }
+                } catch (SQLException e){
+                    throw new DatabaseException("her"+e.getMessage());
+                }
+
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Fejl i insertOrders: " + e.getMessage());
+        }
+        return 0;
     }
 
     public int updateBalance(int userId, int balance, ConnectionPool connectionPool) throws DatabaseException {

@@ -1,6 +1,4 @@
 package app.persistence;
-
-import app.controllers.OrderController;
 import app.exceptions.DatabaseException;
 import app.models.Orderline;
 import app.models.Orders;
@@ -15,12 +13,12 @@ public class OrdersMapper {
 
 
         public static int insertOrders(Orders orders, ConnectionPool connectionPool) throws DatabaseException {
-            String sql = "INSERT INTO orders (user_id, date, carport_length, carport_width, shed_length, shed_width, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO orders (date, user_id, carport_length, carport_width, shed_length, shed_width, status) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING id";
 
             try (Connection connection = connectionPool.getConnection()) {
                 try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                    ps.setInt(1, orders.getUser_id());
-                    ps.setTimestamp(2, new Timestamp(orders.getDate().getTime()));
+                    ps.setTimestamp(1, new Timestamp(orders.getDate().getTime()));
+                    ps.setInt(2, orders.getUser_id());
                     ps.setDouble(3, orders.getCarport_length());
                     ps.setDouble(4, orders.getCarport_width());
                     ps.setDouble(5, orders.getShed_length());
