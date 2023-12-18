@@ -16,9 +16,12 @@
     <p>Skur Længde: <span th:text="${#ctx.session.SessionOrder.shed_length}"></span></p>
     <p>Skur Bredde: <span th:text="${#ctx.session.SessionOrder.shed_width}"></span></p>
     <p>Status: <span th:text="${#ctx.session.SessionOrder.status}"></span></p>
-    <p>Antal Stolper: <span th:text="${numberOfPosts}"></span></p>
-    <p>Antal Spær: <span th:text="${numberOfRafters}"></span></p>
-    <p>Antal Remme: <span th:text="${numberOfStraps}"></span></p>
+     <p>Antal Stolper: <span th:text="${numberOfPosts}"></span></p>
+     <p>Totalpris for Stolper: <span th:text="${totalPricePosts}"></span> kr</p>
+     <p>Antal Spær: <span th:text="${numberOfRafters}"></span></p>
+     <p>Totalpris for Spær: <span th:text="${totalPriceRafters}"></span> kr</p>
+     <p>Antal Remme: <span th:text="${numberOfStraps}"></span></p>
+     <p>Totalpris for Remme: <span th:text="${totalPriceStraps}"></span> kr</p>
 
   </div>
 
