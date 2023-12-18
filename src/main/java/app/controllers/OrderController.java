@@ -3,8 +3,8 @@ package app.controllers;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.models.Material;
-import app.models.Orderline;
 import app.models.Orders;
+import app.persistence.UserMapper;
 import app.services.Calculator;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
@@ -37,7 +37,7 @@ public class OrderController {
     }
 
 
-    public static void allOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static void InsertOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         // Retrieve the current user from the session
         User user = ctx.sessionAttribute("currentUser");
 
@@ -62,7 +62,7 @@ public class OrderController {
             Orders insertedOrder = getOrderById(generatedOrderId, connectionPool);
 
             // Use the insertedOrder for further processing or pass it to other methods as needed
-            calculateAndRender(ctx, insertedOrder, connectionPool);
+            //calculateAndRender(ctx, insertedOrder, connectionPool);
 
         } catch (DatabaseException e) {
             // Handle any database exception by rethrowing or logging
@@ -103,10 +103,10 @@ public class OrderController {
             e.getMessage();
         }
     }
-    public static void processGuestOrder(Context ctx, ConnectionPool connectionPool, String guestEmail) throws DatabaseException {        // Retrieve the current user from the session
-        User user = ctx.sessionAttribute("currentUser");
-        // If the user is logged in, we will use their ID and if not we will use a default ID (0 as a placeholder)
-        int userId = (user != null) ? user.getId() : GUEST_USER_ID;
+    public static void processGuestOrder(Context ctx, ConnectionPool connectionPool, String guestEmail) throws Exception {        // Retrieve the current user from the session
+        String email = ctx.formParam("email");
+        String name = ctx.formParam("name");
+        String city = ctx.formParam("city");
 
         // Extract form parameters for order details
         double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
@@ -114,25 +114,22 @@ public class OrderController {
         double shedLength = Double.parseDouble(ctx.formParam("shed_length"));
         double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
         String status = ctx.formParam("status");
-
+        int generated_userID = UserMapper.CreateMiniUser(guestEmail, name, city, connectionPool);
+        if(generated_userID == 0) {
+            throw new Exception("didnt create a new user");
+        }
+// CREATE A SMALL USER PROFILE HERE AND
         // Create an Orders object with the extracted details
-        Orders orders = new Orders(0, new Date(System.currentTimeMillis()), userId, carportLength, carportWidth, shedLength, shedWidth, status);
-
+        Orders orders = new Orders(0, new Date(System.currentTimeMillis()), generated_userID, carportLength, carportWidth, shedLength, shedWidth, status);
         try {
-            // Call the insertOrders method to insert the order into the database and get the generated id
-            int generatedOrderId = OrdersMapper.insertOrders(orders, connectionPool);
-
-            // Retrieve the inserted order details
-            Orders insertedOrder = getOrderById(generatedOrderId, connectionPool);
-
-            // Use the insertedOrder for further processing or pass it to other methods as needed
-            calculateAndRender(ctx, insertedOrder, connectionPool);
-
+            // Call the insertOrders method to insert the order into the database
+            OrdersMapper.insertOrders(orders, connectionPool);
         } catch (DatabaseException e) {
             // Handle any database exception by rethrowing or logging
             throw new DatabaseException("Fejl i processGuestOrder: " + e.getMessage());
         }
     }
+
    /* public static int insertOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         User user = ctx.sessionAttribute("currentUser");
 

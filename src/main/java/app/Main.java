@@ -1,8 +1,6 @@
 package app;
 import app.controllers.OrderController;
 import app.entities.User;
-import app.models.Orders;
-import app.util.EmailSender;
 import config.ThymeleafConfig;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
@@ -44,7 +42,7 @@ public class Main {
         app.post("/order", ctx -> {
             boolean isLoggedIn = UserController.checkUserLoggedIn(ctx);
             if (isLoggedIn) {
-                OrderController.allOrders(ctx, connectionPool);
+                OrderController.InsertOrder(ctx, connectionPool);
                {
                     ctx.redirect("/sale"); // Redirect non-admin users to a confirmation page
                 }
@@ -74,6 +72,21 @@ public class Main {
                 ctx.redirect("/frontpage");
             }
         });
+        app.post("/process-order", ctx -> {
+            boolean isLoggedIn = UserController.checkUserLoggedIn(ctx);
+            if (isLoggedIn) {
+                OrderController.InsertOrder(ctx, connectionPool);
+                Thread.sleep(5000); // 5000 milliseconds = 5 seconds
+                ctx.redirect("/Thank-you");
+            } else {
+                String email = ctx.formParam("email");
+                OrderController.processGuestOrder(ctx, connectionPool, email);
+                ctx.attribute("email", email);
+                Thread.sleep(5000); // 5000 milliseconds = 5 seconds
+                ctx.redirect("/Thank-you");
+            }
+        });
+        app.get("/Thank-you", ctx -> ctx.render("Thank-you.html"));
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
         app.post("/login", ctx -> UserController.login(ctx, connectionPool));
