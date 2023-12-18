@@ -72,24 +72,27 @@ public class OrderController {
     }
 
 
-    public static void calculateAndRender(Context ctx, Orders existingOrder, ConnectionPool connectionPool) throws DatabaseException, SQLException {
+    public static void calculateAndRender(Context ctx, Orders orders, ConnectionPool connectionPool) throws DatabaseException, SQLException {
         // Retrieve all materials from the database
         Map<Integer, Material> materials = MaterialMapper.getAllMaterial(connectionPool);
 
-        // Calculate the quantities and sizes
-        int numberOfPosts = (int) Calculator.calculatePost(existingOrder.getId(), connectionPool);
-        int sizeRequiredForRafter = (int) Calculator.calculateRafter(existingOrder.getId(), connectionPool);
-        int sizeRequiredForStrap = (int) Calculator.calculateStraps(existingOrder.getId(), connectionPool);
+        // Calculate the quantities
+        int numberOfPosts = (int) Calculator.calculatePost(orders.getId(), connectionPool);
+        int totalRafters = (int) Calculator.calculateRafter(orders.getId(), connectionPool);
+        int totalStraps = (int) Calculator.calculateStraps(orders.getId(), connectionPool);
 
         // Retrieve the Material objects directly using their IDs
-        Material postMaterial = materials.get(16); // 16 is the ID for posts
-        Material rafterMaterial = materials.get(MaterialMapper.getMaterialIdBySize(sizeRequiredForRafter, connectionPool));
-        Material strapMaterial = materials.get(MaterialMapper.getMaterialIdBySize(sizeRequiredForStrap, connectionPool));
+        Material postMaterial = materials.get(16); // For posts
+        // Assuming methods to get material IDs for rafter and straps by size
+        int rafterMaterialId = MaterialMapper.getMaterialIdBySize(totalRafters, connectionPool);
+        int strapMaterialId = MaterialMapper.getMaterialIdBySize(totalStraps, connectionPool);
+        Material rafterMaterial = materials.get(rafterMaterialId);
+        Material strapMaterial = materials.get(strapMaterialId);
 
         // Create orderlines with quantity and total price
-        Orderline postOrderline = new Orderline(0, existingOrder.getId(), postMaterial, numberOfPosts, (postMaterial.getPrice() * numberOfPosts));
-        Orderline rafterOrderline = new Orderline(0, existingOrder.getId(), rafterMaterial, sizeRequiredForRafter, (rafterMaterial.getPrice() * sizeRequiredForRafter));
-        Orderline strapOrderline = new Orderline(0, existingOrder.getId(), strapMaterial, sizeRequiredForStrap, (strapMaterial.getPrice() * sizeRequiredForStrap));
+        Orderline postOrderline = new Orderline(0, orders.getId(), postMaterial, numberOfPosts, postMaterial.getPrice() * numberOfPosts);
+        Orderline rafterOrderline = new Orderline(0, orders.getId(), rafterMaterial, totalRafters, rafterMaterial.getPrice() * totalRafters);
+        Orderline strapOrderline = new Orderline(0, orders.getId(), strapMaterial, totalStraps, strapMaterial.getPrice() * totalStraps);
 
         // Add these orderlines to a list for the template
         List<Orderline> orderlines = Arrays.asList(postOrderline, rafterOrderline, strapOrderline);
@@ -99,18 +102,19 @@ public class OrderController {
         OrdersMapper.insertOrderline(strapOrderline, connectionPool);
 
         double totalPricePosts = postMaterial.getPrice() * numberOfPosts;
-        double totalPriceRafters = rafterMaterial.getPrice() * sizeRequiredForRafter;
-        double totalPriceStraps = strapMaterial.getPrice() * sizeRequiredForStrap;
+        double totalPriceRafters = rafterMaterial.getPrice() * totalRafters;
+        double totalPriceStraps = strapMaterial.getPrice() * totalStraps;
 
         ctx.sessionAttribute("totalPricePosts", totalPricePosts);
         ctx.sessionAttribute("totalPriceRafters", totalPriceRafters);
         ctx.sessionAttribute("totalPriceStraps", totalPriceStraps);
 
-        ctx.attribute("SessionOrder", existingOrder);
+        ctx.attribute("SessionOrder", orders);
         ctx.attribute("orderlines", orderlines);
 
-        ctx.render("saleswindow.html");
+        ctx.render("order-conformation.html");
     }
+
 
 
 

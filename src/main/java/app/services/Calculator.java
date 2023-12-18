@@ -89,17 +89,16 @@ public class Calculator {
         int numberOfStraps = 0;
 
         for (Orders order : orderList) {
-            // Calculate straps for carport length and width
+            // Calculate straps for carport length
             int carportLengthStraps = calculateStrapsLength(order.getCarport_length());
 
             // Add the current count to the total count
             numberOfStraps += carportLengthStraps;
         }
 
-        // Ensure a minimum of 4 straps
-        numberOfStraps = Math.max(numberOfStraps, 4);
 
-        return numberOfStraps;
+
+        return Math.max(numberOfStraps, 2);
     }
 
     public static int calculateStrapsLength(int side) {

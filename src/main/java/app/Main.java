@@ -46,16 +46,24 @@ public class Main {
             if (isLoggedIn) {
                 OrderController.allOrders(ctx, connectionPool);
                {
-                    ctx.redirect("/sale"); // Redirect non-admin users to a confirmation page
+                    ctx.redirect("/order-conformation"); // Redirect non-admin users to a confirmation page
                 }
             } else {
                 String email = ctx.formParam("email");
                 OrderController.processGuestOrder(ctx, connectionPool, email);
                 ctx.attribute("email", email);
-                ctx.render("sale.html"); // Render order confirmation for guests
+                ctx.render("order-conformation.html"); // Render order confirmation for guests
             }
         });
-
+        app.get("/order-conformation", ctx -> {
+            Orders orders = ctx.sessionAttribute("SessionOrder");
+            ctx.attribute("SessionOrder", orders);
+            ctx.render("order-conformation.html");
+        });
+        app.post("/order-conformation", ctx -> {
+            OrderController.allOrders(ctx, connectionPool);
+            ctx.render("order-conformation.html");
+        });
         app.get("/saleswindow", ctx -> {
             User currentUser = ctx.sessionAttribute("currentUser");
             if (currentUser != null && "admin".equals(currentUser.getRole())) {
@@ -69,7 +77,7 @@ public class Main {
             User currentUser = ctx.sessionAttribute("currentUser");
             if (currentUser != null && "admin".equals(currentUser.getRole())) {
                 OrderController.GrabOneOrder(ctx, connectionPool);
-                ctx.render("sale.html");
+                ctx.render("order.html");
             } else {
                 ctx.redirect("/frontpage");
             }
@@ -84,15 +92,7 @@ public class Main {
 //Excempel på at man kan sende en mail, kan dog ikke få den sat fast på en knap.
 /*
  });
-        app.get("/sale", ctx -> {
-            Orders orderDetails = ctx.sessionAttribute("orderDetails");
-            ctx.attribute("orderDetails", orderDetails);
-            ctx.render("sale.html");
-        });
-        app.post("/sale", ctx -> {
-            OrderController.allOrders(ctx, connectionPool);
-            ctx.render("sale.html");
-        });
+
 
 try {
             EmailSender emailSender = new EmailSender();

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:replace="~{fragments :: head('FOG')}"></div>
+
+<body>
+<div th:replace="~{fragments :: top-nav}"></div>
+
+<section>
+    <h3>Order Details</h3>
+    <div>
+        <p>ID: <span th:text="${#ctx.session.SessionOrder.id}"></span></p>
+        <p>Dato: <span th:text="${#ctx.session.SessionOrder.date}"></span></p>
+        <p>User ID: <span th:text="${#ctx.session.SessionOrder.user_id}"></span></p>
+        <p>Carport Længde: <span th:text="${#ctx.session.SessionOrder.carport_length}"></span></p>
+        <p>Carport Bredde: <span th:text="${#ctx.session.SessionOrder.carport_width}"></span></p>
+
+            <p>Skur Længde: <span th:text="${#ctx.session.SessionOrder.shed_length}"></span></p>
+
+
+            <p>Skur Bredde: <span th:text="${#ctx.session.SessionOrder.shed_width}"></span></p>
+
+        <p>Status: <span th:text="${#ctx.session.SessionOrder.status}"></span></p>
+
+        <p>Tak for din bestilling</p>
+    </div>
+</section>
+
+</body>
+</html>
