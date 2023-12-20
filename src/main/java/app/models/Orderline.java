@@ -34,6 +34,13 @@ public class Orderline {
         this.material_id = material_id;
     }
 
+    public Orderline(int id, Material material, int quantity, double total_price) {
+        this.id = id;
+        this.material = material;
+        this.quantity = quantity;
+        this.total_price = total_price;
+    }
+
     public int getId() {
         return id;
     }

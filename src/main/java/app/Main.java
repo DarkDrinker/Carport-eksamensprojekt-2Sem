@@ -1,13 +1,18 @@
 package app;
 import app.controllers.OrderController;
 import app.entities.User;
+import app.models.Orderline;
 import app.models.Orders;
+import app.persistence.OrdersMapper;
 import app.util.EmailSender;
 import config.ThymeleafConfig;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
+
+import java.util.List;
+
 public class Main {
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
@@ -44,22 +49,28 @@ public class Main {
         app.post("/order", ctx -> {
             boolean isLoggedIn = UserController.checkUserLoggedIn(ctx);
             if (isLoggedIn) {
-                OrderController.allOrders(ctx, connectionPool);
-               {
-                    ctx.redirect("/order-conformation"); // Redirect non-admin users to a confirmation page
-                }
+                int orderId = OrderController.allOrders(ctx, connectionPool);
+                ctx.sessionAttribute("orderId", orderId);
+                ctx.redirect("/order-confirmation");
             } else {
                 String email = ctx.formParam("email");
+                // Process guest order and redirect to order-confirmation page with guest email
                 OrderController.processGuestOrder(ctx, connectionPool, email);
                 ctx.attribute("email", email);
-                ctx.render("order-conformation.html"); // Render order confirmation for guests
+                ctx.redirect("/order-confirmation");
             }
         });
-        app.get("/order-conformation", ctx -> {
-            Orders orders = ctx.sessionAttribute("SessionOrder");
-            ctx.attribute("SessionOrder", orders);
-            ctx.render("order-conformation.html");
+
+        app.get("/order-confirmation", ctx -> {
+            int orderId = ctx.sessionAttribute("orderId");
+            // Fetch the order and orderline details
+            Orders order = OrdersMapper.getOrderById(orderId, connectionPool);
+            List<Orderline> orderlines = OrdersMapper.getOrderlinesByOrderId(orderId, connectionPool);
+            ctx.attribute("SessionOrder", order);
+            ctx.attribute("orderlines", orderlines);
+            ctx.render("order-confirmation.html");
         });
+
         app.post("/order-conformation", ctx -> {
             OrderController.allOrders(ctx, connectionPool);
             ctx.render("order-conformation.html");
@@ -76,12 +87,17 @@ public class Main {
         app.get("/saleswindow/{orderId}", ctx -> {
             User currentUser = ctx.sessionAttribute("currentUser");
             if (currentUser != null && "admin".equals(currentUser.getRole())) {
-                OrderController.GrabOneOrder(ctx, connectionPool);
-                ctx.render("order.html");
+                int orderId = Integer.parseInt(ctx.pathParam("orderId"));
+                Orders order = OrdersMapper.getOrderById(orderId, connectionPool);
+                List<Orderline> orderlines = OrdersMapper.getOrderlinesByOrderId(orderId, connectionPool);
+                ctx.attribute("SessionOrder", order);
+                ctx.attribute("orderlines", orderlines);
+                ctx.render("sale.html");
             } else {
                 ctx.redirect("/frontpage");
             }
         });
+
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
         app.post("/login", ctx -> UserController.login(ctx, connectionPool));

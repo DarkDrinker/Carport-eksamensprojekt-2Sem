@@ -55,6 +55,28 @@ public class MaterialMapper {
         }
     }
 
+    static Material getMaterialById(int material_id, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM material WHERE material_id = ?";
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
 
+            ps.setInt(1, material_id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    //int material_id = rs.getInt("material_id");
+                    String material_description = rs.getString("material_description");
+                    int quantity= rs.getInt("quantity");
+                    double price = rs.getDouble("price");
+
+                    return new Material(material_id, material_description, quantity, price);
+                } else {
+                    throw new DatabaseException("Ingen materiale fundet for den givne id");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Database fejl: " + e.getMessage());
+        }
+    }
 
 }
