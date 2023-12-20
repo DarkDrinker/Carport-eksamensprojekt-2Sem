@@ -89,17 +89,16 @@ public class Calculator {
         int numberOfStraps = 0;
 
         for (Orders order : orderList) {
-            // Calculate straps for carport length and width
+            // Calculate straps for carport length
             int carportLengthStraps = calculateStrapsLength(order.getCarport_length());
 
             // Add the current count to the total count
             numberOfStraps += carportLengthStraps;
         }
 
-        // Ensure a minimum of 4 straps
-        numberOfStraps = Math.max(numberOfStraps, 4);
 
-        return numberOfStraps;
+
+        return Math.max(numberOfStraps, 2);
     }
 
     public static int calculateStrapsLength(int side) {
@@ -137,7 +136,24 @@ public class Calculator {
         }
 
         // Multiply the count by 4 to account for both sides of the length
-        return minStrapsCount * 4;
+        return minStrapsCount * 2;
     }
+    public static int getClosestSize(int targetSize, int[] availableSizes) {
+        int closestSize = availableSizes[0];
+        int smallestDifference = Integer.MAX_VALUE;
+        for (int size : availableSizes) {
+            int currentDifference = size - targetSize;
+            // Check if the current difference is smaller in absolute terms than the smallest difference found so far
+            // Prefer negative differences (smaller sizes) over positive ones
+            if (Math.abs(currentDifference) < Math.abs(smallestDifference) ||
+                    (Math.abs(currentDifference) == Math.abs(smallestDifference) && currentDifference < smallestDifference)) {
+                closestSize = size;
+                smallestDifference = currentDifference;
+            }
+        }
+
+        return closestSize;
+    }
+
 
 }

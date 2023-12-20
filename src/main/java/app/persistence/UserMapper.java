@@ -96,7 +96,7 @@ public class UserMapper {
         return 0;
     }
 
-    public int updateBalance(int userId, int balance, ConnectionPool connectionPool) throws DatabaseException {
+    /*public int updateBalance(int userId, int balance, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE users SET balance = ? WHERE user_id = ?";
 
         try (Connection connection = connectionPool.getConnection()){
@@ -114,5 +114,5 @@ public class UserMapper {
         } catch (SQLException ex) {
             throw new DatabaseException("Forbindelse kunne ikke oprettes");
         }
-    }
+    }*/
 }

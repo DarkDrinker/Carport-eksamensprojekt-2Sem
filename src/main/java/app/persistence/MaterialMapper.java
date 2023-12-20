@@ -2,6 +2,7 @@ package app.persistence;
 
 import app.exceptions.DatabaseException;
 import app.models.Material;
+import app.models.Orderline;
 
 
 import java.sql.*;
@@ -24,8 +25,8 @@ public class MaterialMapper {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     int material_id = rs.getInt("material_id");
-                    String material_description= rs.getString("material_description");
-                    int size= rs.getInt("size");
+                    String material_description = rs.getString("material_description");
+                    int size = rs.getInt("size");
                     double price = rs.getDouble("price");
                     Material material = new Material(material_id, material_description, size, price);
                     materialMap.put(material_id, material);
@@ -36,6 +37,46 @@ public class MaterialMapper {
             throw new DatabaseException("Fejl i MaterialMapper");
         }
         return materialMap;
+    }
+
+    public static int getMaterialIdBySize(int size, ConnectionPool connectionPool) throws SQLException, DatabaseException {
+        String sql = "SELECT material_id FROM material WHERE size = ?";
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, size); // Set the size parameter
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("material_id");
+                } else {
+                    throw new DatabaseException("Ingen materiale for den størrelse");
+                }
+            }
+        }
+    }
+
+    static Material getMaterialById(int material_id, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM material WHERE material_id = ?";
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, material_id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    //int material_id = rs.getInt("material_id");
+                    String material_description = rs.getString("material_description");
+                    int quantity= rs.getInt("quantity");
+                    double price = rs.getDouble("price");
+
+                    return new Material(material_id, material_description, quantity, price);
+                } else {
+                    throw new DatabaseException("Ingen materiale fundet for den givne id");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Database fejl: " + e.getMessage());
+        }
     }
 
 }
