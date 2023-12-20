@@ -47,7 +47,7 @@ public class UserController
                 try {
                     UserMapper.createuser(name, password1, adresse, email, city, zip, connectionPool);
                     ctx.sessionAttribute("message", "Du er nu oprettet. Log på for at komme i gang.");
-                    ctx.redirect("/login");
+                    ctx.render("login.html");
                 } catch (DatabaseException e) {
                     ctx.sessionAttribute("message", e.getMessage());
                     ctx.render("createuser.html");
