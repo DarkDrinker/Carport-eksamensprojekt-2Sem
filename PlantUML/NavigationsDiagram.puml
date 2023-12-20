@@ -1,0 +1,65 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+state Frontpage.jsp
+state login.jsp
+state opretbruger.jsp
+state logout.jsp
+state hovedmenu.jsp
+
+
+
+note bottom of hovedmenu.jsp
+ er på alle sider og man logge
+ ind og ud fra den og oprette
+  en ny bruger og knappen
+ til at se overview of sales
+ er i den og man kan komme
+ tilbage til Frontpage.jsp ved at
+ klikke på FOG ikonet
+end note
+
+
+
+[*] -right-> Frontpage.jsp
+Frontpage.jsp --> login.jsp
+login.jsp--> Frontpage.jsp :logget ind
+Frontpage.jsp-->adminLoggedIn : admin
+login.jsp --> login.jsp : fejl ved log ind
+login.jsp --> opretbruger.jsp : oprettelse af ny bruger
+logout.jsp-->Frontpage.jsp : uanset hvor man logger ud
+
+
+
+Frontpage.jsp --> materialeListe.jsp : bruger eller gæst
+  materialeListe.jsp --> bestillinger.jsp : går til ordersiden
+  bestillinger.jsp-->orderconformation.jsp : order bliver sat sammen med bruger eller gæst id
+  bestillinger.jsp-->sale.jsp : stykliste
+
+
+
+note bottom of orderconformation.jsp
+brugerne eller
+gæsterne ser
+dette her
+end note
+
+note bottom of sale.jsp
+dybdegående
+info af salget
+end note
+
+note right of bestillinger.jsp
+Gæster skal indtaste
+deres navn, email og by
+end note
+
+state adminLoggedIn{
+[*]-->overviewofsales.jsp : går ind på orders/stykliste oversigt
+overviewofsales.jsp -->overviewofsalesbyorderid.jsp : vælger den order/stykliste man vil se
+sale.jsp-->overviewofsalesbyorderid.jsp : bliver fundet ud fra orders_id
+}
+
+
+
+@enduml
