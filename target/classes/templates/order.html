@@ -11,6 +11,7 @@
         <section>
             <h3>Størrelse</h3>
             <form action="/order-conformation" method="post" id="formlist">
+
                 <label for="carport_length">Carport længde i cm:</label>
                 <input type="number" name="carport_length" id="carport_length" value="1" min="1" required>
                 <br><br>
@@ -23,9 +24,14 @@
                 <label for="shed_width">Skur bredde i cm:</label>
                 <input type="number" name="shed_width" id="shed_width" value="0" min="0" required>
                 <br><br>
-                <div th:if="${!isLoggedIn}">
+                <div class="personal-information-container" th:if="${!isLoggedIn}">
+                    <h3>Contact information</h3>
+                    <label for="name">Name:</label>
+                    <input type="name" name="name" id="name" required>
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email" required>
+                    <label for="city">City:</label>
+                    <input for="city" name="city" id="city">
                 </div>
                 <br>
                 <input type="hidden" name="status" value="Pending">
