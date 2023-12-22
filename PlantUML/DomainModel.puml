@@ -1,0 +1,133 @@
+@startuml
+!define RECTANGLE class
+RECTANGLE Main {
+  - USER: String
+  - PASSWORD: String
+  - URL: String
+  - DB: String
+  - connectionPool: ConnectionPool
+  + main(args: String[])
+}
+
+RECTANGLE ThymeleafConfig {
+  + templateEngine(): TemplateEngine
+}
+RECTANGLE User {
+  + id: int
+  + name: String
+  + password: String
+  + adresse: String
+  + email: String
+  + role: String
+  + city: String
+  + zip: int
+}
+
+RECTANGLE Orders {
+  + id: int
+  + date: Date
+  + user_id: int
+  + carport_length: double
+  + carport_width: double
+  + shed_length: double
+  + shed_width: double
+  + status: String
+}
+
+RECTANGLE Orderline {
+  + id: int
+  + orders_id: int
+  + material: Material
+  + quantity: int
+  + total_price: double
+}
+
+RECTANGLE Material {
+  + material_id: int
+  + material_description: String
+  + size: int
+  + price: double
+}
+
+RECTANGLE Calculator {
+  + calculatePost(id: int, connectionPool: ConnectionPool): double
+  + calculateRafter(id: int, connectionPool: ConnectionPool): int
+  + calculateStraps(id: int, connectionPool: ConnectionPool): double
+  + getClosestSize(targetSize: int, availableSizes: int[]): int
+}
+
+RECTANGLE ConnectionPool {
+  - DEFAULT_USER: String
+  - DEFAULT_PASSWORD: String
+  - DEFAULT_URL: String
+  - DEFAULT_DB: String
+  - instance: ConnectionPool
+  - ds: HikariDataSource
+  + getInstance(): ConnectionPool
+  + getConnection(): Connection
+  + close(): void
+}
+
+RECTANGLE MaterialMapper {
+  + getAllMaterial(connectionPool: ConnectionPool): Map<Integer, Material>
+  + getMaterialIdBySize(size: int, connectionPool: ConnectionPool): int
+  + getMaterialById(material_id: int, connectionPool: ConnectionPool): Material
+}
+
+RECTANGLE OrdersMapper {
+  + insertOrders(orders: Orders, connectionPool: ConnectionPool): int
+  + insertOrderline(orderline: Orderline, connectionPool: ConnectionPool)
+  + getSize(id: int, connectionPool: ConnectionPool): List<Orders>
+  + getOrderById(id: int, connectionPool: ConnectionPool): Orders
+  + getAllOrders(connectionPool: ConnectionPool): Map<Integer, Orders>
+  + getOrderlinesByOrderId(orders_id: int, connectionPool: ConnectionPool): List<Orderline>
+}
+
+RECTANGLE UserMapper {
+  + login(email: String, password: String, connectionPool: ConnectionPool): User
+  + createuser(name: String, password: String, adresse: String, email: String, city: String, zip: int, connectionPool: ConnectionPool)
+}
+
+RECTANGLE EmailSender {
+  + sendEmail(ctx: Context)
+}
+
+RECTANGLE DatabaseException {
+  + message: String
+  + userMessage: String
+  + systemMessage: String
+}
+
+RECTANGLE UserController {
+  + login(ctx: Context, connectionPool: ConnectionPool)
+  + createuser(ctx: Context, connectionPool: ConnectionPool)
+  + checkUserLoggedIn(ctx: Context): boolean
+  + logout(ctx: Context)
+}
+
+RECTANGLE OrderController {
+  + initializeMaterialMap(ctx: Context, connectionPool: ConnectionPool)
+  + allOrders(ctx: Context, connectionPool: ConnectionPool): int
+  + calculateAndRender(ctx: Context, orders: Orders, connectionPool: ConnectionPool)
+  + GrabAllOrders(ctx: Context, connectionPool: ConnectionPool)
+  + GrabOneOrder(ctx: Context, connectionPool: ConnectionPool)
+  + processGuestOrder(ctx: Context, connectionPool: ConnectionPool, guestEmail: String)
+}
+
+Main --> Javalin : initializes >
+Main --> ThymeleafConfig : uses >
+Main --> UserController : uses >
+Main --> OrderController : uses >
+Main --> ConnectionPool : uses >
+User "1" -- "0..*" Orders : places >
+Orders "1" -- "0..*" Orderline : contains >
+Orderline "0..*" -- "1" Material : uses >
+OrderController --> ConnectionPool : uses >
+MaterialMapper --> ConnectionPool : uses >
+OrdersMapper --> ConnectionPool : uses >
+UserMapper --> ConnectionPool : uses >
+Calculator --> OrdersMapper : uses >
+OrderController --> Calculator : uses >
+OrderController --> EmailSender : uses >
+
+@enduml

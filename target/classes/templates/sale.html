@@ -16,14 +16,12 @@
     <p>Skur Længde: <span th:text="${SessionOrder.shed_length}"></span></p>
     <p>Skur Bredde: <span th:text="${SessionOrder.shed_width}"></span></p>
     <p>Status: <span th:text="${SessionOrder.status}"></span></p>
-     <div th:if="${orderlines}">
-         <div th:each="orderline : ${orderlines}">
-             <p>Orderline id: <span th:text="${orderline.id}"></span></p>
-             <p>Materiale id: <span th:text="${orderline.material.id}"></span></p>
-             <p>Antal: <span th:text="${orderline.quantity}"></span></p>
-             <p>Pris på materialet: <span th:text="${orderline.total_price}"></span> kr</p>
-         </div>
-     </div>
+
+             <p>Orderline id: <span th:text="${orderlines.id}"></span></p>
+             <p>Materiale id: <span th:text="${orderlines.material.id}"></span></p>
+             <p>Antal: <span th:text="${orderlines.quantity}"></span></p>
+             <p>Pris på materialet: <span th:text="${orderlines.total_price}"></span> kr</p>
+
 
   </div>
 

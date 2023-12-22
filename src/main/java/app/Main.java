@@ -75,6 +75,7 @@ public class Main {
             OrderController.allOrders(ctx, connectionPool);
             ctx.render("order-conformation.html");
         });
+
         app.get("/saleswindow", ctx -> {
             User currentUser = ctx.sessionAttribute("currentUser");
             if (currentUser != null && "admin".equals(currentUser.getRole())) {

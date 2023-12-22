@@ -27,6 +27,8 @@ login.jsp--> Frontpage.jsp :logget ind
 Frontpage.jsp-->adminLoggedIn : admin
 login.jsp --> login.jsp : fejl ved log ind
 login.jsp --> opretbruger.jsp : oprettelse af ny bruger
+opretbruger.jsp --> login.jsp : succeful oprettelse af ny bruger
+opretbruger.jsp --> opretbruger.jsp : fejle i oprettelse a ny bruger
 logout.jsp-->Frontpage.jsp : uanset hvor man logger ud
 
 

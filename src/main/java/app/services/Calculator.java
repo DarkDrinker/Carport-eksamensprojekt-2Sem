@@ -56,7 +56,7 @@ public class Calculator {
         // Assuming a rafter is needed for every 55 units of length
         int rafterLength = 55;
 
-        // Calculate the number of rafters, considering there is a strap at the beginning and end
+        // Calculate the number of rafters
         return Math.max(0, (int) Math.ceil((double) dimension / rafterLength));
     }
 
@@ -135,7 +135,7 @@ public class Calculator {
             }
         }
 
-        // Multiply the count by 4 to account for both sides of the length
+        // Multiply the count by 2 to account for both sides of the length
         return minStrapsCount * 2;
     }
     public static int getClosestSize(int targetSize, int[] availableSizes) {
