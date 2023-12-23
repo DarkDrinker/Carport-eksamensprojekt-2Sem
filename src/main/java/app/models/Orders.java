@@ -7,6 +7,9 @@ public class Orders {
         private int id;
         private Date date;
         private int user_id;
+        private String name;
+        private String email;
+        private String city;
         private double carport_length;
         private double carport_width;
         private double shed_length;
@@ -29,6 +32,20 @@ public class Orders {
         this.carport_width = carport_width;
         this.shed_length = shed_length;
         this.shed_width = shed_width;
+    }
+
+    public Orders(int id, Date date, int user_id, String name, String email, String city, double carport_length, double carport_width, double shed_length, double shed_width, String status) {
+        this.id = id;
+        this.date = date;
+        this.user_id = user_id;
+        this.name = name;
+        this.email = email;
+        this.city = city;
+        this.carport_length = carport_length;
+        this.carport_width = carport_width;
+        this.shed_length = shed_length;
+        this.shed_width = shed_width;
+        this.status = status;
     }
 
 
@@ -108,5 +125,29 @@ public class Orders {
                 ", shed_width=" + shed_width +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

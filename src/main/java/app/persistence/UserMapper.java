@@ -67,7 +67,7 @@ public class UserMapper {
     }
 
     public static int CreateMiniUser(String name, String email, String city, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into \"user\" (name, email, city) values (?,?,?) RETURNING id";
+        String sql = "insert into public.user (name, email, city) values (?,?,?) RETURNING id";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -77,7 +77,7 @@ public class UserMapper {
                 int rowsAffected = ps.executeUpdate();
 
                 if (rowsAffected == 0) {
-                    throw new DatabaseException("Inserting order fejledebbjh, ingen rækker affected.");
+                    throw new DatabaseException("Inserting order fejl, ingen rækker affected.");
                 }
                 // Retrieve the generated id
                 try{

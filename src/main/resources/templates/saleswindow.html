@@ -24,7 +24,7 @@
                 var box = document.createElement("a");
                 box.className = "order-box";
                 box.href = "javascript:void(0);"; // Using JavaScript void to prevent actual navigation
-                box.innerHTML = `Order ID: ${order.id}<br>User ID: ${order.user_id}<br>Date: ${order.date}`;
+                box.innerHTML = `Order ID: ${order.id}<br>Name: ${order.name}<br>Date: ${order.date}`;
 
                 // Click event to navigate to order details
                 box.addEventListener("click", function(orderId) {

@@ -92,21 +92,28 @@ public class OrdersMapper {
 
     public static Orders getOrderById(int id, ConnectionPool connectionPool) throws DatabaseException {
         Orders order = null;
-        String sql = "SELECT * FROM orders WHERE id=?";
+        String sql = "SELECT orders.id, orders.date, orders.user_id, public.user.name, public.user.email, public.user.city, public.user.role, public.orders.carport_length, public.orders.carport_width, public.orders.shed_length, public.orders.shed_width, public.orders.status\n" +
+                "FROM Orders\n" +
+                "INNER JOIN public.user\n" +
+                "ON orders.user_id = public.user.id where orders.id = ? ORDER BY id";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setInt(1, id);
                 ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
+                while (rs.next()) {
                     Date date = rs.getDate("date");
                     int user_id = rs.getInt("user_id");
+                    String name = rs.getString("name");
+                    String email = rs.getString("email");
+                    String city = rs.getString("city");
                     double carport_length = rs.getDouble("carport_length");
                     double carport_width = rs.getDouble("carport_width");
                     double shed_length = rs.getDouble("shed_length");
                     double shed_width = rs.getDouble("shed_width");
                     String status = rs.getString("status");
-                    order = new Orders(id, date, user_id, carport_length, carport_width, shed_length, shed_width, status);
+                    String role = rs.getString("role");
+                    order = new Orders(id, date, user_id, name, email, city, carport_length, carport_width, shed_length, shed_width, status);
                 }
             }
         } catch (SQLException e) {
@@ -119,21 +126,31 @@ public class OrdersMapper {
     public static Map<Integer, Orders> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         Map<Integer, Orders> ordersMap = new HashMap<>();
         String sql = "SELECT * FROM orders ORDER BY id DESC";
+        String sql1 = "SELECT orders.id, orders.date, orders.user_id, public.user.name, public.user.email, public.user.city, public.user.role, public.orders.carport_length, public.orders.carport_width, public.orders.shed_length, public.orders.shed_width, public.orders.status\n" +
+                "FROM Orders\n" +
+                "INNER JOIN public.user\n" +
+                "ON orders.user_id = public.user.id ORDER BY id";
 
         try (Connection connection = connectionPool.getConnection()) {
-            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            try (PreparedStatement ps = connection.prepareStatement(sql1)) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     int id = rs.getInt("id");
                     Date date = rs.getDate("date");
                     int user_id = rs.getInt("user_id");
+                    String name = rs.getString("name");
+                    String email = rs.getString("email");
+                    String city = rs.getString("city");
                     double carport_length = rs.getDouble("carport_length");
                     double carport_width = rs.getDouble("carport_width");
                     double shed_length = rs.getDouble("shed_length");
                     double shed_width = rs.getDouble("shed_width");
                     String status = rs.getString("status");
-                    Orders order = new Orders(id, date, user_id, carport_length, carport_width, shed_length, shed_width, status);
-                    ordersMap.put(id, order);
+                    String role = rs.getString("role");
+                    Orders order = new Orders(id, date, user_id, name, email, city, carport_length, carport_width, shed_length, shed_width, status);
+                    if(role.equals("customer")) {
+                        ordersMap.put(id, order);
+                    }
                 }
             }
         } catch (SQLException e) {
