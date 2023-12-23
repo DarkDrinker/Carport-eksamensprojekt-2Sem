@@ -29,19 +29,39 @@
      </div>
   </div>
 
-  <form action="/update-status" method="post">
-    <input type="hidden" name="orderId" th:value="${SessionOrder.id}" />
+    <form id="updateStatusForm" th:action="@{/updateStatus}" method="post">
+    <input type="hidden" name="orderId" th:value="${SessionOrder.id}"/>
     <label for="status">Ny Status:</label>
     <select name="status" id="status" required>
-      <option value="Accepteret" th:selected="${SessionOrder.status == 'Accepteret'}">Accepteret</option>
-      <option value="Betalt" th:selected="${SessionOrder.status == 'Betalt'}">Betalt</option>
-        <option value="På Hold" th:selected="${SessionOrder.status == 'På Hold'}">On Hold</option>
-
+        <option value="Accepteret" th:selected="${SessionOrder.status == 'Accepteret'}">Accepteret</option>
+        <option value="Betalt" th:selected="${SessionOrder.status == 'Betalt'}">Betalt</option>
+        <option value="Pending" th:selected="${SessionOrder.status == 'Pending'}">Pending</option>
     </select>
-    <button type="submit">Opdatere Status</button>
+    <button type="button" onclick="updateStatus()">Opdater Status</button>
   </form>
 </section>
 
+
+<script>
+    function updateStatus() {
+        var form = document.getElementById('updateStatusForm');
+        var formData = new FormData(form);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/update-status', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        xhr.send(new URLSearchParams(formData));
+
+        // You can handle the response from the server here if needed
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                console.log('Status updated successfully');
+            } else {
+                console.error('Failed to update status');
+            }
+        };
+    }
+</script>
 </body>
 
 </html>

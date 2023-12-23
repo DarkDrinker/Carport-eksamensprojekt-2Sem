@@ -1,4 +1,5 @@
 package app.persistence;
+import app.controllers.OrderController;
 import app.exceptions.DatabaseException;
 import app.models.Material;
 import app.models.Orderline;
@@ -187,6 +188,26 @@ public class OrdersMapper {
             }
         }
         return orderlines;
+    }
+    public static void updateorderstatus(String status, int id, ConnectionPool connectionPool) throws DatabaseException, SQLException {
+        String sql = "update orders\n" +
+                "set status=?\n" +
+                "where id=?;";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, status);
+            ps.setInt(2, id);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Order status updated successfully");
+            } else {
+                System.out.println("Order not found or status not updated");
+                // You might want to throw an exception or handle this case differently
+            }
+        }
     }
 
 

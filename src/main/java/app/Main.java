@@ -98,6 +98,12 @@ public class Main {
                 ctx.redirect("/frontpage");
             }
         });
+
+        app.post("/update-status", ctx -> {
+            OrderController.updatestatus(ctx, connectionPool);
+            ctx.result("Status updated succesfully");
+        });
+
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
         app.post("/login", ctx -> UserController.login(ctx, connectionPool));

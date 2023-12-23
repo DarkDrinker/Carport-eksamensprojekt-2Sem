@@ -175,6 +175,17 @@ public class OrderController {
         }
     }
 
+    public static void updatestatus(Context ctx, ConnectionPool connectionPool) throws SQLException, DatabaseException {
+        String status = ctx.formParam("status");
+        int id = Integer.parseInt(ctx.formParam("orderId"));
+        System.out.println(id);
+        try {
+            OrdersMapper.updateorderstatus(status, id, connectionPool);
+        } catch (DatabaseException | SQLException e){
+            throw new DatabaseException("Error i Ordercontroller updatestatus" + e.getMessage());
+        }
+    }
+
    /* public static int insertOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         User user = ctx.sessionAttribute("currentUser");
 
