@@ -132,15 +132,6 @@ public class OrderController {
         }
     }
 
-    public static void GrabOneOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        int id = Integer.parseInt(ctx.pathParam("orderId"));
-        try {
-            Orders order = getOrderById(id, connectionPool);
-            ctx.sessionAttribute("SessionOrder", order);
-        } catch (DatabaseException e) {
-            e.getMessage();
-        }
-    }
     public static void processGuestOrder(Context ctx, ConnectionPool connectionPool, String guestEmail) throws Exception {        // Retrieve the current user from the session
         String email = ctx.formParam("email");
         String name = ctx.formParam("name");
