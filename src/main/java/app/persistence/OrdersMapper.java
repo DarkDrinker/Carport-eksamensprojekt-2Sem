@@ -200,7 +200,6 @@ public class OrdersMapper {
             ps.executeUpdate();
             }
         }
-    }
 
 
 }
