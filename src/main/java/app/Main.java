@@ -36,10 +36,10 @@ public class Main {
         app.post("/frontpage", ctx -> ctx.render("frontpage.html"));
         app.get("/createuser", ctx -> ctx.render("createuser.html"));
         app.post("/createuser",ctx -> UserController.createuser(ctx, connectionPool ));
-        app.get("/materials", ctx -> {
+        /*app.get("/materials", ctx -> {
             OrderController.initializeMaterialMap(ctx, connectionPool);
             ctx.render("materials.html");
-        });
+        });*/
 
         app.get("/order", ctx -> {
             boolean isLoggedIn = UserController.checkUserLoggedIn(ctx);
@@ -111,14 +111,13 @@ public class Main {
     }
 }
 
-//Excempel på at man kan sende en mail, kan dog ikke få den sat fast på en knap.
+
 /*
- });
-
-
+//Excempel på at man kan sende en mail, kan dog ikke få den sat fast på en knap.
 try {
             EmailSender emailSender = new EmailSender();
             emailSender.sendEmail();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
+*/
