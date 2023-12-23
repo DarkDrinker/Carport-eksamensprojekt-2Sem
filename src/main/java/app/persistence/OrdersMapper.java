@@ -113,7 +113,6 @@ public class OrdersMapper {
                     double shed_length = rs.getDouble("shed_length");
                     double shed_width = rs.getDouble("shed_width");
                     String status = rs.getString("status");
-                    String role = rs.getString("role");
                     order = new Orders(id, date, user_id, name, email, city, carport_length, carport_width, shed_length, shed_width, status);
                 }
             }
@@ -126,7 +125,6 @@ public class OrdersMapper {
 
     public static Map<Integer, Orders> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         Map<Integer, Orders> ordersMap = new HashMap<>();
-        String sql = "SELECT * FROM orders ORDER BY id DESC";
         String sql1 = "SELECT orders.id, orders.date, orders.user_id, public.user.name, public.user.email, public.user.city, public.user.role, public.orders.carport_length, public.orders.carport_width, public.orders.shed_length, public.orders.shed_width, public.orders.status\n" +
                 "FROM Orders\n" +
                 "INNER JOIN public.user\n" +
@@ -199,13 +197,7 @@ public class OrdersMapper {
 
             ps.setString(1, status);
             ps.setInt(2, id);
-            int rowsAffected = ps.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Order status updated successfully");
-            } else {
-                System.out.println("Order not found or status not updated");
-                // You might want to throw an exception or handle this case differently
+            ps.executeUpdate();
             }
         }
     }

@@ -55,11 +55,16 @@
         // You can handle the response from the server here if needed
         xhr.onload = function () {
             if (xhr.status === 200) {
-                console.log('Status updated successfully');
+                var responseMessage = xhr.responseText;
+                console.log(responseMessage);
+                alert(responseMessage);
+                location.reload();
             } else {
                 console.error('Failed to update status');
             }
         };
+
+        xhr.send(new URLSearchParams(formData));
     }
 </script>
 </body>
