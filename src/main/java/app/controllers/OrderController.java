@@ -3,6 +3,7 @@ package app.controllers;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.models.Material;
+import app.models.Orderline;
 import app.models.Orders;
 import app.persistence.UserMapper;
 import app.services.Calculator;
@@ -131,15 +132,6 @@ public class OrderController {
         }
     }
 
-    public static void GrabOneOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        int id = Integer.parseInt(ctx.pathParam("orderId"));
-        try {
-            Orders order = getOrderById(id, connectionPool);
-            ctx.sessionAttribute("SessionOrder", order);
-        } catch (DatabaseException e) {
-            e.getMessage();
-        }
-    }
     public static void processGuestOrder(Context ctx, ConnectionPool connectionPool, String guestEmail) throws Exception {        // Retrieve the current user from the session
         String email = ctx.formParam("email");
         String name = ctx.formParam("name");
@@ -171,6 +163,17 @@ public class OrderController {
         } catch (DatabaseException | SQLException e) {
             // Handle any database exception by rethrowing or logging
             throw new DatabaseException("Fejl i processGuestOrder: " + e.getMessage());
+        }
+    }
+
+    public static void updatestatus(Context ctx, ConnectionPool connectionPool) throws SQLException, DatabaseException {
+        String status = ctx.formParam("status");
+        int id = Integer.parseInt(ctx.formParam("orderId"));
+        System.out.println(id);
+        try {
+            OrdersMapper.updateorderstatus(status, id, connectionPool);
+        } catch (DatabaseException | SQLException e){
+            throw new DatabaseException("Error i Ordercontroller updatestatus" + e.getMessage());
         }
     }
 
