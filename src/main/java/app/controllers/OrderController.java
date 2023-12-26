@@ -38,6 +38,8 @@ public class OrderController {
         }
     }
 
+
+
     public static int allOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         // Retrieve the current user from the session
         User user = ctx.sessionAttribute("currentUser");

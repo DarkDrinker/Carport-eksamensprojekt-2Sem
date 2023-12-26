@@ -8,10 +8,10 @@
 
 <script th:inline="javascript">
     /*<![CDATA[*/
-    // Retrieve order data from the session
+    // Retrieve data from session : this case all allOrders in DB
     var orderData = /*[[${session.allorders}]]*/ {};
 
-    // Initialize orderDetails as an empty object
+    // Initialize orderDetails
     var orderDetails = {};
 
     // Populate orderDetails based on the data in orderData
