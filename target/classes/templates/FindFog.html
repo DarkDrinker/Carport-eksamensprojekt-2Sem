@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:replace="~{fragments :: head('FOG')}"></div>
+<body>
+<div th:replace="~{fragments :: top-nav}"></div>
+
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwKtDS3lx8hpXNy2wRyVX5iECZLiyD4cM&callback=initMap&libraries=maps,marker&v=beta"></script>
+
+<script>
+    function initMap() {
+        // Når Google Maps API'en er indlæst udføres denne kode
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 55.77012634277344, lng: 12.51517105102539 },
+            zoom: 14
+        });
+        var marker = new google.maps.Marker({
+            position: { lat: 55.77012634277344, lng: 12.51517105102539 },
+            map: map,
+            title: 'Find Fog/CPH business'
+        });
+    }
+</script>
+</body>
+</html>
