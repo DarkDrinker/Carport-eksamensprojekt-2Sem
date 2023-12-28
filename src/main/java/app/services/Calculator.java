@@ -5,6 +5,7 @@ import app.models.Orders;
 import app.persistence.ConnectionPool;
 import app.persistence.OrdersMapper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -138,6 +139,8 @@ public class Calculator {
         // Multiply the count by 2 to account for both sides of the length
         return minStrapsCount * 2;
     }
+
+
     public static int getClosestSize(int targetSize, int[] availableSizes) {
         int closestSize = availableSizes[0];
         int smallestDifference = Integer.MAX_VALUE;
@@ -154,6 +157,5 @@ public class Calculator {
 
         return closestSize;
     }
-
 
 }
