@@ -1,13 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
-<div th:replace="~{fragments :: head('FOG')}"></div>
 
-<head th:fragment="head(title)">
-    <title th:text="${title}">Materiale</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-</head>
+<div th:replace="~{fragments :: head('FOG')}"></div>
 
 <body>
 <div th:replace="~{fragments :: top-nav}"></div>
@@ -29,5 +23,5 @@
     <button type="submit" th:href="@{/order}">Bestilling</button>
 </form>
 </body>
-
+<div th:replace="~{fragments :: Footer}"></div>
 </html>

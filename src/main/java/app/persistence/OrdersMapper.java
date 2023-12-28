@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class OrdersMapper {
     public static int insertOrders(Orders orders, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "INSERT INTO orders (user_id, date, carport_length, carport_width, shed_length, shed_width, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO orders (user_id, date, carport_length, carport_width, shed_length, shed_width, status) VALUES (?, ?, ?, ?, ?, ?, ?) returning id";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -182,7 +182,7 @@ public class OrdersMapper {
                     orderlines.add(orderline);
                 }
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new DatabaseException("fejl i orderlinesbyorderID"+e.getMessage());
             }
         }
         return orderlines;
@@ -202,4 +202,28 @@ public class OrdersMapper {
         }
 
 
+    public static List<Orders> getOrdersByCustomerId(int id, ConnectionPool connectionPool) throws DatabaseException {
+        List<Orders> ListOfOrders = new ArrayList<>();
+        String sql = "select * from orders where user_id=?";
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    Date date = rs.getDate("date");
+                    int user_id = rs.getInt("user_id");
+                    double carport_length = rs.getDouble("carport_length");
+                    double carport_width = rs.getDouble("carport_width");
+                    double shed_length = rs.getDouble("shed_length");
+                    double shed_width = rs.getDouble("shed_width");
+                    String status = rs.getString("status");
+                    ListOfOrders.add(new Orders(id, date, user_id ,carport_length, carport_width, shed_length, shed_width, status));
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException("Fejl i getOrdersByCustomerId " + e);
+        }
+        return ListOfOrders;
+    }
 }

@@ -64,12 +64,10 @@ public class MaterialMapper {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    //int material_id = rs.getInt("material_id");
                     String material_description = rs.getString("material_description");
-                    int quantity= rs.getInt("quantity");
+                    int size= rs.getInt("size");
                     double price = rs.getDouble("price");
-
-                    return new Material(material_id, material_description, quantity, price);
+                    return new Material(material_id, material_description, size, price);
                 } else {
                     throw new DatabaseException("Ingen materiale fundet for den givne id");
                 }

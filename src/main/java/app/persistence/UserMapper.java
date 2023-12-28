@@ -1,6 +1,7 @@
 package app.persistence;
 import app.entities.User;
 import app.exceptions.DatabaseException;
+import io.javalin.http.Context;
 
 import java.sql.*;
 
@@ -66,8 +67,8 @@ public class UserMapper {
         }
     }
 
-    public static int CreateMiniUser(String name, String email, String city, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into public.user (name, email, city) values (?,?,?) RETURNING id";
+    public static int CreateMiniUser(Context ctx, String email, String name, String city, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "insert into public.user (name, email, city) values (?,?,?) RETURNING id,password";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -83,6 +84,8 @@ public class UserMapper {
                 try{
                     ResultSet generatedids = ps.getGeneratedKeys();
                     if(generatedids.next()){
+                        User user = new User(generatedids.getInt("id"),name,generatedids.getString("password"),email,"customer",city);
+                        ctx.sessionAttribute("currentUser", user);
                         return generatedids.getInt("id");
                     }
                 } catch (SQLException e){

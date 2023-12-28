@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-
-</head>
-<body>
 <div th:replace="~{fragments :: head('FOG')}"></div>
+<body>
 <div th:replace="~{fragments :: top-nav}"></div>
+
 <div id="page-container">
     <div id="page-content">
         <div class="centered-form">
@@ -26,4 +24,5 @@
     </div>
 </div>
 </body>
+<div th:replace="~{fragments :: Footer}"></div>
 </html>

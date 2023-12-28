@@ -10,7 +10,7 @@
     <div id="page-content">
         <section>
             <h3>Størrelse</h3>
-            <form action="/order-conformation" method="post" id="formlist">
+            <form action="/order" method="post" id="formlist">
 
                 <label for="carport_length">Carport længde i cm:</label>
                 <input type="number" name="carport_length" id="carport_length" value="1" min="1" required>
@@ -31,7 +31,7 @@
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email" required>
                     <label for="city">City:</label>
-                    <input for="city" name="city" id="city">
+                    <input for="city" name="city" id="city" required>
                 </div>
                 <br>
                 <input type="hidden" name="status" value="Pending">
@@ -42,4 +42,5 @@
     </div>
 </div>
 </body>
+<div th:replace="~{fragments :: Footer}"></div>
 </html>

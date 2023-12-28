@@ -32,6 +32,15 @@ public class User {
         this.zip = zip;
     }
 
+    public User(int id, String name, String password, String email, String role, String city) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.city = city;
+    }
+
     public int getId() {
         return id;
     }

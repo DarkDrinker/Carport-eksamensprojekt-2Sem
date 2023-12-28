@@ -1,4 +1,5 @@
 package app;
+
 import app.controllers.OrderController;
 import app.entities.User;
 import app.models.Orderline;
@@ -35,7 +36,7 @@ public class Main {
         app.get("/frontpage", ctx -> ctx.render("frontpage.html"));
         app.post("/frontpage", ctx -> ctx.render("frontpage.html"));
         app.get("/createuser", ctx -> ctx.render("createuser.html"));
-        app.post("/createuser",ctx -> UserController.createuser(ctx, connectionPool ));
+        app.post("/createuser", ctx -> UserController.createuser(ctx, connectionPool));
 
         app.get("/materials", ctx -> {
             OrderController.initializeMaterialMap(ctx, connectionPool);
@@ -52,30 +53,28 @@ public class Main {
             if (isLoggedIn) {
                 int orderId = OrderController.allOrders(ctx, connectionPool);
                 ctx.sessionAttribute("orderId", orderId);
-                ctx.redirect("/order-confirmation");
+                //ctx.redirect("/order-confirmation");
             } else {
-                String email = ctx.formParam("email");
+                //String email = ctx.formParam("email");
                 // Process guest order and redirect to order-confirmation page with guest email
-                OrderController.processGuestOrder(ctx, connectionPool, email);
-                ctx.attribute("email", email);
-                ctx.redirect("/order-confirmation");
+                OrderController.processGuestOrder(ctx, connectionPool);
+                //ctx.attribute("email", email);
+                //ctx.redirect("/order-confirmation");
             }
         });
 
         app.get("/order-confirmation", ctx -> {
-            int orderId = ctx.sessionAttribute("orderId");
-            // Fetch the order and orderline details
-            Orders order = OrdersMapper.getOrderById(orderId, connectionPool);
-            List<Orderline> orderlines = OrdersMapper.getOrderlinesByOrderId(orderId, connectionPool);
-            ctx.attribute("SessionOrder", order);
-            ctx.attribute("orderlines", orderlines);
-            ctx.render("order-confirmation.html");
-        });
-
-        app.post("/order-conformation", ctx -> {
-            OrderController.allOrders(ctx, connectionPool);
+            //int orderId = ctx.sessionAttribute("orderId"); Orders order = OrdersMapper.getOrderById(orderId, connectionPool);
+            //List<Orderline> orderlines = OrdersMapper.getOrderlinesByOrderId(orderId, connectionPool);
+            // ctx.attribute("SessionOrder", order);
+            //ctx.attribute("orderlines", orderlines);
             ctx.render("order-conformation.html");
         });
+
+       /* app.post("/order-conformation", ctx -> {
+            OrderController.allOrders(ctx, connectionPool);
+            ctx.render("order-conformation.html");
+        });*/
 
         app.get("/saleswindow", ctx -> {
             User currentUser = ctx.sessionAttribute("currentUser");
@@ -92,6 +91,10 @@ public class Main {
                 int orderId = Integer.parseInt(ctx.pathParam("orderId"));
                 Orders order = OrdersMapper.getOrderById(orderId, connectionPool);
                 List<Orderline> orderlines = OrdersMapper.getOrderlinesByOrderId(orderId, connectionPool);
+                double totalPrice = orderlines.stream()
+                        .mapToDouble(Orderline::getTotal_price)
+                        .sum();
+                ctx.attribute("totalPrice", totalPrice);
                 ctx.attribute("SessionOrder", order);
                 ctx.attribute("orderlines", orderlines);
                 ctx.render("sale.html");
@@ -105,6 +108,14 @@ public class Main {
             ctx.result("Status updated succesfully");
         });
 
+        app.get("/customerOrders/{id}", ctx -> {
+
+            List<Orders> ListOfOrders = OrdersMapper.getOrdersByCustomerId(Integer.parseInt(ctx.pathParam("id")), connectionPool);
+            System.out.println(ListOfOrders);
+            ctx.sessionAttribute("AllOrderByCustomer",ListOfOrders);
+            ctx.render("customerOrders.html");
+        });
+        app.get("/standardcarport", ctx -> ctx.render("standardcarport.html"));
         app.get("/cart", ctx -> ctx.render("cart.html"));
         app.get("/login", ctx -> ctx.render("login.html"));
         app.post("/login", ctx -> UserController.login(ctx, connectionPool));

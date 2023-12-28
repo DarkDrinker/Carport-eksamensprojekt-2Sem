@@ -109,7 +109,9 @@ public class OrderController {
         double totalPricePosts = postMaterial.getPrice() * numberOfPosts;
         double totalPriceRafters = rafterMaterial.getPrice() * totalRafters;
         double totalPriceStraps = strapMaterial.getPrice() * totalStraps;
+        double totalPrice = totalPriceStraps+totalPricePosts+totalPriceRafters;
 
+        ctx.sessionAttribute("totalPrice", totalPrice);
         ctx.sessionAttribute("totalPricePosts", totalPricePosts);
         ctx.sessionAttribute("totalPriceRafters", totalPriceRafters);
         ctx.sessionAttribute("totalPriceStraps", totalPriceStraps);
@@ -119,8 +121,8 @@ public class OrderController {
 
         ctx.attribute("SessionOrder", orders);
         ctx.attribute("orderlines", orderlines);
-
         ctx.render("order-conformation.html");
+
     }
 
 
@@ -134,7 +136,7 @@ public class OrderController {
         }
     }
 
-    public static void processGuestOrder(Context ctx, ConnectionPool connectionPool, String guestEmail) throws Exception {        // Retrieve the current user from the session
+    public static void processGuestOrder(Context ctx, ConnectionPool connectionPool) throws Exception {        // Retrieve the current user from the session
         String email = ctx.formParam("email");
         String name = ctx.formParam("name");
         String city = ctx.formParam("city");
@@ -145,10 +147,11 @@ public class OrderController {
         double shedLength = Double.parseDouble(ctx.formParam("shed_length"));
         double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
         String status = ctx.formParam("status");
-        int generated_userID = UserMapper.CreateMiniUser(guestEmail, name, city, connectionPool);
+        int generated_userID = UserMapper.CreateMiniUser(ctx, email, name, city, connectionPool);
         if(generated_userID == 0) {
-            throw new Exception("didnt create a new user");
+            throw new Exception("didnt create a new user, probaly already have an account?");
         }
+
 // CREATE A SMALL USER PROFILE HERE AND
         // Create an Orders object with the extracted details
         Orders orders = new Orders(0, new Date(System.currentTimeMillis()), generated_userID, carportLength, carportWidth, shedLength, shedWidth, status);
@@ -161,14 +164,13 @@ public class OrderController {
 
             // Use the insertedOrder for further processing or pass it to other methods as needed
             calculateAndRender(ctx, insertedOrder, connectionPool);
-
         } catch (DatabaseException | SQLException e) {
             // Handle any database exception by rethrowing or logging
             throw new DatabaseException("Fejl i processGuestOrder: " + e.getMessage());
         }
     }
 
-    public static void updatestatus(Context ctx, ConnectionPool connectionPool) throws SQLException, DatabaseException {
+    public static void updatestatus(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         String status = ctx.formParam("status");
         int id = Integer.parseInt(ctx.formParam("orderId"));
         System.out.println(id);

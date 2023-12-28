@@ -7,15 +7,11 @@
 <div id="order-container"></div>
 
 
-
-
-
-
 </body>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    // Retrieve data from session : this case all allOrders in DB
-    var orderData = /*[[${session.allorders}]]*/ {};
+    // Retrieve data from session : this case all allOrders from specific user_id in DB
+    var orderData = /*[[${session.AllOrderByCustomer}]]*/ {};
 
     // Initialize orderDetails
     var orderDetails = {};
@@ -27,29 +23,21 @@
         for (var orderId in orderData) {
             if (orderData.hasOwnProperty(orderId)) {
                 var order = orderData[orderId];
-                var box = document.createElement("a");
+                var box = document.createElement("span");
                 box.className = "order-box";
                 box.href = "javascript:void(0);"; // Using JavaScript void to prevent actual navigation
-                box.innerHTML = `Order ID: ${order.id}<br>Name: ${order.name}<br>Date: ${order.date}`;
-
-                // Click event to navigate to order details
-                box.addEventListener("click", function(orderId) {
-                    return function() {
-                        navigateToOrderDetails(orderId);
-                    };
-                }(order.id));
+                box.innerHTML = `Order ID: ${order.id}<br>
+                Date: ${order.date}<br>
+                Carport Length: ${order.carport_length}<br>
+                Carport Width: ${order.carport_length}<br>
+                Shed Length: ${order.shed_length}<br>
+                Shed Width: ${order.shed_width}<br>
+                Status of your order: ${order.status}`;
 
                 container.appendChild(box);
             }
         }
     }
-
-    function navigateToOrderDetails(orderId) {
-        var url = "/saleswindow/" + orderId;
-        console.log("Navigating to:", url);
-        window.location.href = url; // Navigate to the detailed page
-    }
-
     createOrderBoxes();
     /*]]>*/
 </script>
