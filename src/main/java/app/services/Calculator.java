@@ -135,7 +135,7 @@ public class Calculator {
             }
         }
 
-        // Multiply the count by 4 to account for both sides of the length
+        // Multiply the count by 2 to account for both sides of the length
         return minStrapsCount * 2;
     }
     public static int getClosestSize(int targetSize, int[] availableSizes) {
