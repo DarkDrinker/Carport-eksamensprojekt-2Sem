@@ -17,10 +17,14 @@
     </a>
 
     <nav class="menu">
-        Version 0.5
+        <a style="color: #cccccc">Ver 0.9</a>
         <ul class="links">
-            <li>
-                <a href="/saleswindow">Overview of sales</a>
+            <li th:if="${#ctx.session.currentUser != null}">
+                <div th:switch="${#ctx.session.currentUser.role}">
+                    <a th:case="admin" href="/saleswindow">AllSales</a>
+                    <a th:case="customer" th:href="@{/customerOrders/__${#ctx.session.currentUser.id}__}">Dine Order</a>
+                    <a th:case="*">Something went wrong</a>
+                </div>
             </li>
             <li>
                 <a href="https://www.google.com/maps/search/?api=1&query=55.77012634277344,12.51517105102539" target="_blank">Find Fog</a>
@@ -34,12 +38,20 @@
                     <a th:case="true" th:text="${#ctx.session.currentUser.name}" href="/logout"></a>
                 </div>
             </li>
+
         </ul>
         <div class="icon">
-            <button class="dropdownmenubutton">
-                <i onclick="dropdownfunction()" class="fa fa-bars"></i>
+            <button class="dropdownmenubutton" onclick="toggleDropdown()">
+                <i  class="fa fa-bars"></i>
             </button>
             <ul class="dropdownlinks" id="dropdownlinksid">
+                <li th:if="${#ctx.session.currentUser != null}">
+                    <div th:switch="${#ctx.session.currentUser.role}">
+                        <a th:case="admin" href="/saleswindow">AllSales</a>
+                        <a th:case="customer" th:href="@{/customerOrders/__${#ctx.session.currentUser.id}__}">Dine Order</a>
+                        <a th:case="*">Something went wrong</a>
+                    </div>
+                </li>
                 <li>
                     <a href="not a working link">Find Fog</a>
                 </li>
@@ -56,5 +68,24 @@
         </div>
     </nav>
 </header>
+
+<footer th:fragment="Footer">
+    <script>
+        function toggleDropdown() {
+            var dropdownLinks = document.getElementById('dropdownlinksid');
+            dropdownLinks.classList.toggle('show');
+
+            // Add event listener to close dropdown when clicking outside of it
+            document.addEventListener('click', function (event) {
+                var isButtonClick = event.target.closest('.dropdownmenubutton');
+                var isClickInside = dropdownLinks.contains(event.target) || isButtonClick;
+
+                if (!isClickInside) {
+                    dropdownLinks.classList.remove('show');
+                }
+            });
+        }
+    </script>
+</footer>
 </body>
 </html>

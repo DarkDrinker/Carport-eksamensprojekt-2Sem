@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:replace="~{fragments :: head('FOG')}"></div>
+<body>
+<div th:replace="~{fragments :: top-nav}"></div>
+
+<div id="order-container"></div>
+
+
+</body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Retrieve data from session : this case all allOrders from specific user_id in DB
+    var orderData = /*[[${session.AllOrderByCustomer}]]*/ {};
+
+    // Initialize orderDetails
+    var orderDetails = {};
+
+    // Populate orderDetails based on the data in orderData
+    function createOrderBoxes() {
+        var container = document.getElementById("order-container");
+
+        for (var orderId in orderData) {
+            if (orderData.hasOwnProperty(orderId)) {
+                var order = orderData[orderId];
+                var box = document.createElement("span");
+                box.className = "order-box";
+                box.href = "javascript:void(0);"; // Using JavaScript void to prevent actual navigation
+                box.innerHTML = `Order ID: ${order.id}<br>
+                Date: ${order.date}<br>
+                Carport Length: ${order.carport_length}<br>
+                Carport Width: ${order.carport_length}<br>
+                Shed Length: ${order.shed_length}<br>
+                Shed Width: ${order.shed_width}<br>
+                Status of your order: ${order.status}`;
+
+                container.appendChild(box);
+            }
+        }
+    }
+    createOrderBoxes();
+    /*]]>*/
+</script>
+<div th:replace="~{fragments :: Footer}"></div>
+</html>
