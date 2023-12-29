@@ -58,17 +58,15 @@ public class OrderController {
         try {
             // Insert the order and get the generated ID
             int generatedOrderId = OrdersMapper.insertOrders(orders, connectionPool);
-            Orders insertedOrder = getOrderById(generatedOrderId, connectionPool);
+            //Orders insertedOrder = getOrderById(generatedOrderId, connectionPool);
             // Additional processing with insertedOrder
-            calculateAndRender(ctx, insertedOrder, connectionPool);
+            //calculateAndRender(ctx, insertedOrder, connectionPool);
 
             // Return the generated order ID
             return generatedOrderId;
         } catch (DatabaseException e) {
             // Handle database exceptions
             throw new DatabaseException("Fejl i allOrders: " + e.getMessage());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
