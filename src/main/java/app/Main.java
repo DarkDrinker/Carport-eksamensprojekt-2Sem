@@ -1,17 +1,19 @@
 package app;
 
+import config.ThymeleafConfig;
+import java.util.List;
 import app.controllers.OrderController;
 import app.entities.User;
 import app.models.Orderline;
 import app.models.Orders;
+import app.util.EmailSender;
 import app.persistence.OrdersMapper;
-import config.ThymeleafConfig;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
-import java.util.List;
+
 
 public class Main {
     private static final String USER = "postgres";
