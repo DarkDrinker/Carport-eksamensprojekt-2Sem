@@ -34,10 +34,27 @@
                 Shed Width: ${order.shed_width}<br>
                 Status of your order: ${order.status}`;
 
+
+                // Click event to navigate to order details
+                if (`${order.status}` != 'Pending') {
+                box.addEventListener("click", function(orderId) {
+                    return function() {
+                        navigateToOrderDetails(orderId);
+                    };
+                }(order.id));
+                }
                 container.appendChild(box);
             }
+
         }
     }
+
+    function navigateToOrderDetails(orderId) {
+        var url = "/customerOrder/" + orderId;
+        console.log("Navigating to:", url);
+        window.location.href = url; // Navigate to the detailed page
+    }
+
     createOrderBoxes();
     /*]]>*/
 </script>

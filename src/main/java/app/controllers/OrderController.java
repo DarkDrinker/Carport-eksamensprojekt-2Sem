@@ -123,21 +123,45 @@ public class OrderController {
 
     }
 
-
+    //Grabs all available orders and sets them into ctx.sessionAttribute
     public static void GrabAllOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         try {
-            Map<Integer, Orders> allOrders = getAllOrders(connectionPool);
-            ctx.sessionAttribute("allorders", allOrders);
+            //Checks against if the Attribute has already been filled before.
+            if(ctx.sessionAttribute("allorders") != null ) {
+
+            } else {
+                Map<Integer, Orders> allOrders = getAllOrders(connectionPool);
+                ctx.sessionAttribute("allorders", allOrders);
+            }
+
         } catch (DatabaseException e) {
             // Handle any database exception by rethrowing or logging
             throw new DatabaseException("Fejl i GrabAllOrders: " + e.getMessage());
         }
     }
 
-    public static void processGuestOrder(Context ctx, ConnectionPool connectionPool) throws Exception {        // Retrieve the current user from the session
-        String email = ctx.formParam("email");
-        String name = ctx.formParam("name");
-        String city = ctx.formParam("city");
+    public static void processOrder(Context ctx, ConnectionPool connectionPool) throws Exception {
+        String email;
+        String name;
+        String city;
+        int generated_userID;
+        User user = ctx.sessionAttribute("currentUser");
+        // Retrieve the personal information from the form.
+        if(user != null){
+            email = user.getEmail();
+            name = user.getName();
+            city = user.getCity();
+            generated_userID = user.getId();
+        } else {
+            email = ctx.formParam("email");
+            name = ctx.formParam("name");
+            city = ctx.formParam("city");
+            generated_userID = UserMapper.CreateMiniUser(ctx, email, name, city, connectionPool);
+            if(generated_userID == 0) {
+                throw new Exception("didnt create a new user, probaly already have an account?");
+            }
+        }
+
 
         // Extract form parameters for order details
         double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
@@ -145,12 +169,10 @@ public class OrderController {
         double shedLength = Double.parseDouble(ctx.formParam("shed_length"));
         double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
         String status = ctx.formParam("status");
-        int generated_userID = UserMapper.CreateMiniUser(ctx, email, name, city, connectionPool);
-        if(generated_userID == 0) {
-            throw new Exception("didnt create a new user, probaly already have an account?");
-        }
+        //Creates a mini user that almost has all the things.
 
-// CREATE A SMALL USER PROFILE HERE AND
+
+
         // Create an Orders object with the extracted details
         Orders orders = new Orders(0, new Date(System.currentTimeMillis()), generated_userID, carportLength, carportWidth, shedLength, shedWidth, status);
         try {
@@ -168,6 +190,7 @@ public class OrderController {
         }
     }
 
+    //Updates status of an order.
     public static void updatestatus(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         String status = ctx.formParam("status");
         int id = Integer.parseInt(ctx.formParam("orderId"));
@@ -179,89 +202,5 @@ public class OrderController {
         }
     }
 
-   /* public static int insertOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        User user = ctx.sessionAttribute("currentUser");
-
-        double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
-        double carportWidth = Double.parseDouble(ctx.formParam("carport_width"));
-        double shedLength = Double.parseDouble(ctx.formParam("shed_length"));
-        double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
-
-
-        Orders orders = new Orders(0, new Date(System.currentTimeMillis()), user.getId(), carportLength, carportWidth, shedLength, shedWidth, "Pending");
-
-        // Call the insertOrders method to insert the order into the database and get the generated id
-        return OrdersMapper.insertOrders(orders, connectionPool);
-    }
-    public static void showOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        try {
-            int orderId = Integer.parseInt(ctx.pathParam("id"));
-            Orders order = getOrderById(orderId, connectionPool);
-
-            if (order != null) {
-                ctx.attribute("orderDetails", order);
-                ctx.render("sale.html");
-            } else {
-                ctx.status(404).result("Order not found");
-            }
-        } catch (NumberFormatException e) {
-            ctx.status(400).result("Invalid order ID format");
-        } catch (DatabaseException e) {
-            throw new DatabaseException("Fejl i showOrders: " + e.getMessage());
-        }
-    }
-    public static void initializeOrdersMap(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        Map<Integer, Orders> ordersMap = ctx.sessionAttribute("ordersMap");
-
-        if (ordersMap == null) {
-            ordersMap = getAllOrders(connectionPool); // Fetch all orders
-            ctx.sessionAttribute("ordersMap", ordersMap);
-
-            List<Orders> ordersList = new ArrayList<>(ordersMap.values());
-            ordersList.sort(Comparator.comparing(Orders::getId));
-            ctx.sessionAttribute("ordersList", ordersList);
-        }
-    }
-
-    public static void calcPosts(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        int id = Integer.parseInt(ctx.formParam("id"));
-        int post = (int) Calculator.calculatePost(id, connectionPool);
-        ctx.attribute("post", post);
-        ctx.render("sale.html");
-    }
-
-    public static void calcRafters(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        int id = Integer.parseInt(ctx.formParam("id"));
-        int rafter = (int) Calculator.calculateRafter(id, connectionPool);
-        ctx.attribute("rafter", rafter);
-        ctx.render("sale.html");
-    }
-
-    public static void calcStraps(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        int id = Integer.parseInt(ctx.formParam("id"));
-        int strap = (int) Calculator.calculateStraps(id, connectionPool);
-        ctx.attribute("strap", strap);
-        ctx.render("sale.html");
-    }*/
-
-
-        /*public static void processOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-            User user = (User) ctx.sessionAttribute("currentUser");
-            Cart cart = (Cart) ctx.sessionAttribute("cart");
-
-            double carportLength = Double.parseDouble(ctx.formParam("carport_length"));
-            double carportWidth = Double.parseDouble(ctx.formParam("carport_width"));
-            double shedLength = Double.parseDouble(ctx.formParam("shed_length"));
-            double shedWidth = Double.parseDouble(ctx.formParam("shed_width"));
-
-            Orders orders = new Orders(0, new Date(System.currentTimeMillis()), user.getId(), carportLength, carportWidth, shedLength, shedWidth, "Pending");
-
-           try {
-                OrdersMapper.insertOrders(orders, cart.getCartItems(), connectionPool);
-                ctx.render("order-confirmation.html");
-            } catch (DatabaseException e) {
-                throw new DatabaseException("Fejl i processOrders");
-            }
-        }*/
 }
 

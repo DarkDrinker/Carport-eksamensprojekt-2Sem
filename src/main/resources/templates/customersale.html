@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:replace="~{fragments :: head('FOG')}"></div>
+<body>
+<div th:replace="~{fragments :: top-nav}"></div>
+
+<section>
+    <h3>Order Details</h3>
+    <div>
+        <div class="personal-information">
+            <h1>Personal info</h1>
+            <span>ID: <span th:text="${SessionOrder.id}"></span></span><br>
+            <span>Dato: <span th:text="${SessionOrder.date}"></span></span><br>
+            <span>User ID: <span th:text="${SessionOrder.user_id}"></span></span><br>
+            <span>Name: <span th:text="${SessionOrder.name}"></span></span><br>
+            <span>Email: <span th:text="${SessionOrder.email}"></span></span><br>
+            <span>City: <span th:text="${SessionOrder.city}"></span></span><br>
+        </div>
+
+        <h1>Order details</h1>
+        <div class="orderlines" th:if="${orderlines}">
+            <p>Carport Længde: <span th:text="${SessionOrder.carport_length}"></span></p>
+            <p>Carport Bredde: <span th:text="${SessionOrder.carport_width}"></span></p>
+            <p>Skur Længde: <span th:text="${SessionOrder.shed_length}"></span></p>
+            <p>Skur Bredde: <span th:text="${SessionOrder.shed_width}"></span></p>
+            <div th:each="orderline : ${orderlines}">
+                <p>Orderline id: <span th:text="${orderline.id}"></span></p>
+                <div th:with="material=${orderline.material}">
+                    <p>Materiale id: <span th:text="${material.material_id}"></span></p>
+                    <p>materiale description: <span th:text="${material.material_description}"></span></p>
+                    <p>size: <span th:text="${material.size}"></span></p>
+                </div>
+                <p>Antal: <span th:text="${orderline.quantity}"></span></p>
+                <p>Pris på materialet: <span th:text="${orderline.total_price}"></span> kr</p>
+            </div>
+        </div>
+        <p>Total Pris: <span th:text="${totalPrice}"></span> kr</p>
+
+        <p>Status: <span th:text="${SessionOrder.status}"></span></p>
+    </div>
+
+</section>
+
+
+
+</body>
+<div th:replace="~{fragments :: Footer}"></div>
+</html>

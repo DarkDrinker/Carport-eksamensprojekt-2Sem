@@ -5,7 +5,6 @@ import app.entities.User;
 import app.models.Orderline;
 import app.models.Orders;
 import app.persistence.OrdersMapper;
-import app.util.EmailSender;
 import config.ThymeleafConfig;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
@@ -45,6 +44,7 @@ public class Main {
         app.post("/login", ctx -> UserController.login(ctx, connectionPool));
         app.post("/frontpage", ctx -> ctx.render("frontpage.html"));
         app.post("/createuser", ctx -> UserController.createuser(ctx, connectionPool));
+        app.post("/order", ctx -> OrderController.processOrder(ctx, connectionPool));
 
         app.get("/materials", ctx -> {
             OrderController.initializeMaterialMap(ctx, connectionPool);
@@ -56,21 +56,6 @@ public class Main {
             ctx.attribute("isLoggedIn", isLoggedIn);
             ctx.render("order.html");
         });
-        app.post("/order", ctx -> {
-            boolean isLoggedIn = UserController.checkUserLoggedIn(ctx);
-            if (isLoggedIn) {
-                int orderId = OrderController.allOrders(ctx, connectionPool);
-                ctx.sessionAttribute("orderId", orderId);
-                //ctx.redirect("/order-confirmation");
-            } else {
-                //String email = ctx.formParam("email");
-                // Process guest order and redirect to order-confirmation page with guest email
-                OrderController.processGuestOrder(ctx, connectionPool);
-                //ctx.attribute("email", email);
-                //ctx.redirect("/order-confirmation");
-            }
-        });
-
 
 
         app.get("/saleswindow", ctx -> {
@@ -107,10 +92,17 @@ public class Main {
         });
 
         app.get("/customerOrders/{id}", ctx -> {
-            List<Orders> ListOfOrders = OrdersMapper.getOrdersByCustomerId(Integer.parseInt(ctx.pathParam("id")), connectionPool);
-            System.out.println(ListOfOrders);
+            List<Orders> ListOfOrders = OrdersMapper.getOrdersByUserId(Integer.parseInt(ctx.pathParam("id")), connectionPool);
             ctx.sessionAttribute("AllOrderByCustomer",ListOfOrders);
             ctx.render("customerOrders.html");
+        });
+        app.get("/customerOrder/{orderId}", ctx -> {
+            int orderId = Integer.parseInt(ctx.pathParam("orderId"));
+            Orders order = OrdersMapper.getOrderById(orderId, connectionPool);
+            List<Orderline> orderlines = OrdersMapper.getOrderlinesByOrderId(orderId, connectionPool);
+            ctx.attribute("SessionOrder",order);
+            ctx.attribute("orderlines", orderlines);
+            ctx.render("customersale.html");
         });
     }
 }
