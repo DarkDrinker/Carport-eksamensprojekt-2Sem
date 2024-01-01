@@ -1,20 +1,14 @@
 package app.controllers;
 import app.entities.User;
 import app.exceptions.DatabaseException;
-import app.models.Material;
 import app.persistence.ConnectionPool;
-import app.persistence.MaterialMapper;
 import app.persistence.UserMapper;
 import io.javalin.http.Context;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class UserController
-{
-    User user;
+public class UserController {
+
+    //Simple login function, that checks against DB to match any user. and set them at currentUser
     public static void login(Context ctx, ConnectionPool connectionPool)
     {
 
@@ -34,7 +28,9 @@ public class UserController
         }
     }
 
+    //Create a user function
     public static void createuser(Context ctx, ConnectionPool connectionPool) {
+            //pulls info from the form.
             String name = ctx.formParam("name");
             String password1 = ctx.formParam("password1");
             String password2 = ctx.formParam("password2");
@@ -43,11 +39,13 @@ public class UserController
             String city = ctx.formParam("city");
             int zip = Integer.parseInt(ctx.formParam("zip"));
 
+            //Checks against the DB to either create or spit out error
             if (password1.equals(password2)) {
                 try {
                     UserMapper.createuser(name, password1, adresse, email, city, zip, connectionPool);
-                    ctx.sessionAttribute("message", "Du er nu oprettet. Log på for at komme i gang.");
+
                     ctx.render("login.html");
+                    ctx.sessionAttribute("message", "Du er nu oprettet. Log på for at komme i gang.");
                 } catch (DatabaseException e) {
                     ctx.sessionAttribute("message", e.getMessage());
                     ctx.render("createuser.html");

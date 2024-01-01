@@ -1,5 +1,4 @@
 package app.persistence;
-import app.controllers.OrderController;
 import app.exceptions.DatabaseException;
 import app.models.Material;
 import app.models.Orderline;
@@ -12,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 public class OrdersMapper {
+    
+    //SQL handler to execute, this case inserting an order into our DB
     public static int insertOrders(Orders orders, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "INSERT INTO orders (user_id, date, carport_length, carport_width, shed_length, shed_width, status) VALUES (?, ?, ?, ?, ?, ?, ?) returning id";
 
@@ -26,12 +27,13 @@ public class OrdersMapper {
                 ps.setString(7, orders.getStatus());
 
                 int rowsAffected = ps.executeUpdate();
-
+                
+                //checks to se if any rows were affected
                 if (rowsAffected == 0) {
                     throw new DatabaseException("Inserting order fejlede, ingen rækker affected.");
                 }
 
-                // Retrieve the generated id
+                // Retrieve the generated id and returns it
                 try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         return generatedKeys.getInt(1);
@@ -45,11 +47,7 @@ public class OrdersMapper {
         }
     }
 
-    // Insert orderlines
-           /* for (Orderline orderline : orderlines) {
-                insertOrderline(orderline, newOrdersId, connectionPool);
-            }*/
-
+    //SQL handler to execute, this case inserting a orderLine into our DB
     public static void insertOrderline(Orderline orderline, ConnectionPool connectionPool) throws SQLException, DatabaseException {
         String sql = "INSERT INTO orderline (orders_id, material_id, quantity, total_price) VALUES (?, ?, ?, ?)";
         try (Connection connection = connectionPool.getConnection()) {
@@ -68,7 +66,6 @@ public class OrdersMapper {
     }
 
     public static List<Orders> getSize(int id, ConnectionPool connectionPool) throws DatabaseException {
-
         List<Orders> sizelist = new ArrayList<>();
         String sql = "select carport_length, carport_width, shed_length, shed_width from orders where id=?";
 
@@ -91,6 +88,7 @@ public class OrdersMapper {
         return sizelist;
     }
 
+    //Pulls a specific order by its id. 
     public static Orders getOrderById(int id, ConnectionPool connectionPool) throws DatabaseException {
         Orders order = null;
         String sql = "SELECT orders.id, orders.date, orders.user_id, public.user.name, public.user.email, public.user.city, public.user.role, public.orders.carport_length, public.orders.carport_width, public.orders.shed_length, public.orders.shed_width, public.orders.status\n" +
@@ -123,6 +121,7 @@ public class OrdersMapper {
         return order;
     }
 
+    //pulls all orders in our DB and returns them as a MAP
     public static Map<Integer, Orders> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         Map<Integer, Orders> ordersMap = new HashMap<>();
         String sql1 = "SELECT orders.id, orders.date, orders.user_id, public.user.name, public.user.email, public.user.city, public.user.role, public.orders.carport_length, public.orders.carport_width, public.orders.shed_length, public.orders.shed_width, public.orders.status\n" +
@@ -159,6 +158,7 @@ public class OrdersMapper {
         return ordersMap;
     }
 
+    //pulls specific orderlines by their associated orderId
     public static List<Orderline> getOrderlinesByOrderId(int orders_id, ConnectionPool connectionPool) throws DatabaseException, SQLException {
         String sql = "SELECT id, material_id, quantity, total_price FROM orderline WHERE orders_id = ? ORDER BY id DESC";
         List<Orderline> orderlines = new ArrayList<>();
@@ -187,6 +187,7 @@ public class OrdersMapper {
         }
         return orderlines;
     }
+    //SQl Handler to update the orders status of a specific order
     public static void updateorderstatus(String status, int id, ConnectionPool connectionPool) throws DatabaseException, SQLException {
         String sql = "update orders\n" +
                 "set status=?\n" +
@@ -201,17 +202,17 @@ public class OrdersMapper {
             }
         }
 
-
-    public static List<Orders> getOrdersByCustomerId(int id, ConnectionPool connectionPool) throws DatabaseException {
+        //Pulls specific orders by their associated UserId
+    public static List<Orders> getOrdersByUserId(int user_id, ConnectionPool connectionPool) throws DatabaseException {
         List<Orders> ListOfOrders = new ArrayList<>();
         String sql = "select * from orders where user_id=?";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setInt(1, id);
+                ps.setInt(1, user_id);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
+                    int id = rs.getInt("id");
                     Date date = rs.getDate("date");
-                    int user_id = rs.getInt("user_id");
                     double carport_length = rs.getDouble("carport_length");
                     double carport_width = rs.getDouble("carport_width");
                     double shed_length = rs.getDouble("shed_length");
