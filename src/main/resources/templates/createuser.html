@@ -14,8 +14,8 @@
                     <input type="password" name="password2" placeholder="Gentag password" required/><br><br>
                     <input type="text" name="adresse" placeholder="Adresse" required/><br><br>
                     <input type="email" name="email" placeholder="Email" required/><br><br>
-                    <input type="text" name="city" placeholder="By"/><br><br>
-                    <input type="number" name="zip" placeholder="Postnummer"/><br><br>
+                    <input type="text" name="city" placeholder="By" required/><br><br>
+                    <input type="number" name="zip" placeholder="Postnummer" required/><br><br>
                     <button type="submit" formaction="/createuser">Opret bruger</button>
                 </label>
                 <p class="errormessage" th:text="${#ctx.message}"></p>

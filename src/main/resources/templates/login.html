@@ -4,18 +4,17 @@
 <body>
 <div th:replace="~{fragments :: top-nav}"></div>
 <div class="logincontainer">
-    <form method="post" id="myInput">
-        <label for="email">Type in your email</label><br>
+    <form class="loginform" method="post" id="myInput">
+        <label class="inputlabel" for="email">Type in your email</label><br>
         <input type="text" id="email" name="email" placeholder="email" required/><br>
-        <label for="password">type in password</label><br>
-        <input type="password" id="password" name="password" placeholder="password" required/>
-        <button type="submit" id="myBtn" formaction="/login" >log pā</button>
+        <label class="inputlabel" for="password">type in password</label><br>
+        <input type="password" id="password" name="password" placeholder="password" required/><br><br>
+        <button style="margin-left: 10%" type="submit" id="myBtn" formaction="/login" >log pā</button>
 
-        <p th:text="${#ctx.message}"> </p>
+        <p style="margin-left: 10%" th:text="${#ctx.message}"> </p>
+        <p style="margin-left: 10%">Har du ikke en profil? <a style="color: black;" target="_self" href="/createuser">Tryk her!</a></p>
     </form>
 </div>
-<p>Har du ikke en profil? <a style="color: black;" target="_self" href="/createuser">Tryk her!</a></p>
-
 
 </body>
 <div th:replace="~{fragments :: Footer}"></div>

@@ -17,7 +17,7 @@
     </a>
 
     <nav class="menu">
-        <a style="color: #cccccc">Ver 0.9</a>
+        <a style="color: #cccccc; padding-right: 5px" >Ver 1.0</a>
         <ul class="links">
             <li th:if="${#ctx.session.currentUser != null}">
                 <div th:switch="${#ctx.session.currentUser.role}">
@@ -27,11 +27,10 @@
                 </div>
             </li>
             <li>
-            <a href="https://www.google.com/maps/search/?api=1&query=55.77012634277344,12.51517105102539" target="_blank">Find Fog</a>
-
-        </li>
+                <a href="/find-fog">Find Fog</a>
+            </li>
             <li>
-                <a href="not a working link">Kurv</a>
+                <a href="/cart">Kurv</a>
             </li>
             <li>
                 <div th:switch="${#ctx.session.currentUser != null}">
