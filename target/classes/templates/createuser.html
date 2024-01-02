@@ -1,31 +1,28 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <div th:replace="~{fragments :: head('FOG')}"></div>
-
 <body>
-<div th:replace="~{fragments :: top-nav}"></div><
+<div th:replace="~{fragments :: top-nav}"></div>
 
 <div id="page-container">
-
     <div id="page-content">
-        <p></p>
         <div class="centered-form">
-            <form method="post">
+            <form method="post" >
                 <label>Indtast venligst brugerinfo: <br><br>
-                <input type="text" name="name" placeholder="Navn"/><br><br>
-                <input type="password" name="password1" placeholder="password"/><br><br>
-                <input type="password" name="password2" placeholder="gentag password"/><br><br>
-                <input type="adresse" name="adresse" placeholder="Skriv adresse"/><br><br>
-                <input type="email" name="email" placeholder="Skriv email"/><br><br>
-                <button type="submit" formaction="/createuser">Opret bruger</button>
+                    <input type="text" name="name" placeholder="Navn" required/><br><br>
+                    <input type="password" name="password1" placeholder="Password" required/><br><br>
+                    <input type="password" name="password2" placeholder="Gentag password" required/><br><br>
+                    <input type="text" name="adresse" placeholder="Adresse" required/><br><br>
+                    <input type="email" name="email" placeholder="Email" required/><br><br>
+                    <input type="text" name="city" placeholder="By" required/><br><br>
+                    <input type="number" name="zip" placeholder="Postnummer" required/><br><br>
+                    <button type="submit" formaction="/createuser">Opret bruger</button>
                 </label>
                 <p class="errormessage" th:text="${#ctx.message}"></p>
-
             </form>
         </div>
     </div>
 </div>
 </body>
-
-
+<div th:replace="~{fragments :: Footer}"></div>
 </html>

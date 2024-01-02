@@ -1,75 +1,38 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
-
-<head th:fragment="head(title)">
-    <title th:text="${title}">Kurv</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-</head>
-
+<div th:replace="~{fragments :: head('FOG')}"></div>
 <body>
+<div th:replace="~{fragments :: top-nav}"></div>
+
+It is empty here...
+for now.
 
 
-<header th:fragment="top-nav">
-    <a href="/cart" style="height: inherit">
-        <img style="height: inherit" src="/images/fog_logo_2015-3003583891.jpg" alt="Logo">
-    </a>
-
-    <nav>
-        <ul>
-            <li>
-                <a href="not a working link">Find Fog</a>
-            </li>
-            <li>
-                <a href="not a working link">Kurv</a>
-            </li>
 
 
-            <h2>Order Detaljer</h2>
 
 
-            <!-- Display Orders information -->
-            <p>Date: <span th:text="${orders.date}"></span></p>
-            <p>User ID: <span th:text="${orders.user_id}"></span></p>
-            <p>Carport Length: <span th:text="${orders.carport_length}"></span></p>
-            <p>Carport Width: <span th:text="${orders.carport_width}"></span></p>
-            <p>Shed Length: <span th:text="${orders.shed_length}"></span></p>
-            <p>Shed Width: <span th:text="${orders.shed_width}"></span></p>
-            <p>Status: <span th:text="${orders.status}"></span></p>
+<!--
+<h2>Order Detaljer</h2>
 
-            <!-- Display associated materials -->
+<p>Date: <span th:text="${orders.date}"></span></p>
+<p>User ID: <span th:text="${orders.user_id}"></span></p>
+<p>Carport Length: <span th:text="${orders.carport_length}"></span></p>
+<p>Carport Width: <span th:text="${orders.carport_width}"></span></p>
+<p>Shed Length: <span th:text="${orders.shed_length}"></span></p>
+<p>Shed Width: <span th:text="${orders.shed_width}"></span></p>
+<p>Status: <span th:text="${orders.status}"></span></p>
 
-            <h3>Materialer</h3>
-            <ol>
-                <li th:each="material : ${orders.materials}">
-                    <p th:text=" ${material.material_id} +' Materiale ' + ' ' + ${material.material_description} + ' størrelse ' + ${material.size}"></p>
-                </li>
-            </ol>
+<h3>Materialer</h3>
+<ol>
+    <li th:each="material : ${orders.materials}">
+        <p th:text=" ${material.material_id} +' Materiale ' + ' ' + ${material.material_description} + ' størrelse ' + ${material.size}"></p>
+    </li>
+</ol>
 
-            <!-- Display total_price for the entire order -->
-
-            <h3>Samlet Beløb</h3>
-            <p th:text="'Samlet beløb: ' + ${orderline.total_price}"></p>
-
-
-            <li>
-                <div th:switch="${#ctx.session.currentUser != null}" >
-                    <a th:case="false" href="/login">Login </a>
-                    <a th:case="true" th:text="${#ctx.session.currentUser.name}" href="/logout"></a>
-                </div>
-            </li>
-            <li>
-                <div th:switch="${#ctx.session.currentUser != null}" >
-                    <a th:case="false"></a>
-
-                    <a th:case="true" href="/order">orders</a>
-
-                    <a th:case="true" href="/payment">Betaling</a>
-                </div>
-        </ul>
-    </nav>
-</header>
+<h3>Samlet Beløb</h3>
+<p th:text="'Samlet beløb: ' + ${orderline.total_price}"></p> -->
 
 </body>
+<div th:replace="~{fragments :: Footer}"></div>
 </html>

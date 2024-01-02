@@ -6,6 +6,12 @@
 
 <div id="order-container"></div>
 
+
+
+
+
+
+</body>
 <script th:inline="javascript">
     /*<![CDATA[*/
     // Retrieve data from session : this case all allOrders in DB
@@ -47,5 +53,5 @@
     createOrderBoxes();
     /*]]>*/
 </script>
-</body>
+<div th:replace="~{fragments :: Footer}"></div>
 </html>
